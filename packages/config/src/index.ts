@@ -55,3 +55,17 @@ export const CONSTANTS = {
   PAGINATION_LIMIT: 20,
   CACHE_TTL: 3600, // 1 hour
 };
+
+/**
+ * Design System Exports
+ */
+export {
+  ColorTokens,
+  TypographyTokens,
+  IconsInfo,
+  SpacingTokens,
+  BorderRadiusTokens,
+  ShadowTokens,
+  ZIndexTokens,
+  TransitionTokens,
+} from './design-tokens';
