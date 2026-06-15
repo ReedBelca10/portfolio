@@ -123,6 +123,21 @@ export interface HeaderProps {
 }
 
 /**
+ * SearchHeader Component Props
+ */
+export interface SearchHeaderLink {
+  label: string;
+  href: string;
+}
+
+export interface SearchHeaderProps {
+  logo?: string;
+  links?: SearchHeaderLink[];
+  onSearch?: (query: string) => void;
+  className?: string;
+}
+
+/**
  * Footer Component Props
  */
 export interface FooterLink {

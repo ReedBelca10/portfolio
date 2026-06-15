@@ -16,4 +16,5 @@ export { TextArea } from './TextArea';
 export { ModuleTitle } from './ModuleTitle';
 export { BlogColumn } from './BlogColumn';
 export { Header } from './Header';
+export { SearchHeader } from './SearchHeader';
 export { Footer } from './Footer';
