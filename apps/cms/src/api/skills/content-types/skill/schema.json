@@ -1,0 +1,49 @@
+'use strict';
+
+/**
+ * Skills Content Type
+ */
+
+module.exports = {
+  kind: 'collectionType',
+  collectionName: 'skills',
+  info: {
+    singularName: 'skill',
+    pluralName: 'skills',
+    displayName: 'Skills',
+  },
+  options: {
+    draftAndPublish: false,
+    increments: true,
+    timestamps: true,
+  },
+  attributes: {
+    name: {
+      type: 'string',
+      required: true,
+    },
+    category: {
+      type: 'enumeration',
+      enum: ['programming', 'design', 'tool', 'soft-skill'],
+      required: true,
+    },
+    level: {
+      type: 'enumeration',
+      enum: ['beginner', 'intermediate', 'advanced', 'expert'],
+      default: 'intermediate',
+    },
+    icon: {
+      type: 'string',
+    },
+    description: {
+      type: 'text',
+    },
+    yearsOfExperience: {
+      type: 'integer',
+    },
+    priority: {
+      type: 'integer',
+      default: 0,
+    },
+  },
+};

@@ -1,0 +1,51 @@
+'use strict';
+
+/**
+ * Testimonials Content Type
+ */
+
+module.exports = {
+  kind: 'collectionType',
+  collectionName: 'testimonials',
+  info: {
+    singularName: 'testimonial',
+    pluralName: 'testimonials',
+    displayName: 'Testimonials',
+  },
+  options: {
+    draftAndPublish: true,
+    increments: true,
+    timestamps: true,
+  },
+  attributes: {
+    author: {
+      type: 'string',
+      required: true,
+    },
+    role: {
+      type: 'string',
+      required: true,
+    },
+    company: {
+      type: 'string',
+    },
+    image: {
+      type: 'media',
+      multiple: false,
+    },
+    content: {
+      type: 'richtext',
+      required: true,
+    },
+    rating: {
+      type: 'integer',
+      min: 1,
+      max: 5,
+      default: 5,
+    },
+    priority: {
+      type: 'integer',
+      default: 0,
+    },
+  },
+};

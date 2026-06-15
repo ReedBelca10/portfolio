@@ -1,0 +1,62 @@
+'use strict';
+
+/**
+ * Portfolio Information Content Type
+ */
+
+module.exports = {
+  kind: 'collectionType',
+  collectionName: 'portfolio_info',
+  info: {
+    singularName: 'portfolio-info',
+    pluralName: 'portfolio-infos',
+    displayName: 'Portfolio Info',
+    description: 'Portfolio owner information',
+  },
+  options: {
+    draftAndPublish: false,
+    increments: true,
+    timestamps: true,
+  },
+  attributes: {
+    name: {
+      type: 'string',
+      required: true,
+      unique: true,
+    },
+    title: {
+      type: 'string',
+      required: true,
+    },
+    subtitle: {
+      type: 'string',
+    },
+    description: {
+      type: 'richtext',
+    },
+    email: {
+      type: 'email',
+      required: true,
+    },
+    phone: {
+      type: 'string',
+    },
+    location: {
+      type: 'string',
+    },
+    profileImage: {
+      type: 'media',
+      multiple: false,
+      required: false,
+    },
+    resumeFile: {
+      type: 'media',
+      multiple: false,
+      required: false,
+    },
+    socialLinks: {
+      type: 'json',
+      default: {},
+    },
+  },
+};
