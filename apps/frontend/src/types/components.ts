@@ -138,6 +138,22 @@ export interface SearchHeaderProps {
 }
 
 /**
+ * SidebarNav Component Props
+ */
+export interface NavItem {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  sectionId: string;
+}
+
+export interface SidebarNavProps {
+  items?: NavItem[];
+  className?: string;
+  onNavigate?: (sectionId: string) => void;
+}
+
+/**
  * Footer Component Props
  */
 export interface FooterLink {

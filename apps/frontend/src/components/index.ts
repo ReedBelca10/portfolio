@@ -17,4 +17,5 @@ export { ModuleTitle } from './ModuleTitle';
 export { BlogColumn } from './BlogColumn';
 export { Header } from './Header';
 export { SearchHeader } from './SearchHeader';
+export { SidebarNav } from './SidebarNav';
 export { Footer } from './Footer';
