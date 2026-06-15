@@ -1,0 +1,31 @@
+{
+  "name": "portfolio-monorepo",
+  "version": "1.0.0",
+  "description": "Professional portfolio with Next.js frontend and Strapi CMS",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces",
+    "dev:frontend": "npm run dev -w apps/frontend",
+    "dev:cms": "npm run dev -w apps/cms",
+    "build": "npm run build --workspaces",
+    "build:frontend": "npm run build -w apps/frontend",
+    "build:cms": "npm run build -w apps/cms",
+    "lint": "npm run lint --workspaces --if-present",
+    "type-check": "npm run type-check --workspaces --if-present",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "clean": "npm run clean --workspaces && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.17.0",
+    "npm": ">=9.0.0"
+  }
+}
