@@ -1,0 +1,32 @@
+{
+  "name": "portfolio-cms",
+  "version": "1.0.0",
+  "description": "Strapi CMS for portfolio",
+  "private": true,
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi",
+    "clean": "rm -rf node_modules/.cache .next dist"
+  },
+  "dependencies": {
+    "@strapi/plugin-i18n": "^5.0.0",
+    "@strapi/plugin-users-permissions": "^5.0.0",
+    "@strapi/strapi": "^5.0.0",
+    "better-sqlite3": "^9.4.3",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "@strapi/typescript": "^5.0.0",
+    "@types/node": "^20.10.6",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "strapi": {
+    "uuid": "your-uuid-here"
+  }
+}
