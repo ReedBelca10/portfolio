@@ -82,8 +82,63 @@ export interface SkillBadgeProps {
 }
 
 /**
- * Navigation Component Props
+ * ModuleTitle Component Props
  */
-export interface NavigationProps {
+export interface ModuleTitleProps {
+  badge?: string;
+  title: string;
+  description?: string;
+  className?: string;
+}
+
+/**
+ * BlogColumn Component Props
+ */
+export interface BlogColumnProps {
+  image: string;
+  imageAlt: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  readingTime: string;
+  author: string;
+  tags: string[];
+  link?: string;
+  featured?: boolean;
+  className?: string;
+}
+
+/**
+ * Header Component Props
+ */
+export interface HeaderLink {
+  label: string;
+  href: string;
+}
+
+export interface HeaderProps {
+  logo?: string;
+  links?: HeaderLink[];
+  className?: string;
+}
+
+/**
+ * Footer Component Props
+ */
+export interface FooterLink {
+  label: string;
+  href: string;
+}
+
+export interface FooterSocialLinks {
+  github?: string;
+  linkedin?: string;
+  twitter?: string;
+}
+
+export interface FooterProps {
+  copyrightText?: string;
+  legalLinks?: FooterLink[];
+  socialLinks?: FooterSocialLinks;
   className?: string;
 }
