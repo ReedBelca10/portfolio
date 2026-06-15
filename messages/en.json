@@ -1,0 +1,31 @@
+{
+  "common": {
+    "language": "English",
+    "nav": {
+      "home": "Home",
+      "about": "About",
+      "projects": "Projects",
+      "skills": "Skills",
+      "contact": "Contact"
+    }
+  },
+  "home": {
+    "title": "Welcome to my portfolio",
+    "subtitle": "Full-stack developer passionate about building amazing web experiences",
+    "cta": "View My Work"
+  },
+  "about": {
+    "title": "About Me",
+    "description": "I'm a passionate developer with expertise in modern web technologies"
+  },
+  "projects": {
+    "title": "My Projects",
+    "description": "Here are some of my recent works"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message"
+  }
+}

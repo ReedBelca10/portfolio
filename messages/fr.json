@@ -1,0 +1,31 @@
+{
+  "common": {
+    "language": "Français",
+    "nav": {
+      "home": "Accueil",
+      "about": "À propos",
+      "projects": "Projets",
+      "skills": "Compétences",
+      "contact": "Contact"
+    }
+  },
+  "home": {
+    "title": "Bienvenue sur mon portfolio",
+    "subtitle": "Développeur passionné par la création d'excellentes expériences web",
+    "cta": "Voir mes travaux"
+  },
+  "about": {
+    "title": "À propos",
+    "description": "Je suis un développeur passionné avec expertise dans les technologies web modernes"
+  },
+  "projects": {
+    "title": "Mes projets",
+    "description": "Voici quelques-uns de mes travaux récents"
+  },
+  "contact": {
+    "title": "Contactez-moi",
+    "email": "Email",
+    "message": "Message",
+    "send": "Envoyer le message"
+  }
+}
