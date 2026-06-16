@@ -1,7 +1,10 @@
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  i18n: undefined, // Using next-intl instead of built-in i18n
   images: {
     remotePatterns: [
       {
@@ -23,15 +26,6 @@ const nextConfig = {
     };
     return config;
   },
-  redirects: async () => {
-    return [
-      {
-        source: '/',
-        destination: '/en',
-        permanent: false,
-      },
-    ];
-  },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

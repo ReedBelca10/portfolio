@@ -1,5 +1,8 @@
-import createNextIntlPlugin from 'next-intl/plugin';
+import { routing } from './i18n';
+import { createMiddleware } from 'next-intl/middleware';
 
-const withNextIntl = createNextIntlPlugin();
+export default createMiddleware(routing);
 
-export default withNextIntl('./src/i18n.ts');
+export const config = {
+  matcher: ['/', '/(en|fr)/:path*'],
+};
