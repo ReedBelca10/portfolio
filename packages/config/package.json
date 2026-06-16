@@ -1,5 +1,5 @@
 {
-  "name": "config",
+  "name": "@portfolio/config",
   "version": "1.0.0",
   "private": true,
   "main": "./dist/index.js",
@@ -9,6 +9,6 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@shared/types": "*"
+    "@portfolio/types": "*"
   }
 }

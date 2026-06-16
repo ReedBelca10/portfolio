@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   i18n: undefined, // Using next-intl instead of built-in i18n
   images: {
     remotePatterns: [
