@@ -2,6 +2,7 @@
   "name": "portfolio-frontend",
   "version": "1.0.0",
   "description": "Next.js portfolio frontend with App Router and i18n",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
