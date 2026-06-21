@@ -91,7 +91,7 @@ export function Navbar({
   return (
     <>
       <nav className={clsx('fixed top-0 left-0 right-0 z-50', className)} style={{ height: '170px', fontFamily: 'IBM Plex Mono', backgroundColor: '#292F36' }}>
-        <div className="h-full px-8 lg:px-16 flex items-center justify-between py-6">
+        <div className="h-full px-[120px] flex items-center justify-between py-6">
           {/* Left: Brand */}
           <div className="flex items-center gap-2">
             <span style={{ fontFamily: 'IBM Plex Mono', fontSize: 32, fontWeight: 700 }}>
