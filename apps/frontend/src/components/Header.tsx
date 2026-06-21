@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
-import { Icon } from './Icon';
 
 /*
  * Header Component

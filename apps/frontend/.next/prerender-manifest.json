@@ -1,1 +1,37 @@
-{"version":4,"routes":{"/en":{},"/fr":{}},"dynamicRoutes":{"/[locale]":{"dataRoute":null,"dataRouteRegex":null,"fallback":null,"fallbackRevalidate":false,"fallbackSourceRoute":"/[locale]","routeRegex":"^\\/([^/]+?)(?:\\/)?$","allowHeader":[]}},"notFoundRoutes":[],"preview":{"previewModeId":"16a8b5c0914650902495120fcc7655e7","previewModeSigningKey":"4f0a9a456d8ed01d103617e4998c2dcadd88bf19f326a05e2432633ecfd7da02","previewModeEncryptionKey":"8466e33819ff82627bf9dbaecd81815438837901c1a4a1292b0472216907c3f7"}}
+{
+  "version": 4,
+  "routes": {
+    "/_not-found": {
+      "initialStatus": 404,
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/_not-found",
+      "dataRoute": "/_not-found.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    }
+  },
+  "dynamicRoutes": {},
+  "notFoundRoutes": [],
+  "preview": {
+    "previewModeId": "9f40084bbde9ec4a74584278de9a53fd",
+    "previewModeSigningKey": "f0051576d2b33fabdf66c5aae02d289af5c08af26ccd672cd4bba2536fb128c4",
+    "previewModeEncryptionKey": "a421e6d80b51db5f5221d63593ff15fb65ac0ef74a7f0504cf21285f0f4dec78"
+  }
+}
