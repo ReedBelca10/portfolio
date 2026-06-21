@@ -1,12 +1,12 @@
 import { useTranslations } from 'next-intl';
-import { SearchHeader, SidebarNav, ModuleTitle, Button, Container, Heading } from '@/components';
+import { Navbar, SidebarNav, ModuleTitle, Button, Container, Heading } from '@/components';
 
 export default function HomePage() {
   const t = useTranslations();
 
   return (
     <>
-      <SearchHeader />
+      <Navbar />
       <SidebarNav />
 
       <main className="min-h-screen">
