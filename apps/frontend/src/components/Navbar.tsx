@@ -83,13 +83,14 @@ export function Navbar({
     return;
   }, [searchOpen]);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSearchSubmit = (e?: React.FormEvent | null) => {
+    e?.preventDefault?.();
     if (searchQuery.trim() && onSearch) {
       onSearch(searchQuery);
-      setSearchOpen(false);
-      setSearchQuery('');
     }
+    // Always close the popup and clear the query after submit (even if no onSearch provided)
+    setSearchOpen(false);
+    setSearchQuery('');
   };
 
   const handleSocialClick = (url: string) => {
@@ -155,7 +156,7 @@ export function Navbar({
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    handleSearchSubmit(e as unknown as React.FormEvent);
+                    handleSearchSubmit();
                   }
                 }}
                 className="hidden md:block bg-transparent text-slate-900 focus:outline-none text-sm w-56 xl:w-56 lg:w-44 md:w-40"
@@ -223,13 +224,13 @@ export function Navbar({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSearchSubmit(e as unknown as React.FormEvent);
+                  if (e.key === 'Enter') handleSearchSubmit();
                 }}
                 className="bg-transparent text-slate-900 focus:outline-none text-sm w-full"
                 style={{ fontFamily: 'IBM Plex Mono' }}
               />
               <button
-                onClick={() => handleSearchSubmit(new Event('submit') as unknown as React.FormEvent)}
+                onClick={() => handleSearchSubmit()}
                 className="text-slate-900 hover:text-slate-700 transition-colors p-1"
                 aria-label="Execute search"
                 title="Search"
