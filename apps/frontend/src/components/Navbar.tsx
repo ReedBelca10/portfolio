@@ -13,27 +13,26 @@ import { GitHubIcon, LinkedInIcon } from './Icon';
  */
 
 interface NavbarLink {
-  interface NavbarLink {
-    label: string;
-    href: string;
-  }
+  label: string;
+  href: string;
+}
 
-  interface SocialLink {
-    name: string;
-    url: string;
-    icon: 'github' | 'linkedin' | 'discord';
-  }
+interface SocialLink {
+  name: string;
+  url: string;
+  icon: 'github' | 'linkedin' | 'discord';
+}
 
-  interface NavbarProps {
-    brandName?: string;
-    links?: NavbarLink[];
-    socialLinks?: SocialLink[];
-    onSearch?: (query: string) => void;
-    className?: string;
-  }
+interface NavbarProps {
+  brandName?: string;
+  links?: NavbarLink[];
+  socialLinks?: SocialLink[];
+  onSearch?: (query: string) => void;
+  className?: string;
+}
 
-  export function Navbar({
-    brandName = 'Caleb Adjeoda',
+export function Navbar({
+    brandName = 'CalebAdjeoda',
     links = [
       { label: 'Home', href: '#home' },
       { label: 'Blogs', href: '#blog' },
@@ -118,7 +117,7 @@ interface NavbarLink {
       <>
         <nav
           className={clsx(
-            'fixed top-0 left-0 right-0 z-50 h-[68px] md:h-[170px] px-4 sm:px-6 md:px-12 lg:px-20 xl:px-28 2xl:px-[8%]',
+            'fixed top-0 left-0 right-0 z-40 h-[68px] md:h-[170px] px-4 sm:px-6 md:px-12 lg:px-20 xl:px-28 2xl:px-[8%]',
             className
           )}
           style={{ fontFamily: 'IBM Plex Mono', backgroundColor: '#292F36' }}
@@ -127,18 +126,11 @@ interface NavbarLink {
             {/* Left: Brand */}
             <div className="relative flex items-center gap-2">
               <span className="font-bold md:font-normal lg:font-medium text-[18px]" style={{ fontFamily: 'IBM Plex Mono' }}>
-                <span className="text-cyan-400">&lt;CA/&gt;</span>
+                <span className="text-cyan-400">&lt;C/&gt;</span>
                 <span className="text-white ml-2">{brandName}</span>
               </span>
 
-              {/* Floating badge that indicates the logo represents the full name */}
-              <div
-                aria-hidden
-                className="absolute -top-3 left-10 md:left-12 bg-cyan-400 text-slate-900 text-[11px] md:text-xs rounded-full px-2 py-1 shadow-md flex items-center"
-                style={{ transform: 'translateY(-6px)' }}
-              >
-                Caleb Adjeoda
-              </div>
+              {/* Removed floating name badge per design feedback */}
             </div>
 
             {/* Right: Nav links, Search, Socials (single line at wide screens) */}
@@ -219,11 +211,11 @@ interface NavbarLink {
         {/* Mobile-only search popup with backdrop blur */}
         {searchOpen && (
           <div
-            className="fixed inset-0 z-60 flex items-start justify-center pt-20 md:hidden"
+            className="fixed inset-0 z-50 flex items-start justify-center pt-20 md:hidden"
             onClick={() => setSearchOpen(false)}
           >
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-            <div className="relative z-70 w-[min(720px,90%)] px-4">
+            <div className="relative z-50 w-[min(720px,90%)] px-4">
               <div
                 className="bg-white rounded-full px-4 py-2 flex items-center gap-2"
                 onClick={(e) => e.stopPropagation()}

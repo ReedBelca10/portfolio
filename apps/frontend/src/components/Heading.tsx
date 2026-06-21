@@ -27,8 +27,9 @@ export function Heading({ level, children, className, asChild: Component }: Head
     6: 'text-base',
   };
 
-  return React.createElement(HeadingTag, {
-    className: clsx('font-semibold text-neutral-white', sizeMap[level], className),
-    children,
-  });
+  return React.createElement(
+    HeadingTag,
+    { className: clsx('font-semibold text-neutral-white', sizeMap[level], className) },
+    children
+  );
 }
