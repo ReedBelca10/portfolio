@@ -159,15 +159,13 @@ export function Navbar({
                   <button
                     key={link.name}
                     onClick={() => handleSocialClick(link.url)}
-                    className="flex items-center gap-1 text-white hover:opacity-80 transition-opacity"
+                    className="flex items-center gap-2 hover:opacity-90 transition-opacity"
                     aria-label={link.name}
                     title={link.name}
                     style={{ fontFamily: 'IBM Plex Mono' }}
                   >
-                    <span className="text-xs font-medium capitalize">{link.name}</span>
-                    <div className="flex items-center">
-                      {renderSocialIcon(link.icon, 'md')}
-                    </div>
+                    <span className="text-cyan-400 flex items-center">{renderSocialIcon(link.icon, 'md')}</span>
+                    <span className="text-white text-sm font-medium capitalize">{link.name}</span>
                   </button>
                 ))}
               </div>
