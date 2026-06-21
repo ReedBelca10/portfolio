@@ -3,7 +3,7 @@
  */
 
 export default {
-  bootstrap(app) {
+  bootstrap() {
     console.log('Strapi portfolio is starting');
   },
 };
