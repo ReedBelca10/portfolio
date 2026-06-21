@@ -6,9 +6,9 @@ import { GitHubIcon, LinkedInIcon } from './Icon';
 
 /*
  * Navbar Component
- * Premium navbar design for large screens with logo, navigation, search, and social links
+ * Single-row premium navbar design with logo, navigation, search, and social links
  * Features dark background with accent colors
- * Responsive with optimized 170px height for desktop
+ * Optimized for 1920px width desktop viewing
  */
 
 interface NavbarLink {
@@ -95,9 +95,9 @@ export function Navbar({
         className
       )}
     >
-      <div className="h-[170px] px-8 lg:px-12 flex flex-col justify-between py-6">
-        {/* Top Row: Brand + Right Actions */}
-        <div className="flex items-center justify-between">
+      <div className="h-[70px] px-8 lg:px-12 flex items-center justify-between py-0">
+        {/* Left: Brand + Navigation */}
+        <div className="flex items-center gap-8 lg:gap-12">
           {/* Brand Name */}
           <div className="flex-shrink-0">
             <h1 className="text-2xl font-bold font-monospace bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
@@ -105,74 +105,64 @@ export function Navbar({
             </h1>
           </div>
 
-          {/* Right Side: Search + Social Icons */}
-          <div className="flex items-center gap-4 lg:gap-6">
-            {/* Search Button */}
-            <button
-              onClick={handleSearchToggle}
-              className="p-2 hover:bg-slate-800 rounded-lg transition-all duration-200 text-cyan-400 hover:text-cyan-300"
-              aria-label="Toggle search"
-              title="Search"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35" />
-              </svg>
-            </button>
-
-            {/* Social Links */}
-            {socialLinks.map((link) => (
-              <button
-                key={link.name}
-                onClick={() => handleSocialClick(link.url)}
-                className="p-2 hover:bg-slate-800 rounded-lg transition-all duration-200 text-slate-300 hover:text-cyan-400"
-                aria-label={link.name}
-                title={link.name}
+          {/* Navigation Links */}
+          <div className="flex items-center gap-6 lg:gap-8">
+            {links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors duration-200"
               >
-                <div className="text-slate-300 hover:text-cyan-400 transition-colors">
-                  {renderSocialIcon(link.icon)}
-                </div>
-              </button>
+                {link.label}
+              </a>
             ))}
           </div>
         </div>
 
-        {/* Bottom Row: Navigation Links */}
-        <div className="flex items-center gap-8 lg:gap-12">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors duration-200 relative group"
-            >
-              {link.label}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400 group-hover:w-full transition-all duration-300"></span>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* Search Bar (slides in when active) */}
-      {searchOpen && (
-        <div className="border-t border-slate-800/50 px-8 lg:px-12 py-4 bg-slate-900/50 backdrop-blur-sm">
-          <form onSubmit={handleSearchSubmit} className="flex gap-3">
+        {/* Right Side: Search + Social Icons */}
+        <div className="flex items-center gap-4 lg:gap-6">
+          {/* Search Box */}
+          <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-2 hover:border-cyan-400 transition-colors">
             <input
               ref={searchInputRef}
               type="text"
-              placeholder="Search..."
+              placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30 transition-all"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSearchSubmit(e as unknown as React.FormEvent);
+                }
+              }}
+              className="bg-transparent text-slate-100 placeholder-slate-400 focus:outline-none text-sm w-24 lg:w-32"
             />
             <button
-              type="submit"
-              className="px-6 py-2 bg-gradient-to-r from-cyan-400 to-blue-400 text-slate-900 font-semibold rounded-lg hover:shadow-lg hover:shadow-cyan-400/50 transition-all duration-200"
+              onClick={handleSearchToggle}
+              className="text-cyan-400 hover:text-cyan-300 transition-colors"
+              aria-label="Toggle search"
+              title="Search"
             >
-              Search
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
             </button>
-          </form>
+          </div>
+
+          {/* Social Links */}
+          {socialLinks.map((link) => (
+            <button
+              key={link.name}
+              onClick={() => handleSocialClick(link.url)}
+              className="text-slate-300 hover:text-cyan-400 transition-colors"
+              aria-label={link.name}
+              title={link.name}
+            >
+              {renderSocialIcon(link.icon, 'md')}
+            </button>
+          ))}
         </div>
-      )}
+      </div>
     </nav>
   );
 }
