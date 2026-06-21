@@ -98,7 +98,7 @@ export function Navbar({
         <div className="h-full flex items-center justify-between py-4 md:py-6">
           {/* Left: Brand */}
           <div className="flex items-center gap-2">
-            <span className="font-bold text-[24px]" style={{ fontFamily: 'IBM Plex Mono' }}>
+            <span className="font-bold md:font-normal lg:font-medium text-[24px]" style={{ fontFamily: 'IBM Plex Mono' }}>
               <span className="text-cyan-400">&lt;C/&gt;</span>
               <span className="text-white ml-2">{brandName}</span>
             </span>
