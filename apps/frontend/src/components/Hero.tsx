@@ -10,12 +10,15 @@ export function Hero() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           {/* Left profile card */}
           <aside className="md:col-span-3">
-            <div className="relative rounded-[36px] p-6 md:p-8 bg-[#263034] border-l-4 border-cyan-400 shadow-[inset_0_0_0_2px_rgba(255,255,255,0.02)]" style={{ minHeight: 520 }}>
-              <div className="flex flex-col items-center text-center gap-4">
+            <div className="relative" style={{ minHeight: 520 }}>
+              {/* decorative cyan outline arc */}
+              <div aria-hidden="true" className="absolute -left-6 -top-6 right-0 bottom-0 rounded-[56px] border-4 border-cyan-400 pointer-events-none" />
+              <div className="relative rounded-[36px] p-6 md:p-8 bg-[#263034] shadow-[inset_0_0_0_2px_rgba(255,255,255,0.02)]">
+                <div className="flex flex-col items-center text-center gap-4">
                 <div className="w-28 h-28 rounded-full overflow-hidden ring-2 ring-cyan-400">
                   <Image src="/profile.jpeg" alt="Caleb" width={112} height={112} className="object-cover" />
                 </div>
-                <h3 className="text-2xl font-semibold text-white font-monospace">Caleb</h3>
+                <h3 className="font-semibold text-white font-monospace" style={{ fontSize: 'clamp(18px, 1.8vw, 28px)' }}>Caleb</h3>
                 <p className="text-sm text-neutral-grey">Full-Stack Developer</p>
 
                 <div className="mt-4 space-y-3 text-sm text-neutral-grey w-full">
@@ -43,6 +46,7 @@ export function Hero() {
                     <svg className="ml-3" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   </Link>
                 </div>
+                </div>
               </div>
             </div>
           </aside>
@@ -50,7 +54,7 @@ export function Hero() {
           {/* Center hero content */}
           <div className="md:col-span-6">
             <div className="max-w-3xl">
-              <h1 className="text-white font-monospace font-semibold leading-tight" style={{ fontSize: 'clamp(32px, 4.5vw, 64px)' }}>
+              <h1 className="text-white font-monospace font-semibold leading-tight" style={{ fontSize: 'clamp(36px, 6vw, 72px)', lineHeight: 0.95 }}>
                 Hey
                 <br />
                 I&apos;m <span className="text-cyan-400">Caleb</span>,
@@ -58,7 +62,7 @@ export function Hero() {
                 Full-Stack Developer
               </h1>
 
-              <p className="text-neutral-grey mt-6 text-base md:text-lg leading-relaxed">
+              <p className="text-neutral-grey mt-6 leading-relaxed" style={{ fontSize: 'clamp(14px, 1.3vw, 18px)', maxWidth: 680 }}>
                 I craft high-performance web and mobile applications, from robust backend architectures to seamless user experiences. If you&apos;re looking for a versatile developer to transform complex ideas into scalable digital products, let&apos;s build together.
               </p>
 
@@ -77,34 +81,34 @@ export function Hero() {
           <aside className="md:col-span-3 flex justify-end">
             <div className="w-64 rounded-[40px] bg-[#1f2427] py-8 px-6 text-white flex flex-col gap-8 items-start shadow-lg" style={{ minHeight: 420 }}>
               <div className="flex items-center gap-3">
-                <span className="text-cyan-400 text-2xl font-monospace">8</span>
+                <span className="text-cyan-400 font-monospace" style={{ fontSize: 'clamp(20px, 3vw, 36px)' }}>8</span>
                 <div>
-                  <div className="text-sm">Programming</div>
-                  <div className="text-xs text-neutral-grey">Language</div>
+                  <div className="text-sm" style={{ fontSize: 'clamp(12px, 1.1vw, 14px)' }}>Programming</div>
+                  <div className="text-xs text-neutral-grey" style={{ fontSize: 'clamp(11px, 0.9vw, 12px)' }}>Language</div>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-cyan-400 text-2xl font-monospace">5</span>
+                <span className="text-cyan-400 font-monospace" style={{ fontSize: 'clamp(20px, 3vw, 36px)' }}>5</span>
                 <div>
-                  <div className="text-sm">Frameworks</div>
-                  <div className="text-xs text-neutral-grey">&amp; Libs</div>
+                  <div className="text-sm" style={{ fontSize: 'clamp(12px, 1.1vw, 14px)' }}>Frameworks</div>
+                  <div className="text-xs text-neutral-grey" style={{ fontSize: 'clamp(11px, 0.9vw, 12px)' }}>&amp; Libs</div>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-cyan-400 text-2xl font-monospace">5</span>
+                <span className="text-cyan-400 font-monospace" style={{ fontSize: 'clamp(20px, 3vw, 36px)' }}>5</span>
                 <div>
-                  <div className="text-sm">Databases</div>
-                  <div className="text-xs text-neutral-grey">&amp; DevOps</div>
+                  <div className="text-sm" style={{ fontSize: 'clamp(12px, 1.1vw, 14px)' }}>Databases</div>
+                  <div className="text-xs text-neutral-grey" style={{ fontSize: 'clamp(11px, 0.9vw, 12px)' }}>&amp; DevOps</div>
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-cyan-400 text-2xl font-monospace">4</span>
+                <span className="text-cyan-400 font-monospace" style={{ fontSize: 'clamp(20px, 3vw, 36px)' }}>4</span>
                 <div>
-                  <div className="text-sm">QA &amp; Design</div>
-                  <div className="text-xs text-neutral-grey">Tools</div>
+                  <div className="text-sm" style={{ fontSize: 'clamp(12px, 1.1vw, 14px)' }}>QA &amp; Design</div>
+                  <div className="text-xs text-neutral-grey" style={{ fontSize: 'clamp(11px, 0.9vw, 12px)' }}>Tools</div>
                 </div>
               </div>
             </div>
