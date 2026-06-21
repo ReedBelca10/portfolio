@@ -79,8 +79,8 @@ export function Navbar({
         return <LinkedInIcon size={size} />;
       case 'discord':
         return (
-          <svg width={size === 'lg' ? 28 : 24} height={size === 'lg' ? 28 : 24} viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20.317 4.3671a19.8062 19.8062 0 00-4.8851-1.5152.074.074 0 00-.0782.0336c-.211.3667-.4429.8465-.6056 1.2251-.9493-.1423-1.8915-.1423-2.8134 0-.1624-.3837-.3954-.8584-.6069-1.2251a.077.077 0 00-.0785-.0336 19.7354 19.7354 0 00-4.8852 1.515.07.07 0 00-.0529.0273C.5817 9.0739-.0208 13.5sweep 0 17.9692a.083.083 0 00.0315.0686c2.0447 1.3084 4.0181 2.1004 5.9645 2.6289a.076.076 0 00.0822-.0288c.4671-.6374.8823-1.3106 1.2381-2.0028a.075.075 0 00-.0041-.0852c-.3933-.1487-.7667-.3279-1.1156-.5139a.075.075 0 01-.0074-.1257c.7487.5591 1.5616 1.0787 2.4147 1.4618a.074.074 0 00.0784.0105c2.2196-.9626 4.6348-.9626 6.8437 0a.075.075 0 00.0787-.0107c.8529-.3837 1.6655-.9027 2.4139-1.4618a.075.075 0 01-.0073.1256c-.3487.1861-.7221.3667-1.1147.5139a.075.075 0 00-.0037.0852c.3566.6922.7708 1.3654 1.2373 2.0028a.076.076 0 00.0824.0288 19.504 19.504 0 005.9645-2.6289.083.083 0 00.0317-.0686c.3804-4.2137-.6404-7.9296-2.7101-11.5968a.06.06 0 00-.0531-.0274zM8.02 15.3312c-.9692 0-1.7669-.8889-1.7669-1.9779 0-1.0889.7768-1.9779 1.7669-1.9779.9987 0 1.7782.8889 1.7669 1.9779 0 1.089-.7768 1.9779-1.7669 1.9779zm7.9601 0c-.9692 0-1.767-.8889-1.767-1.9779 0-1.0889.7768-1.9779 1.767-1.9779.9987 0 1.7783.8889 1.767 1.9779 0 1.089-.768 1.9779-1.767 1.9779z" />
+          <svg width={size === 'lg' ? 28 : 24} height={size === 'lg' ? 28 : 24} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+            <path d="M12 2C7.03 2 3 5.58 3 10c0 2.53 1.5 4.78 3.9 6.19L7 20l4-1.7c.9.3 1.8.5 2.9.5 4.97 0 9-3.58 9-8s-4.03-8-9-8zm-3.5 9a1.5 1.5 0 11.001-3.001A1.5 1.5 0 018.5 11zm7 0a1.5 1.5 0 11.001-3.001A1.5 1.5 0 0115.5 11z" />
           </svg>
         );
       default:
@@ -90,25 +90,19 @@ export function Navbar({
 
   return (
     <>
-      <nav
-        className={clsx(
-          'fixed top-0 left-0 right-0 z-50 bg-slate-950',
-          className
-        )}
-        style={{ height: '170px', fontFamily: 'IBM Plex Mono' }}
-      >
-        <div className="h-full px-8 lg:px-16 flex flex-col justify-between py-6">
-          {/* Top Row: Logo */}
+      <nav className={clsx('fixed top-0 left-0 right-0 z-50', className)} style={{ height: '170px', fontFamily: 'IBM Plex Mono', backgroundColor: '#292F36' }}>
+        <div className="h-full px-8 lg:px-16 flex items-center justify-between py-6">
+          {/* Left: Brand */}
           <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold">
+            <span className="text-2xl font-bold" style={{ fontFamily: 'IBM Plex Mono' }}>
               <span className="text-cyan-400">&lt;C/&gt;</span>
               <span className="text-white ml-2">{brandName}</span>
             </span>
           </div>
 
-          {/* Bottom Row: Navigation, Search, Social */}
-          <div className="flex items-center justify-between">
-            {/* Left: Navigation Links */}
+          {/* Right: Nav links, Search, Socials (single line at wide screens) */}
+          <div className="flex items-center gap-8 lg:gap-12">
+            {/* Navigation Links - placed left of search */}
             <div className="flex items-center gap-8 lg:gap-12">
               {links.map((link) => (
                 <a
@@ -122,53 +116,50 @@ export function Navbar({
               ))}
             </div>
 
-            {/* Right: Search + Social Icons */}
-            <div className="flex items-center gap-6 lg:gap-8">
-              {/* Search Box - White Background */}
-              <div className="flex items-center gap-2 bg-white rounded px-3 py-1.5">
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSearchSubmit(e as unknown as React.FormEvent);
-                    }
-                  }}
-                  className="bg-transparent text-slate-900 placeholder-slate-500 focus:outline-none text-xs w-32"
-                  style={{ fontFamily: 'IBM Plex Mono' }}
-                />
-                <button
-                  onClick={handleSearchToggle}
-                  className="text-slate-900 hover:text-slate-700 transition-colors"
-                  aria-label="Toggle search"
-                  title="Search"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.35-4.35" />
-                  </svg>
-                </button>
-              </div>
+            {/* Search Box - White Background */}
+            <div className="flex items-center gap-2 bg-white rounded px-3 py-1.5">
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearchSubmit(e as unknown as React.FormEvent);
+                  }
+                }}
+                className="bg-transparent text-slate-900 placeholder-slate-500 focus:outline-none text-sm w-48"
+                style={{ fontFamily: 'IBM Plex Mono' }}
+              />
+              <button
+                onClick={handleSearchToggle}
+                className="text-slate-900 hover:text-slate-700 transition-colors"
+                aria-label="Toggle search"
+                title="Search"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+              </button>
+            </div>
 
-              {/* Social Links with Names */}
-              <div className="flex items-center gap-4 lg:gap-6">
-                {socialLinks.map((link) => (
-                  <button
-                    key={link.name}
-                    onClick={() => handleSocialClick(link.url)}
-                    className="flex items-center gap-2 hover:opacity-90 transition-opacity"
-                    aria-label={link.name}
-                    title={link.name}
-                    style={{ fontFamily: 'IBM Plex Mono' }}
-                  >
-                    <span className="text-cyan-400 flex items-center">{renderSocialIcon(link.icon, 'md')}</span>
-                    <span className="text-white text-sm font-medium capitalize">{link.name}</span>
-                  </button>
-                ))}
-              </div>
+            {/* Social Links with Names */}
+            <div className="flex items-center gap-4 lg:gap-6">
+              {socialLinks.map((link) => (
+                <button
+                  key={link.name}
+                  onClick={() => handleSocialClick(link.url)}
+                  className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+                  aria-label={link.name}
+                  title={link.name}
+                  style={{ fontFamily: 'IBM Plex Mono' }}
+                >
+                  <span className="text-cyan-400 flex items-center">{renderSocialIcon(link.icon, 'md')}</span>
+                  <span className="text-white text-sm font-medium capitalize">{link.name}</span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
