@@ -6,9 +6,10 @@ import { GitHubIcon, LinkedInIcon } from './Icon';
 
 /*
  * Navbar Component
- * Single-row premium navbar design with logo, navigation, search, and social links
- * Features dark background with accent colors
- * Optimized for 1920px width desktop viewing
+ * Premium navbar design: 170px height, IBM Plex Mono typography
+ * Left: <C/> logo + CalebAdjeoda name
+ * Right: Navigation + Search bar + Social icons with names
+ * Bottom: hr line separator
  */
 
 interface NavbarLink {
@@ -88,81 +89,98 @@ export function Navbar({
   };
 
   return (
-    <nav
-      className={clsx(
-        'fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 border-b border-slate-800/50',
-        'shadow-xl shadow-slate-950/50',
-        className
-      )}
-    >
-      <div className="h-[70px] px-8 lg:px-12 flex items-center justify-between py-0">
-        {/* Left: Brand + Navigation */}
-        <div className="flex items-center gap-8 lg:gap-12">
-          {/* Brand Name */}
-          <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold font-monospace bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-              {brandName}
-            </h1>
+    <>
+      <nav
+        className={clsx(
+          'fixed top-0 left-0 right-0 z-50 bg-slate-950',
+          className
+        )}
+        style={{ height: '170px', fontFamily: 'IBM Plex Mono' }}
+      >
+        <div className="h-full px-8 lg:px-16 flex flex-col justify-between py-6">
+          {/* Top Row: Logo */}
+          <div className="flex items-center gap-2">
+            <span className="text-2xl font-bold">
+              <span className="text-cyan-400">&lt;C/&gt;</span>
+              <span className="text-white ml-2">{brandName}</span>
+            </span>
           </div>
 
-          {/* Navigation Links */}
-          <div className="flex items-center gap-6 lg:gap-8">
-            {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors duration-200"
-              >
-                {link.label}
-              </a>
-            ))}
+          {/* Bottom Row: Navigation, Search, Social */}
+          <div className="flex items-center justify-between">
+            {/* Left: Navigation Links */}
+            <div className="flex items-center gap-8 lg:gap-12">
+              {links.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-medium text-white hover:text-cyan-400 transition-colors duration-200"
+                  style={{ fontFamily: 'IBM Plex Mono' }}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+
+            {/* Right: Search + Social Icons */}
+            <div className="flex items-center gap-6 lg:gap-8">
+              {/* Search Box - White Background */}
+              <div className="flex items-center gap-2 bg-white rounded px-3 py-1.5">
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearchSubmit(e as unknown as React.FormEvent);
+                    }
+                  }}
+                  className="bg-transparent text-slate-900 placeholder-slate-500 focus:outline-none text-xs w-32"
+                  style={{ fontFamily: 'IBM Plex Mono' }}
+                />
+                <button
+                  onClick={handleSearchToggle}
+                  className="text-slate-900 hover:text-slate-700 transition-colors"
+                  aria-label="Toggle search"
+                  title="Search"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Social Links with Names */}
+              <div className="flex items-center gap-4 lg:gap-6">
+                {socialLinks.map((link) => (
+                  <button
+                    key={link.name}
+                    onClick={() => handleSocialClick(link.url)}
+                    className="flex items-center gap-1 text-white hover:opacity-80 transition-opacity"
+                    aria-label={link.name}
+                    title={link.name}
+                    style={{ fontFamily: 'IBM Plex Mono' }}
+                  >
+                    <span className="text-xs font-medium capitalize">{link.name}</span>
+                    <div className="flex items-center">
+                      {renderSocialIcon(link.icon, 'md')}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Right Side: Search + Social Icons */}
-        <div className="flex items-center gap-4 lg:gap-6">
-          {/* Search Box */}
-          <div className="flex items-center gap-2 bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-2 hover:border-cyan-400 transition-colors">
-            <input
-              ref={searchInputRef}
-              type="text"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleSearchSubmit(e as unknown as React.FormEvent);
-                }
-              }}
-              className="bg-transparent text-slate-100 placeholder-slate-400 focus:outline-none text-sm w-24 lg:w-32"
-            />
-            <button
-              onClick={handleSearchToggle}
-              className="text-cyan-400 hover:text-cyan-300 transition-colors"
-              aria-label="Toggle search"
-              title="Search"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35" />
-              </svg>
-            </button>
-          </div>
+        {/* Bottom HR Line */}
+        <hr className="border-t border-slate-800/50 m-0" />
+      </nav>
 
-          {/* Social Links */}
-          {socialLinks.map((link) => (
-            <button
-              key={link.name}
-              onClick={() => handleSocialClick(link.url)}
-              className="text-slate-300 hover:text-cyan-400 transition-colors"
-              aria-label={link.name}
-              title={link.name}
-            >
-              {renderSocialIcon(link.icon, 'md')}
-            </button>
-          ))}
-        </div>
-      </div>
-    </nav>
+      {/* Spacer for fixed navbar */}
+      <div style={{ height: '170px' }} />
+    </>
   );
 }
