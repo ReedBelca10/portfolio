@@ -161,7 +161,7 @@ export function Navbar({
                   style={{ fontFamily: 'IBM Plex Mono' }}
                 >
                     <span className="text-cyan-400 flex items-center">{renderSocialIcon(link.icon, 'md')}</span>
-                    <span className="text-white font-medium capitalize text-[16px]">{link.name}</span>
+                    <span className="text-white font-medium capitalize text-[16px] hidden xl:inline-block">{link.name}</span>
                 </button>
               ))}
             </div>
