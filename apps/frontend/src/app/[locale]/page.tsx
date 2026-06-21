@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
-import { Navbar, SidebarNav, ModuleTitle, Button, Container, Heading } from '@/components';
+import { Navbar, SidebarNav, ModuleTitle, Button, Container } from '@/components';
+import Hero from '@/components/Hero';
 
 export default function HomePage() {
   const t = useTranslations();
@@ -11,30 +12,7 @@ export default function HomePage() {
 
       <main className="min-h-screen">
         {/* Hero Section */}
-        <section id="home" className="relative min-h-screen bg-bg-secondary flex items-center justify-center">
-          <div className="absolute inset-0 bg-gradient-to-b from-brand-primary/5 to-transparent pointer-events-none" />
-          
-          <Container>
-            <div className="relative z-10 text-center max-w-2xl mx-auto py-24">
-              <Heading level={1} className="text-h1-u font-bold text-neutral-white mb-6">
-                {t('pages.home.hero.title') || 'Welcome to My Portfolio'}
-              </Heading>
-              
-              <p className="text-article-u text-neutral-grey mb-12 leading-relaxed">
-                {t('pages.home.hero.subtitle') || 'Crafting beautiful digital experiences through design and development'}
-              </p>
-
-              <div className="flex gap-4 justify-center">
-                <Button variant="primary" size="lg">
-                  {t('pages.home.hero.cta') || 'View My Work'}
-                </Button>
-                <Button variant="outline" size="lg">
-                  {t('pages.home.hero.contact') || 'Get in Touch'}
-                </Button>
-              </div>
-            </div>
-          </Container>
-        </section>
+        <Hero />
 
         {/* About Section */}
         <section id="about" className="relative min-h-screen bg-bg-primary py-24">
