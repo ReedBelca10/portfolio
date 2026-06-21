@@ -35,10 +35,10 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
 
   const defaultItems: NavItem[] = items || [
     {
-      id: 'home',
-      label: t('home') || 'Home',
-      icon: <HomeIcon />,
-      sectionId: 'home',
+      id: 'modules',
+      label: t('modules') || 'Modules',
+      icon: <ProjectsIcon />,
+      sectionId: 'modules',
     },
     {
       id: 'about',
@@ -47,21 +47,21 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
       sectionId: 'about',
     },
     {
-      id: 'projects',
-      label: t('projects') || 'Works',
-      icon: <ProjectsIcon />,
-      sectionId: 'projects',
-    },
-    {
       id: 'skills',
       label: t('skills') || 'Skills',
       icon: <SkillsIcon />,
       sectionId: 'skills',
     },
     {
+      id: 'works',
+      label: t('works') || 'Works',
+      icon: <MonitorIcon />,
+      sectionId: 'projects',
+    },
+    {
       id: 'blog',
       label: t('blog') || 'Blogs',
-      icon: <BlogIcon />,
+      icon: <EditIcon />,
       sectionId: 'blog',
     },
     {
@@ -167,15 +167,15 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
   return (
     <nav
       className={clsx(
-        'fixed left-[0.1em] top-[68px] md:top-[170px] z-50',
+        'fixed left-2 top-[78px] md:top-[190px] z-50',
         'hidden lg:block',
         className
       )}
       role="navigation"
       aria-label="Section navigation"
     >
-      <div className="rounded-full bg-[#2f3438] border border-white/10 shadow-lg p-3">
-        <div className="flex flex-col items-center gap-4 py-2 px-1 w-14">
+      <div className="rounded-full bg-[#2f3438] border border-white/30 shadow-lg p-3">
+        <div className="flex flex-col items-center gap-4 py-3 px-1 w-14">
           {defaultItems.map((item, index) => (
             <div key={item.id} className="relative group">
               <button
@@ -187,10 +187,10 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
                   'w-10 h-10 rounded-full',
                   'transition-all duration-300',
                   'focus:outline-none focus-ring',
-                  'border',
+                  'border-2',
                   activeSection === item.id
-                    ? 'border-white/90 bg-white/5'
-                    : 'border-white/20 hover:border-white/40 bg-transparent',
+                    ? 'border-white bg-white/5'
+                    : 'border-white/50 hover:border-white/70 bg-transparent',
                   hoveredId === item.id && 'ring-1 ring-white/30'
                 )}
                 aria-label={item.label}
@@ -203,7 +203,7 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
                     'transition-colors duration-300',
                     activeSection === item.id
                       ? 'text-cyan-400'
-                      : 'text-white/70 group-hover:text-cyan-300'
+                      : 'text-white group-hover:text-cyan-300'
                   )}
                 >
                   {item.icon}
@@ -238,13 +238,6 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
 }
 
 // Icon Components
-function HomeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-    </svg>
-  );
-}
 
 function UserIcon() {
   return (
@@ -277,21 +270,30 @@ function SkillsIcon() {
   );
 }
 
-function BlogIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full">
-      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-      <line x1="8" y1="7" x2="16" y2="7" />
-      <line x1="8" y1="11" x2="16" y2="11" />
-    </svg>
-  );
-}
 
 function ContactIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  );
+}
+
+function MonitorIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full">
+      <rect x="3" y="4" width="18" height="12" rx="2" ry="2" />
+      <path d="M8 20h8" />
+      <path d="M12 16v4" />
+    </svg>
+  );
+}
+
+function EditIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full">
+      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" />
+      <path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
     </svg>
   );
 }
