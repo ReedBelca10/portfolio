@@ -94,8 +94,8 @@ export function Navbar({
 
   return (
     <>
-      <nav className={clsx('fixed top-0 left-0 right-0 z-50', className)} style={{ height: '170px', fontFamily: 'IBM Plex Mono', backgroundColor: '#292F36' }}>
-        <div className="h-full px-[120px] flex items-center justify-between py-6">
+      <nav className={clsx('fixed top-0 left-0 right-0 z-50 h-[80px] md:h-[170px] px-[30px] md:px-[120px]', className)} style={{ fontFamily: 'IBM Plex Mono', backgroundColor: '#292F36' }}>
+        <div className="h-full flex items-center justify-between py-4 md:py-6">
           {/* Left: Brand */}
           <div className="flex items-center gap-2">
             <span className="font-bold text-[32px]" style={{ fontFamily: 'IBM Plex Mono' }}>
@@ -120,8 +120,8 @@ export function Navbar({
               ))}
             </div>
 
-            {/* Search Box - White Background */}
-            <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2">
+            {/* Search Box - White Background. On small screens show only icon */}
+            <div className="flex items-center gap-2 bg-white rounded-full px-2 py-1 md:px-4 md:py-2">
               <input
                 ref={searchInputRef}
                 type="text"
@@ -133,16 +133,16 @@ export function Navbar({
                     handleSearchSubmit(e as unknown as React.FormEvent);
                   }
                 }}
-                className="bg-transparent text-slate-900 focus:outline-none text-sm w-56 xl:w-56 lg:w-44 md:w-40 sm:w-32"
+                className="hidden md:block bg-transparent text-slate-900 focus:outline-none text-sm w-56 xl:w-56 lg:w-44 md:w-40"
                 style={{ fontFamily: 'IBM Plex Mono' }}
               />
               <button
                 onClick={handleSearchToggle}
-                className="text-slate-900 hover:text-slate-700 transition-colors"
+                className="text-slate-900 hover:text-slate-700 transition-colors p-1 md:p-0"
                 aria-label="Toggle search"
                 title="Search"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8" />
                   <path d="m21 21-4.35-4.35" />
                 </svg>
@@ -171,6 +171,9 @@ export function Navbar({
           <hr className="border-t m-0" style={{ borderTopColor: '#43454D' }} />
         </div>
       </nav>
+
+      {/* Spacer matching navbar height (80px mobile, 170px desktop) */}
+      <div className="h-[80px] md:h-[170px]" />
     </>
   );
 }
