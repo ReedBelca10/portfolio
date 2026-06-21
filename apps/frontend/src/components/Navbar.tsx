@@ -94,7 +94,7 @@ export function Navbar({
 
   return (
     <>
-      <nav className={clsx('fixed top-0 left-0 right-0 z-50 h-[80px] md:h-[170px] px-[30px] md:px-[120px]', className)} style={{ fontFamily: 'IBM Plex Mono', backgroundColor: '#292F36' }}>
+      <nav className={clsx('fixed top-0 left-0 right-0 z-50 h-[68px] md:h-[170px] px-[30px] md:px-[120px]', className)} style={{ fontFamily: 'IBM Plex Mono', backgroundColor: '#292F36' }}>
         <div className="h-full flex items-center justify-between py-4 md:py-6">
           {/* Left: Brand */}
           <div className="flex items-center gap-2">
@@ -149,8 +149,8 @@ export function Navbar({
               </button>
             </div>
 
-            {/* Social Links with Names */}
-            <div className="flex items-center gap-4 lg:gap-6">
+            {/* Social Links with Names (hidden on small/mobile screens) */}
+            <div className="hidden md:flex items-center gap-4 lg:gap-6">
               {socialLinks.map((link) => (
                 <button
                   key={link.name}
