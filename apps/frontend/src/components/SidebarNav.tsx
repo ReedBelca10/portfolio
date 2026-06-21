@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 
@@ -33,44 +33,48 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
   const [showTooltip, setShowTooltip] = useState<string | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const defaultItems: NavItem[] = items || [
-    {
-      id: 'modules',
-      label: t('modules') || 'Modules',
-      icon: <ProjectsIcon />,
-      sectionId: 'modules',
-    },
-    {
-      id: 'about',
-      label: t('about') || 'About Me',
-      icon: <UserIcon />,
-      sectionId: 'about',
-    },
-    {
-      id: 'skills',
-      label: t('skills') || 'Skills',
-      icon: <SkillsIcon />,
-      sectionId: 'skills',
-    },
-    {
-      id: 'works',
-      label: t('works') || 'Works',
-      icon: <MonitorIcon />,
-      sectionId: 'projects',
-    },
-    {
-      id: 'blog',
-      label: t('blog') || 'Blogs',
-      icon: <EditIcon />,
-      sectionId: 'blog',
-    },
-    {
-      id: 'contact',
-      label: t('contact') || 'Contact',
-      icon: <ContactIcon />,
-      sectionId: 'contact',
-    },
-  ];
+  const defaultItems: NavItem[] = useMemo(
+    () =>
+      items || [
+        {
+          id: 'modules',
+          label: t('modules') || 'Modules',
+          icon: <ProjectsIcon />,
+          sectionId: 'modules',
+        },
+        {
+          id: 'about',
+          label: t('about') || 'About Me',
+          icon: <UserIcon />,
+          sectionId: 'about',
+        },
+        {
+          id: 'skills',
+          label: t('skills') || 'Skills',
+          icon: <SkillsIcon />,
+          sectionId: 'skills',
+        },
+        {
+          id: 'works',
+          label: t('works') || 'Works',
+          icon: <MonitorIcon />,
+          sectionId: 'projects',
+        },
+        {
+          id: 'blog',
+          label: t('blog') || 'Blogs',
+          icon: <EditIcon />,
+          sectionId: 'blog',
+        },
+        {
+          id: 'contact',
+          label: t('contact') || 'Contact',
+          icon: <ContactIcon />,
+          sectionId: 'contact',
+        },
+      ],
+    [items, t]
+  );
 
   // Use IntersectionObserver to highlight the active section
   useEffect(() => {
@@ -119,7 +123,7 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [defaultItems]);
 
   // Handle hover with 2 second delay (except first icon)
   const handleMouseEnter = (id: string, index: number) => {

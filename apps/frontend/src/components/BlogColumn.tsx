@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import clsx from 'clsx';
 import { Badge } from './Badge';
 import { Button } from './Button';
@@ -61,10 +62,12 @@ export function BlogColumn({
           featured ? 'md:w-2/5' : 'w-full h-48 md:h-56'
         )}
       >
-        <img
+        <Image
           src={image}
           alt={imageAlt}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          sizes={featured ? '(min-width: 768px) 40vw, 100vw' : '(min-width: 768px) 100vw'}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-bg-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
