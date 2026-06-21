@@ -72,30 +72,53 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
     },
   ];
 
-  // Handle scroll detection to highlight active section
+  // Use IntersectionObserver to highlight the active section
   useEffect(() => {
-    const handleScroll = () => {
-      let currentSection = '';
+    const sections = defaultItems
+      .map((it) => document.getElementById(it.sectionId))
+      .filter(Boolean) as HTMLElement[];
 
-      for (const item of defaultItems) {
-        const element = document.getElementById(item.sectionId);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          // Check if section is in viewport (top 25% of screen)
-          if (rect.top <= window.innerHeight * 0.25) {
-            currentSection = item.id;
+    if (sections.length === 0) return undefined;
+
+    let current = '';
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Pick the entry with the largest intersectionRatio
+        let maxEntry: IntersectionObserverEntry | null = null;
+        for (const entry of entries) {
+          if (!maxEntry || entry.intersectionRatio > maxEntry.intersectionRatio) {
+            maxEntry = entry;
           }
         }
+
+        if (maxEntry && maxEntry.isIntersecting) {
+          const id = defaultItems.find((it) => it.sectionId === (maxEntry!.target as HTMLElement).id)?.id;
+          if (id && id !== current) {
+            current = id;
+            setActiveSection(id);
+          }
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px -50% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
       }
+    );
 
-      setActiveSection(currentSection);
-    };
+    sections.forEach((el) => observer.observe(el));
 
-    window.addEventListener('scroll', handleScroll);
-    // Call once on mount
-    handleScroll();
+    // initial check
+    sections.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.5 && rect.bottom >= 0) {
+        const id = defaultItems.find((it) => it.sectionId === el.id)?.id;
+        if (id) setActiveSection(id);
+      }
+    });
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => observer.disconnect();
   }, []);
 
   // Handle hover with 2 second delay (except first icon)
@@ -128,7 +151,13 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
   const handleClick = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // update hash to position anchor at the module title
+      try {
+        history.replaceState(null, '', `#${sectionId}`);
+      } catch (e) {
+        // ignore
+      }
       if (onNavigate) {
         onNavigate(sectionId);
       }
@@ -138,73 +167,72 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
   return (
     <nav
       className={clsx(
-        'fixed left-0 top-1/2 transform -translate-y-1/2 z-dropdown',
-        'flex flex-col items-center gap-8 py-8',
-        'hidden lg:flex',
+        'fixed left-[0.1em] top-[68px] md:top-[170px] z-50',
+        'hidden lg:block',
         className
       )}
       role="navigation"
       aria-label="Section navigation"
     >
-      {defaultItems.map((item, index) => (
-        <div key={item.id} className="relative group">
-          {/* Navigation Icon */}
-          <button
-            onClick={() => handleClick(item.sectionId)}
-            onMouseEnter={() => handleMouseEnter(item.id, index)}
-            onMouseLeave={handleMouseLeave}
-            className={clsx(
-              'relative flex items-center justify-center',
-              'w-12 h-12 rounded-full',
-              'transition-all duration-300',
-              'focus:outline-none focus-ring',
-              'border-2',
-              activeSection === item.id
-                ? 'border-brand-primary bg-brand-primary/10'
-                : 'border-neutral-grey/30 hover:border-brand-primary/50 bg-bg-primary',
-              hoveredId === item.id && 'border-brand-primary/50'
-            )}
-            aria-label={item.label}
-            aria-current={activeSection === item.id ? 'page' : undefined}
-            title={item.label}
-          >
-            <div
-              className={clsx(
-                'w-6 h-6 flex items-center justify-center',
-                'transition-colors duration-300',
-                activeSection === item.id
-                  ? 'text-brand-primary'
-                  : 'text-neutral-grey hover:text-brand-primary'
-              )}
-            >
-              {item.icon}
-            </div>
-          </button>
+      <div className="rounded-full bg-[#2f3438] border border-white/10 shadow-lg p-3">
+        <div className="flex flex-col items-center gap-4 py-2 px-1 w-14">
+          {defaultItems.map((item, index) => (
+            <div key={item.id} className="relative group">
+              <button
+                onClick={() => handleClick(item.sectionId)}
+                onMouseEnter={() => handleMouseEnter(item.id, index)}
+                onMouseLeave={handleMouseLeave}
+                className={clsx(
+                  'relative flex items-center justify-center',
+                  'w-10 h-10 rounded-full',
+                  'transition-all duration-300',
+                  'focus:outline-none focus-ring',
+                  'border',
+                  activeSection === item.id
+                    ? 'border-white/90 bg-white/5'
+                    : 'border-white/20 hover:border-white/40 bg-transparent',
+                  hoveredId === item.id && 'ring-1 ring-white/30'
+                )}
+                aria-label={item.label}
+                aria-current={activeSection === item.id ? 'page' : undefined}
+                title={item.label}
+              >
+                <div
+                  className={clsx(
+                    'w-5 h-5 flex items-center justify-center',
+                    'transition-colors duration-300',
+                    activeSection === item.id
+                      ? 'text-cyan-400'
+                      : 'text-white/70 group-hover:text-cyan-300'
+                  )}
+                >
+                  {item.icon}
+                </div>
+              </button>
 
-          {/* Tooltip (appears after 2 seconds on hover, or immediately for first icon) */}
-          {showTooltip === item.id && (
-            <div
-              className={clsx(
-                'absolute left-16 top-1/2 transform -translate-y-1/2',
-                'px-3 py-2 rounded-lg',
-                'bg-neutral-white text-bg-secondary',
-                'text-label-u font-semibold',
-                'whitespace-nowrap',
-                'shadow-md',
-                'animate-fade-in',
-                'pointer-events-none'
+              {showTooltip === item.id && (
+                <div
+                  className={clsx(
+                    'absolute left-16 top-1/2 transform -translate-y-1/2',
+                    'px-3 py-2 rounded-lg',
+                    'bg-white text-gray-800',
+                    'text-sm font-semibold',
+                    'whitespace-nowrap',
+                    'shadow-md',
+                    'pointer-events-none'
+                  )}
+                >
+                  {item.label}
+                  <div
+                    className="absolute -left-1.5 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-white rounded-sm rotate-45"
+                    style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))' }}
+                  />
+                </div>
               )}
-            >
-              {item.label}
-              {/* Tooltip Arrow */}
-              <div
-                className="absolute -left-1.5 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-neutral-white rounded-sm rotate-45"
-                style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))' }}
-              />
             </div>
-          )}
+          ))}
         </div>
-      ))}
+      </div>
     </nav>
   );
 }
