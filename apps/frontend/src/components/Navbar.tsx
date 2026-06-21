@@ -16,7 +16,7 @@ interface NavbarLink {
   label: string;
   href: string;
 }
-
+  brandName = 'Caleb Adjeoda',
 interface SocialLink {
   name: string;
   url: string;
@@ -32,7 +32,7 @@ interface NavbarProps {
 }
 
 export function Navbar({
-  brandName = 'CalebAdjeoda',
+  brandName = 'Caleb Adjeoda',
   links = [
     { label: 'Home', href: '#home' },
     { label: 'Blogs', href: '#blog' },
@@ -104,14 +104,29 @@ export function Navbar({
       case 'linkedin':
         return <LinkedInIcon size={size} />;
       case 'discord':
-        return (
+      <nav
+        className={clsx(
+          'fixed top-0 left-0 right-0 z-50 h-[68px] md:h-[170px] px-4 sm:px-6 md:px-12 lg:px-20 xl:px-28 2xl:px-[8%]',
+          className
+        )}
+        style={{ fontFamily: 'IBM Plex Mono', backgroundColor: '#292F36' }}
+      >
           <svg width={size === 'lg' ? 28 : 24} height={size === 'lg' ? 28 : 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
             <rect x="2" y="3" width="20" height="14" rx="3" stroke="currentColor" fill="none" />
-            <path d="M7 14c.8-.6 1.4-1.8 1.4-3" stroke="currentColor" />
+          <div className="relative flex items-center gap-2">
             <path d="M17 14c-.8-.6-1.4-1.8-1.4-3" stroke="currentColor" />
-            <circle cx="9" cy="9" r="1" fill="currentColor" />
+              <span className="text-cyan-400">&lt;CA/&gt;</span>
             <circle cx="15" cy="9" r="1" fill="currentColor" />
           </svg>
+
+            {/* Floating badge that indicates the logo represents the full name */}
+            <div
+              aria-hidden
+              className="absolute -top-3 left-10 md:left-12 bg-cyan-400 text-slate-900 text-[11px] md:text-xs rounded-full px-2 py-1 shadow-md flex items-center"
+              style={{ transform: 'translateY(-6px)' }}
+            >
+              Caleb Adjeoda
+            </div>
         );
       default:
         return null;
@@ -249,4 +264,3 @@ export function Navbar({
       <div className="h-[68px] md:h-[170px]" />
     </>
   );
-}
