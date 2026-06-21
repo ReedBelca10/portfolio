@@ -125,9 +125,9 @@ export function Navbar({
           <div className="h-full flex items-center justify-between py-4 md:py-6">
             {/* Left: Brand */}
             <div className="relative flex items-center gap-2">
-              <span className="font-bold md:font-normal lg:font-medium text-[18px]" style={{ fontFamily: 'IBM Plex Mono' }}>
+              <span className="font-bold md:font-normal lg:font-medium" style={{ fontFamily: 'IBM Plex Mono', fontSize: 'clamp(18px, 1.8vw, 28px)' }}>
                 <span className="text-cyan-400">&lt;C/&gt;</span>
-                <span className="text-white ml-2">{brandName}</span>
+                <span className="text-white ml-2" style={{ fontSize: 'clamp(16px, 1.4vw, 22px)' }}>{brandName}</span>
               </span>
 
               {/* Removed floating name badge per design feedback */}
@@ -141,8 +141,8 @@ export function Navbar({
                   <a
                     key={link.href}
                     href={link.href}
-                    className="font-medium text-white hover:text-cyan-400 transition-colors duration-200 text-[16px] xl:text-[16px] lg:text-[15px] md:text-[14px]"
-                    style={{ fontFamily: 'IBM Plex Mono' }}
+                    className="font-medium text-white hover:text-cyan-400 transition-colors duration-200"
+                      style={{ fontFamily: 'IBM Plex Mono', fontSize: 'clamp(13px, 1.2vw, 18px)' }}
                   >
                     {link.label}
                   </a>
@@ -197,7 +197,7 @@ export function Navbar({
                     style={{ fontFamily: 'IBM Plex Mono' }}
                   >
                     <span className="text-cyan-400 flex items-center">{renderSocialIcon(link.icon, 'md')}</span>
-                    <span className="text-white font-medium capitalize text-[16px] show-at-1920">{link.name}</span>
+                    <span className="text-white font-medium capitalize show-at-1920" style={{ fontSize: 'clamp(12px, 1.0vw, 16px)' }}>{link.name}</span>
                   </button>
                 ))}
               </div>
