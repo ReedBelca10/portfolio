@@ -94,7 +94,7 @@ export function Navbar({
         <div className="h-full px-8 lg:px-16 flex items-center justify-between py-6">
           {/* Left: Brand */}
           <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold" style={{ fontFamily: 'IBM Plex Mono' }}>
+            <span style={{ fontFamily: 'IBM Plex Mono', fontSize: 32, fontWeight: 700 }}>
               <span className="text-cyan-400">&lt;C/&gt;</span>
               <span className="text-white ml-2">{brandName}</span>
             </span>
@@ -108,8 +108,8 @@ export function Navbar({
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-medium text-white hover:text-cyan-400 transition-colors duration-200"
-                  style={{ fontFamily: 'IBM Plex Mono' }}
+                  className="font-medium text-white hover:text-cyan-400 transition-colors duration-200"
+                  style={{ fontFamily: 'IBM Plex Mono', fontSize: 24 }}
                 >
                   {link.label}
                 </a>
@@ -117,11 +117,11 @@ export function Navbar({
             </div>
 
             {/* Search Box - White Background */}
-            <div className="flex items-center gap-2 bg-white rounded px-3 py-1.5">
+            <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2">
               <input
                 ref={searchInputRef}
                 type="text"
-                placeholder="Search"
+                aria-label="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
@@ -129,7 +129,7 @@ export function Navbar({
                     handleSearchSubmit(e as unknown as React.FormEvent);
                   }
                 }}
-                className="bg-transparent text-slate-900 placeholder-slate-500 focus:outline-none text-sm w-48"
+                className="bg-transparent text-slate-900 focus:outline-none text-sm w-56"
                 style={{ fontFamily: 'IBM Plex Mono' }}
               />
               <button
@@ -157,7 +157,7 @@ export function Navbar({
                   style={{ fontFamily: 'IBM Plex Mono' }}
                 >
                   <span className="text-cyan-400 flex items-center">{renderSocialIcon(link.icon, 'md')}</span>
-                  <span className="text-white text-sm font-medium capitalize">{link.name}</span>
+                    <span className="text-white font-medium capitalize" style={{ fontSize: 16 }}>{link.name}</span>
                 </button>
               ))}
             </div>
@@ -165,7 +165,7 @@ export function Navbar({
         </div>
 
         {/* Bottom HR Line */}
-        <hr className="border-t border-slate-800/50 m-0" />
+        <hr className="border-t m-0" style={{ borderTopColor: '#43454D' }} />
       </nav>
 
       {/* Spacer for fixed navbar */}
