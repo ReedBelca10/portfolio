@@ -79,8 +79,12 @@ export function Navbar({
         return <LinkedInIcon size={size} />;
       case 'discord':
         return (
-          <svg width={size === 'lg' ? 28 : 24} height={size === 'lg' ? 28 : 24} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-            <path d="M12 2C7.03 2 3 5.58 3 10c0 2.53 1.5 4.78 3.9 6.19L7 20l4-1.7c.9.3 1.8.5 2.9.5 4.97 0 9-3.58 9-8s-4.03-8-9-8zm-3.5 9a1.5 1.5 0 11.001-3.001A1.5 1.5 0 018.5 11zm7 0a1.5 1.5 0 11.001-3.001A1.5 1.5 0 0115.5 11z" />
+          <svg width={size === 'lg' ? 28 : 24} height={size === 'lg' ? 28 : 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <rect x="2" y="3" width="20" height="14" rx="3" stroke="currentColor" fill="none" />
+            <path d="M7 14c.8-.6 1.4-1.8 1.4-3" stroke="currentColor" />
+            <path d="M17 14c-.8-.6-1.4-1.8-1.4-3" stroke="currentColor" />
+            <circle cx="9" cy="9" r="1" fill="currentColor" />
+            <circle cx="15" cy="9" r="1" fill="currentColor" />
           </svg>
         );
       default:
@@ -94,7 +98,7 @@ export function Navbar({
         <div className="h-full px-[120px] flex items-center justify-between py-6">
           {/* Left: Brand */}
           <div className="flex items-center gap-2">
-            <span style={{ fontFamily: 'IBM Plex Mono', fontSize: 32, fontWeight: 700 }}>
+            <span className="font-bold text-[32px]" style={{ fontFamily: 'IBM Plex Mono' }}>
               <span className="text-cyan-400">&lt;C/&gt;</span>
               <span className="text-white ml-2">{brandName}</span>
             </span>
@@ -108,8 +112,8 @@ export function Navbar({
                 <a
                   key={link.href}
                   href={link.href}
-                  className="font-medium text-white hover:text-cyan-400 transition-colors duration-200"
-                  style={{ fontFamily: 'IBM Plex Mono', fontSize: 24 }}
+                  className="font-medium text-white hover:text-cyan-400 transition-colors duration-200 text-[24px] xl:text-[24px] lg:text-[22px] md:text-[18px]"
+                  style={{ fontFamily: 'IBM Plex Mono' }}
                 >
                   {link.label}
                 </a>
@@ -129,7 +133,7 @@ export function Navbar({
                     handleSearchSubmit(e as unknown as React.FormEvent);
                   }
                 }}
-                className="bg-transparent text-slate-900 focus:outline-none text-sm w-56"
+                className="bg-transparent text-slate-900 focus:outline-none text-sm w-56 xl:w-56 lg:w-44 md:w-40 sm:w-32"
                 style={{ fontFamily: 'IBM Plex Mono' }}
               />
               <button
@@ -156,8 +160,8 @@ export function Navbar({
                   title={link.name}
                   style={{ fontFamily: 'IBM Plex Mono' }}
                 >
-                  <span className="text-cyan-400 flex items-center">{renderSocialIcon(link.icon, 'md')}</span>
-                  <span className="text-white font-medium capitalize" style={{ fontSize: 16 }}>{link.name}</span>
+                    <span className="text-cyan-400 flex items-center">{renderSocialIcon(link.icon, 'md')}</span>
+                    <span className="text-white font-medium capitalize text-[16px]">{link.name}</span>
                 </button>
               ))}
             </div>
