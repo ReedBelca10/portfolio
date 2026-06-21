@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
 import { GitHubIcon, LinkedInIcon } from './Icon';
 
@@ -48,15 +48,40 @@ export function Navbar({
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const popupInputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchToggle = () => {
     setSearchOpen(!searchOpen);
     if (!searchOpen) {
-      setTimeout(() => searchInputRef.current?.focus(), 100);
+      // will focus via effect either on popup input (mobile) or inline input (desktop)
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+        popupInputRef.current?.focus();
+      }, 100);
     } else {
       setSearchQuery('');
     }
   };
+
+  // Focus popup input when opened on small screens and handle Escape to close
+  useEffect(() => {
+    if (searchOpen) {
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setSearchOpen(false);
+      };
+      document.addEventListener('keydown', onKey);
+      // prevent background scrolling
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      // focus popup if present
+      setTimeout(() => popupInputRef.current?.focus(), 80);
+      return () => {
+        document.removeEventListener('keydown', onKey);
+        document.body.style.overflow = prev;
+      };
+    }
+    return;
+  }, [searchOpen]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +123,7 @@ export function Navbar({
         <div className="h-full flex items-center justify-between py-4 md:py-6">
           {/* Left: Brand */}
           <div className="flex items-center gap-2">
-            <span className="font-bold md:font-normal lg:font-medium text-[24px]" style={{ fontFamily: 'IBM Plex Mono' }}>
+            <span className="font-normal md:font-normal lg:font-medium text-[18px]" style={{ fontFamily: 'IBM Plex Mono' }}>
               <span className="text-cyan-400">&lt;C/&gt;</span>
               <span className="text-white ml-2">{brandName}</span>
             </span>
@@ -139,13 +164,20 @@ export function Navbar({
               <button
                 onClick={handleSearchToggle}
                 className="text-slate-900 hover:text-slate-700 transition-colors p-1 md:p-0"
-                aria-label="Toggle search"
-                title="Search"
+                aria-label={searchOpen ? 'Close search' : 'Open search'}
+                title={searchOpen ? 'Close' : 'Search'}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.35-4.35" />
-                </svg>
+                {searchOpen ? (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                  </svg>
+                )}
               </button>
             </div>
 
@@ -171,6 +203,46 @@ export function Navbar({
           <hr className="border-t m-0" style={{ borderTopColor: '#43454D' }} />
         </div>
       </nav>
+
+      {/* Mobile-only search popup with backdrop blur */}
+      {searchOpen && (
+        <div
+          className="fixed inset-0 z-60 flex items-start justify-center pt-20 md:hidden"
+          onClick={() => setSearchOpen(false)}
+        >
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+          <div className="relative z-70 w-[min(720px,90%)] px-4">
+            <div
+              className="bg-white rounded-full px-4 py-2 flex items-center gap-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <input
+                ref={popupInputRef}
+                type="text"
+                aria-label="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSearchSubmit(e as unknown as React.FormEvent);
+                }}
+                className="bg-transparent text-slate-900 focus:outline-none text-sm w-full"
+                style={{ fontFamily: 'IBM Plex Mono' }}
+              />
+              <button
+                onClick={() => handleSearchSubmit(new Event('submit') as unknown as React.FormEvent)}
+                className="text-slate-900 hover:text-slate-700 transition-colors p-1"
+                aria-label="Execute search"
+                title="Search"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Spacer matching navbar height (80px mobile, 170px desktop) */}
       <div className="h-[80px] md:h-[170px]" />
