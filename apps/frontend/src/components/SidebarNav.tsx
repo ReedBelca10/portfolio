@@ -33,42 +33,51 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
   const [showTooltip, setShowTooltip] = useState<string | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const getNavLabel = (key: string, fallback: string) => {
+    try {
+      const value = t(key);
+      return value || fallback;
+    } catch {
+      return fallback;
+    }
+  };
+
   const defaultItems: NavItem[] = useMemo(
     () =>
       items || [
         {
           id: 'modules',
-          label: t('modules') || 'Modules',
+          label: getNavLabel('modules', 'Modules'),
           icon: <ProjectsIcon />,
           sectionId: 'modules',
         },
         {
           id: 'about',
-          label: t('about') || 'About Me',
+          label: getNavLabel('about', 'About Me'),
           icon: <UserIcon />,
           sectionId: 'about',
         },
         {
           id: 'skills',
-          label: t('skills') || 'Skills',
+          label: getNavLabel('skills', 'Skills'),
           icon: <SkillsIcon />,
           sectionId: 'skills',
         },
         {
           id: 'works',
-          label: t('works') || 'Works',
+          label: getNavLabel('works', 'Works'),
           icon: <MonitorIcon />,
           sectionId: 'projects',
         },
         {
           id: 'blog',
-          label: t('blog') || 'Blogs',
+          label: getNavLabel('blog', 'Blogs'),
           icon: <EditIcon />,
           sectionId: 'blog',
         },
         {
           id: 'contact',
-          label: t('contact') || 'Contact',
+          label: getNavLabel('contact', 'Contact'),
           icon: <ContactIcon />,
           sectionId: 'contact',
         },

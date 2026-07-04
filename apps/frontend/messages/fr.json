@@ -3,6 +3,8 @@
     "language": "Français",
     "nav": {
       "home": "Accueil",
+      "modules": "Modules",
+      "works": "Travaux",
       "about": "À propos",
       "projects": "Travaux",
       "skills": "Compétences",
