@@ -1,8 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Navbar, SidebarNav, ModuleTitle, Button, Container } from '@/components';
 import Hero from '@/components/Hero';
-
-export default function HomePage() {
+import About from '@/components/About';export default function HomePage() {
   const t = useTranslations();
 
   return (
@@ -15,55 +14,7 @@ export default function HomePage() {
         <Hero />
 
         {/* About Section */}
-        <section
-          id="about"
-          className="relative min-h-screen py-24 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/AboutMe.png')" }}
-        >
-          <Container>
-            <ModuleTitle
-              badge="About"
-              title="Get to know me"
-              description="A brief introduction about who I am and what I do"
-              className="mb-16"
-            />
-
-            <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-              <div className="space-y-6">
-                <p className="text-article-u text-neutral-white leading-relaxed">
-                  {t('pages.home.about.paragraph1') || 'I am a passionate developer and designer with a keen eye for creating intuitive and engaging user experiences.'}
-                </p>
-                <p className="text-article-u text-neutral-white leading-relaxed">
-                  {t('pages.home.about.paragraph2') || 'With expertise in modern web technologies, I bring ideas to life through clean, efficient code and thoughtful design.'}
-                </p>
-              </div>
-
-              <div className="bg-bg-secondary rounded-xl p-8">
-                <h3 className="text-h3-u font-semibold text-brand-primary mb-6">
-                  {t('pages.home.about.highlights') || 'Key Highlights'}
-                </h3>
-                <ul className="space-y-4">
-                  <li className="flex gap-3">
-                    <span className="text-brand-primary">▸</span>
-                    <span className="text-article-u text-neutral-white">{t('pages.home.about.skill1') || 'Full-stack development with React & Next.js'}</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-brand-primary">▸</span>
-                    <span className="text-article-u text-neutral-white">{t('pages.home.about.skill2') || 'UI/UX Design & Prototyping'}</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-brand-primary">▸</span>
-                    <span className="text-article-u text-neutral-white">{t('pages.home.about.skill3') || 'Database Design & Optimization'}</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-brand-primary">▸</span>
-                    <span className="text-article-u text-neutral-white">{t('pages.home.about.skill4') || 'Team Leadership & Mentoring'}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </Container>
-        </section>
+        <About />
 
         {/* Projects Section */}
         <section id="projects" className="relative min-h-screen bg-bg-secondary py-24">
