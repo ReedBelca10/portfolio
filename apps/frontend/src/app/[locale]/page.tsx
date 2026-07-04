@@ -15,7 +15,11 @@ export default function HomePage() {
         <Hero />
 
         {/* About Section */}
-        <section id="about" className="relative min-h-screen bg-bg-primary py-24">
+        <section
+          id="about"
+          className="relative min-h-screen py-24 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/AboutMe.png')" }}
+        >
           <Container>
             <ModuleTitle
               badge="About"
