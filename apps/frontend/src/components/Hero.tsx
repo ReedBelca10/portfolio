@@ -13,7 +13,6 @@ import Link from "next/link";
    ─ 2xl (≥1536px)          : single row  profile(3) | text(6) | stats(3)
    ───────────────────────────────────────────────────────────────── */
 
-// Using the exact brand color from tailwind config
 const CYAN = "#00D9FF";
 const BG_HERO = "#292F36";
 const BG_CARD = "#2A3137";
@@ -41,41 +40,41 @@ export function Hero() {
         #home { min-height: calc(100dvh - 60px); }
         @media (min-width: 768px) { #home { min-height: calc(100dvh - 118px); } }
 
-        /* ── Profile card: padding-offset double-border technique ── */
+        /* ── Profile card: true larger border box ── */
         .hp-wrap {
           position: relative;
-          padding: 12px 0 0 12px;   /* card shifts ↘, border stays ↖ */
-          max-width: 380px;
-          margin: 0 auto;
+          max-width: 360px;
+          margin: 18px auto; /* Margin to accommodate the absolute border */
         }
-        @media (min-width: 768px)  { .hp-wrap { padding: 14px 0 0 14px; max-width: 400px; } }
-        @media (min-width: 1536px) { .hp-wrap { padding: 16px 0 0 16px; max-width: 100%; } }
+        @media (min-width: 768px)  { .hp-wrap { max-width: 380px; margin: 20px auto; } }
+        @media (min-width: 1536px) { .hp-wrap { max-width: 100%; margin: 24px auto; } }
 
-        /* The teal offset border (behind the card) */
+        /* The continuous border box (cyan top/left, white bottom/right) */
         .hp-border {
           position: absolute;
-          top: 0; left: 0;
-          right: 12px; bottom: 12px;  /* same offset as padding */
-          border: 2.5px solid ${CYAN};
-          /* Swoosh shape: TL large, TR small, BR large, BL small */
-          border-radius: clamp(70px, 8vw, 110px) 16px clamp(70px, 8vw, 110px) 16px;
+          top: -14px; left: -14px; right: -14px; bottom: -14px;
+          border-top: 2px solid ${CYAN};
+          border-left: 2px solid ${CYAN};
+          border-bottom: 2px solid #ffffff;
+          border-right: 2px solid #ffffff;
+          border-radius: clamp(70px, 8vw, 110px) 0 clamp(70px, 8vw, 110px) 0;
           pointer-events: none;
           z-index: 0;
         }
         @media (min-width: 768px) {
-          .hp-border { right: 14px; bottom: 14px; }
+          .hp-border { top: -16px; left: -16px; right: -16px; bottom: -16px; border-width: 2.5px; }
         }
         @media (min-width: 1536px) {
-          .hp-border { right: 16px; bottom: 16px; }
+          .hp-border { top: -20px; left: -20px; right: -20px; bottom: -20px; }
         }
 
-        /* The dark card (in front, shifted ↘ by the padding) */
+        /* The dark card */
         .hp-card {
           position: relative;
           z-index: 1;
           background: ${BG_CARD};
-          /* Exact same swoosh shape as border */
-          border-radius: clamp(70px, 8vw, 110px) 16px clamp(70px, 8vw, 110px) 16px;
+          /* Exact same shape as border */
+          border-radius: clamp(70px, 8vw, 110px) 0 clamp(70px, 8vw, 110px) 0;
           padding: clamp(24px, 3vw, 38px) clamp(20px, 2.5vw, 32px);
           display: flex;
           flex-direction: column;
@@ -133,7 +132,7 @@ export function Hero() {
           align-items: center;
           justify-content: center;
           gap: 10px;
-          width: 90%; /* Slight padding around it like in mockup */
+          width: 90%; 
           border-radius: 999px;
           background: #ffffff;
           color: #0f172a;
@@ -186,13 +185,17 @@ export function Hero() {
           justify-content: center;
           width:  clamp(34px, 2.8vw, 42px);
           height: clamp(34px, 2.8vw, 42px);
-          border-radius: 10px;
-          background: rgba(0, 217, 255, 0.12);
+          border-radius: 50%;
+          background: #363F46;
           color: ${CYAN};
           flex-shrink: 0;
           transition: background 0.2s;
         }
-        .btn-talk:hover .btn-talk-icon { background: rgba(0, 217, 255, 0.2); }
+        .btn-talk:hover .btn-talk-icon { background: #454E56; }
+        .btn-talk-icon svg {
+          width: 50%;
+          height: 50%;
+        }
 
         /* ── Stats panel ── */
         .stats-panel {
@@ -201,7 +204,7 @@ export function Hero() {
           padding: clamp(30px, 3.5vw, 56px) clamp(22px, 2.5vw, 36px);
           display: flex;
           flex-direction: column;
-          gap: clamp(24px, 3.2vw, 48px);
+          gap: clamp(24px, 3.5vw, 52px);
           width: 100%;
           max-width: 280px;
         }
@@ -277,12 +280,12 @@ export function Hero() {
               2xl:col-span-3 2xl:col-start-1 2xl:row-start-1
             "
           >
-            {/* Padding-offset wrapper creates the double-border depth effect */}
+            {/* The wrapper that creates the offset margin for the absolute border */}
             <div className="hp-wrap">
-              {/* Teal border behind the card */}
+              {/* Continuous Cyan (TL) and White (BR) border */}
               <div className="hp-border" aria-hidden="true" />
 
-              {/* Dark card */}
+              {/* Dark card with the same border-radius */}
               <div className="hp-card">
 
                 {/* Avatar */}
@@ -386,7 +389,7 @@ export function Hero() {
               <br />
               <span style={{ whiteSpace: "nowrap" }}>Full-Stack Developer</span>
               {/* </h1> inline tag */}
-              <span className="ctag-i">&lt;/h1&gt;</span>
+              <span className="ctag">&lt;/h1&gt;</span>
             </h1>
 
             {/* <p> */}
@@ -420,7 +423,7 @@ export function Hero() {
             <a href="mailto:calebadjeoda@hotmail.com" className="btn-talk">
               Let&apos;s Talk
               <span className="btn-talk-icon">
-                <ChatIcon />
+                <MailIcon />
               </span>
             </a>
           </div>
@@ -499,7 +502,7 @@ function GlobeIcon() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
       strokeLinecap="round" strokeLinejoin="round" width="100%" height="100%">
       <circle cx="12" cy="12" r="10" />
-      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
     </svg>
   );
 }
@@ -510,14 +513,6 @@ function DownloadIcon() {
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
       <polyline points="7 10 12 15 17 10" />
       <line x1="12" y1="15" x2="12" y2="3" />
-    </svg>
-  );
-}
-function ChatIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
     </svg>
   );
 }
