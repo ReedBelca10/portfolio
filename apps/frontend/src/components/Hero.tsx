@@ -313,6 +313,7 @@ export function Hero() {
                       fontSize: "clamp(11px, 0.95vw, 14px)",
                       color: "rgba(255,255,255,0.75)",
                       marginTop: "6px",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     Full-Stack Developer
@@ -383,7 +384,7 @@ export function Hero() {
               <br />
               I&apos;m <span style={{ color: CYAN }}>Caleb</span>,
               <br />
-              Full-Stack Developer
+              <span style={{ whiteSpace: "nowrap" }}>Full-Stack Developer</span>
               {/* </h1> inline tag */}
               <span className="ctag-i">&lt;/h1&gt;</span>
             </h1>
