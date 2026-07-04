@@ -309,7 +309,7 @@ export function Hero() {
                       color: "#fff",
                     }}
                   >
-                    Caleb
+                    Caleb K. Adjeoda
                   </p>
                   <p
                     style={{

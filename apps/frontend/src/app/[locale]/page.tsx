@@ -1,7 +1,10 @@
 import { useTranslations } from 'next-intl';
 import { Navbar, SidebarNav, ModuleTitle, Button, Container } from '@/components';
 import Hero from '@/components/Hero';
-import About from '@/components/About';export default function HomePage() {
+import About from '@/components/About';
+import Skills from '@/components/Skills';
+
+export default function HomePage() {
   const t = useTranslations();
 
   return (
@@ -15,6 +18,9 @@ import About from '@/components/About';export default function HomePage() {
 
         {/* About Section */}
         <About />
+
+        {/* Skills Section */}
+        <Skills />
 
         {/* Projects Section */}
         <section id="projects" className="relative min-h-screen bg-bg-secondary py-24">
@@ -43,32 +49,6 @@ import About from '@/components/About';export default function HomePage() {
                       View Project →
                     </Button>
                   </div>
-                </div>
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        {/* Skills Section */}
-        <section id="skills" className="relative min-h-screen bg-bg-primary py-24">
-          <Container>
-            <ModuleTitle
-              badge="Expertise"
-              title="My Skills"
-              description="Technologies and tools I work with"
-              className="mb-16"
-            />
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              {['Frontend', 'Backend', 'Design', 'Database', 'Tools', 'DevOps', 'Testing', 'Other'].map((category) => (
-                <div key={category} className="bg-bg-secondary rounded-xl p-6">
-                  <h3 className="text-h4-u font-semibold text-brand-primary mb-4">{category}</h3>
-                  <ul className="space-y-3">
-                    <li className="text-label-u text-neutral-white">React</li>
-                    <li className="text-label-u text-neutral-white">TypeScript</li>
-                    <li className="text-label-u text-neutral-white">Tailwind CSS</li>
-                    <li className="text-label-u text-neutral-white">Next.js</li>
-                  </ul>
                 </div>
               ))}
             </div>
