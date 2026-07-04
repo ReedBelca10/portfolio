@@ -13,8 +13,6 @@ import { useState } from "react";
    ───────────────────────────────────────────────────────────────── */
 
 const CYAN = "#00D9FF";
-const BG_CARD = "#1e2830";
-const BG_SECTION = "#1a2028";
 const BORDER_CARD = "#00D9FF";
 
 /* ── Skill data ── */
