@@ -111,9 +111,8 @@ const LEVEL_COLOR: Record<string, string> = {
 };
 
 /* ── Category Icon ── */
-function CategoryIcon({ type }: { type: SkillCategory["icon"] }) {
+function CategoryIcon({ type, color = CYAN }: { type: SkillCategory["icon"]; color?: string }) {
   const size = "22px";
-  const color = CYAN;
 
   switch (type) {
     case "monitor":
@@ -247,9 +246,9 @@ export function Skills() {
           content: '';
           position: absolute;
           inset: 0;
-          background: rgba(20, 26, 32, 0.82);
-          backdrop-filter: blur(6px);
-          -webkit-backdrop-filter: blur(6px);
+          background: rgba(18, 24, 30, 0.68);
+          backdrop-filter: blur(2px);
+          -webkit-backdrop-filter: blur(2px);
           z-index: 0;
         }
 
@@ -316,8 +315,8 @@ export function Skills() {
           line-height: 1.6;
           letter-spacing: 0.02em;
           font-family: "IBM Plex Mono", monospace;
-          max-width: 320px;
           text-align: center;
+          white-space: nowrap;
         }
         .skills-header-row {
           display: flex;
@@ -328,54 +327,75 @@ export function Skills() {
           margin-bottom: clamp(32px, 5vw, 60px);
         }
 
-        /* ── Category tabs (horizontal scroll on mobile) ── */
+        /* ── Category tabs — card style ── */
         .skills-tabs {
-          display: flex;
-          gap: 10px;
-          overflow-x: auto;
-          padding-bottom: 4px;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: clamp(8px, 1.2vw, 14px);
           margin-bottom: clamp(28px, 4vw, 48px);
-          scrollbar-width: none;
-          -ms-overflow-style: none;
         }
-        .skills-tabs::-webkit-scrollbar { display: none; }
+        @media (min-width: 640px) {
+          .skills-tabs { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 1024px) {
+          .skills-tabs { grid-template-columns: repeat(5, 1fr); }
+        }
 
         .skills-tab {
-          flex-shrink: 0;
           display: flex;
+          flex-direction: column;
           align-items: center;
+          justify-content: center;
           gap: 8px;
-          padding: clamp(10px, 1.2vw, 14px) clamp(16px, 1.8vw, 24px);
-          border-radius: clamp(12px, 1.5vw, 16px);
-          border: 1.5px solid rgba(255,255,255,0.12);
-          background: rgba(30, 40, 48, 0.7);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
+          padding: clamp(14px, 2vw, 22px) clamp(12px, 1.5vw, 20px);
+          border-radius: clamp(10px, 1.2vw, 14px);
+          border: 1.5px solid rgba(0, 217, 255, 0.25);
+          background: rgba(18, 28, 38, 0.72);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
           color: rgba(255,255,255,0.6);
           font-family: "IBM Plex Mono", monospace;
-          font-size: clamp(12px, 0.9vw, 14px);
-          font-weight: 500;
           cursor: pointer;
           transition: all 0.22s ease;
           outline: none;
+          text-align: center;
+          width: 100%;
         }
         .skills-tab:hover {
-          border-color: rgba(0, 217, 255, 0.5);
+          border-color: rgba(0, 217, 255, 0.6);
           color: #fff;
-          background: rgba(0, 217, 255, 0.08);
+          background: rgba(0, 217, 255, 0.1);
         }
         .skills-tab.active {
           border-color: ${CYAN};
-          color: ${CYAN};
-          background: rgba(0, 217, 255, 0.12);
-          box-shadow: 0 0 18px rgba(0, 217, 255, 0.18);
+          background: ${CYAN};
+          color: #0f1a22;
+        }
+        .skills-tab.active .skills-tab-icon svg {
+          stroke: #0f1a22;
+        }
+        .skills-tab.active .skills-tab-icon circle {
+          fill: #0f1a22;
+        }
+        .skills-tab-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+        .skills-tab-label {
+          font-size: clamp(11px, 0.9vw, 14px);
+          font-weight: 600;
+          letter-spacing: 0.02em;
+          font-family: "IBM Plex Mono", monospace;
+          line-height: 1.2;
         }
         .skills-tab-tags {
-          font-size: clamp(9px, 0.7vw, 11px);
-          color: rgba(255,255,255,0.42);
-          letter-spacing: 0.04em;
+          font-size: clamp(8px, 0.65vw, 10px);
+          letter-spacing: 0.05em;
           font-family: "IBM Plex Mono", monospace;
-          margin-top: 2px;
+          opacity: 0.7;
+          line-height: 1.3;
         }
 
         /* ── Skills grid ── */
@@ -514,11 +534,11 @@ export function Skills() {
               className={`skills-tab${activeTab === cat.id ? " active" : ""}`}
               onClick={() => setActiveTab(cat.id)}
             >
-              <CategoryIcon type={cat.icon} />
-              <div>
-                <div>{cat.label}</div>
-                <div className="skills-tab-tags">{cat.tags}</div>
-              </div>
+              <span className="skills-tab-icon">
+                <CategoryIcon type={cat.icon} color={activeTab === cat.id ? "#0f1a22" : CYAN} />
+              </span>
+              <span className="skills-tab-label">{cat.label}</span>
+              <span className="skills-tab-tags">{cat.tags}</span>
             </button>
           ))}
         </div>
