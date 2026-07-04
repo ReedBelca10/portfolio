@@ -100,13 +100,11 @@ export function Navbar({
           return <LinkedInIcon size={size} />;
         case 'discord':
           return (
-            <svg width={size === 'lg' ? 28 : 24} height={size === 'lg' ? 28 : 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <rect x="2" y="3" width="20" height="14" rx="3" stroke="currentColor" fill="none" />
-              <path d="M7 14c.8-.6 1.4-1.8 1.4-3" stroke="currentColor" />
-              <path d="M17 14c-.8-.6-1.4-1.8-1.4-3" stroke="currentColor" />
-              <circle cx="9" cy="9" r="1" fill="currentColor" />
-              <circle cx="15" cy="9" r="1" fill="currentColor" />
-            </svg>
+            <img 
+              width="24" height="24" 
+              src="https://img.icons8.com/forma-light/24/28a9e0/discord-logo.png" 
+              alt="discord-logo"
+            />
           );
         default:
           return null;
