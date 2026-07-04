@@ -1,118 +1,457 @@
 "use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
+
+/* ─────────────────────────────────────────────────────────────────
+   HERO SECTION
+   Breakpoint behaviour (matching mockup exactly):
+   ─ default / sm (<768px)  : full-width stack [card → text → stats]
+   ─ md (768px–1023px)      : card centred (8/12), text full, stats centred
+   ─ lg (1024px–1279px)     : card centred (6/12), text full, stats centred
+   ─ xl (1280px–1535px)     : row-1 card centred (6/12), row-2 text(7) + stats(5)
+   ─ 2xl (≥1536px)          : single row  profile(3) | text(6) | stats(3)
+   ───────────────────────────────────────────────────────────────── */
+
+const CYAN = "#2dd4bf";
+const BG_HERO = "#292F36";
+const BG_CARD = "#263034";
+const BG_STATS = "#181f26";
+
+const BADGES = ["TS", "NEST", "FLUTTER", "NEXT.JS"];
+
+const STATS = [
+  { n: 8, label: "Programming", sub: "Language" },
+  { n: 5, label: "Frameworks", sub: "& Libs" },
+  { n: 5, label: "Databases", sub: "& DevOps" },
+  { n: 4, label: "QA & Design", sub: "Tools" },
+];
 
 export function Hero() {
   return (
-    <section id="home" className="relative min-h-screen" style={{ backgroundColor: '#292F36', fontFamily: 'IBM Plex Mono' }}>
-      <div className="container-custom mx-auto px-4 sm:px-6 md:px-12 lg:px-20 xl:px-28 2xl:px-[8%] py-20">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          {/* Left profile card */}
-          <aside className="md:col-span-3">
-            <div className="relative" style={{ minHeight: 520 }}>
-              {/* decorative cyan outline arc */}
-              <div aria-hidden="true" className="absolute -left-6 -top-6 right-0 bottom-0 rounded-[56px] border-4 border-cyan-400 pointer-events-none" />
-              <div className="relative rounded-[36px] p-6 md:p-8 bg-[#263034] shadow-[inset_0_0_0_2px_rgba(255,255,255,0.02)]">
-                <div className="flex flex-col items-center text-center gap-4">
-                <div className="w-28 h-28 rounded-full overflow-hidden ring-2 ring-cyan-400">
-                  <Image src="/profile.jpeg" alt="Caleb" width={112} height={112} className="object-cover" />
-                </div>
-                <h3 className="font-semibold text-white font-monospace" style={{ fontSize: 'clamp(18px, 1.8vw, 28px)' }}>Caleb</h3>
-                <p className="text-sm text-neutral-grey">Full-Stack Developer</p>
+    <section
+      id="home"
+      className="relative flex flex-col justify-center"
+      style={{ backgroundColor: BG_HERO, fontFamily: "IBM Plex Mono" }}
+    >
+      {/* ── Scoped styles ── */}
+      <style>{`
+        /* Min-height: viewport minus navbar */
+        #home { min-height: calc(100dvh - 60px); }
+        @media (min-width: 768px) { #home { min-height: calc(100dvh - 118px); } }
 
-                <div className="mt-4 space-y-3 text-sm text-neutral-grey w-full">
-                  <div className="flex items-center gap-3">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400"><path d="M4 4h16v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
-                    <span>calebadjeoda@hotmail.com</span>
+        /* ── Profile card: padding-offset double-border technique ── */
+        .hp-wrap {
+          position: relative;
+          padding: 12px 0 0 12px;   /* card shifts ↘, border stays ↖ */
+        }
+        @media (min-width: 768px)  { .hp-wrap { padding: 14px 0 0 14px; } }
+        @media (min-width: 1536px) { .hp-wrap { padding: 16px 0 0 16px; } }
+
+        /* The teal offset border (behind the card) */
+        .hp-border {
+          position: absolute;
+          top: 0; left: 0;
+          right: 12px; bottom: 12px;  /* same offset as padding */
+          border: 2px solid ${CYAN};
+          border-radius: 28px;
+          pointer-events: none;
+          z-index: 0;
+        }
+        @media (min-width: 768px) {
+          .hp-border { right: 14px; bottom: 14px; border-radius: 30px; }
+        }
+        @media (min-width: 1536px) {
+          .hp-border { right: 16px; bottom: 16px; border-radius: 32px; }
+        }
+
+        /* The dark card (in front, shifted ↘ by the padding) */
+        .hp-card {
+          position: relative;
+          z-index: 1;
+          background: ${BG_CARD};
+          border-radius: 22px;
+          padding: clamp(20px, 2.8vw, 38px) clamp(18px, 2.4vw, 32px);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: clamp(16px, 1.8vw, 24px);
+        }
+        @media (min-width: 768px) { .hp-card { border-radius: 24px; } }
+
+        /* Avatar ring */
+        .hp-avatar {
+          border-radius: 50%;
+          overflow: hidden;
+          border: 2.5px solid ${CYAN};
+          width:  clamp(84px, 8.5vw, 120px);
+          height: clamp(84px, 8.5vw, 120px);
+          flex-shrink: 0;
+        }
+
+        /* Info rows */
+        .hp-info { width: 100%; display: flex; flex-direction: column; gap: clamp(10px, 1vw, 14px); }
+        .hp-row  { display: flex; align-items: flex-start; gap: 10px; }
+        .hp-icon {
+          color: ${CYAN};
+          flex-shrink: 0;
+          margin-top: 1px;
+          width:  clamp(13px, 1.2vw, 16px);
+          height: clamp(13px, 1.2vw, 16px);
+          display: flex; align-items: center; justify-content: center;
+        }
+        .hp-text {
+          color: rgba(255,255,255,0.82);
+          font-size: clamp(10px, 0.9vw, 13px);
+          line-height: 1.5;
+          word-break: break-all;
+        }
+
+        /* Tech badges — uniform teal outline pill */
+        .hp-badges { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; }
+        .hp-badge {
+          display: inline-block;
+          border: 1.5px solid ${CYAN};
+          color: ${CYAN};
+          border-radius: 999px;
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: clamp(9px, 0.72vw, 11px);
+          font-weight: 500;
+          padding: 4px 13px;
+          letter-spacing: 0.04em;
+          transition: background 0.2s;
+        }
+        .hp-badge:hover { background: rgba(45,212,191,0.1); }
+
+        /* Download CV button */
+        .hp-cv {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          width: 100%;
+          border-radius: 999px;
+          background: #ffffff;
+          color: #0f172a;
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: clamp(12px, 1vw, 14px);
+          font-weight: 700;
+          padding: 13px 28px;
+          text-decoration: none;
+          transition: background 0.2s, transform 0.15s;
+        }
+        .hp-cv:hover { background: #e4ecfb; transform: translateY(-1px); color: #0f172a; }
+
+        /* ── Code tags ── */
+        .ctag {
+          display: block;
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: clamp(10px, 0.88vw, 13px);
+          color: ${CYAN};
+          opacity: 0.62;
+          line-height: 1;
+          user-select: none;
+        }
+        .ctag-i {   /* inline variant after heading */
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: clamp(9px, 0.65vw, 11px);
+          color: ${CYAN};
+          opacity: 0.62;
+          user-select: none;
+          margin-left: 10px;
+          vertical-align: baseline;
+        }
+
+        /* ── Let's Talk CTA ── */
+        .btn-talk {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          color: ${CYAN};
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: clamp(15px, 1.4vw, 22px);
+          font-weight: 500;
+          text-decoration: none;
+          transition: opacity 0.2s;
+        }
+        .btn-talk:hover { opacity: 0.78; color: ${CYAN}; }
+        .btn-talk-icon {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width:  clamp(34px, 2.8vw, 42px);
+          height: clamp(34px, 2.8vw, 42px);
+          border-radius: 9px;
+          background: #2d363d;
+          color: ${CYAN};
+          flex-shrink: 0;
+          transition: background 0.2s;
+        }
+        .btn-talk:hover .btn-talk-icon { background: #384148; }
+
+        /* ── Stats panel ── */
+        .stats-panel {
+          background: ${BG_STATS};
+          border-radius: clamp(28px, 3vw, 42px);
+          padding: clamp(26px, 3.5vw, 52px) clamp(20px, 2.4vw, 36px);
+          display: flex;
+          flex-direction: column;
+          gap: clamp(22px, 3.2vw, 48px);
+          width: 100%;
+          max-width: 280px;
+        }
+        .stat-n {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: clamp(30px, 4vw, 58px);
+          font-weight: 500;
+          color: ${CYAN};
+          line-height: 1;
+          flex-shrink: 0;
+          min-width: clamp(34px, 3.5vw, 62px);
+        }
+        .stat-l {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: clamp(11px, 1vw, 15px);
+          color: #ffffff;
+          line-height: 1.35;
+        }
+        .stat-s {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: clamp(10px, 0.88vw, 13px);
+          color: rgba(255,255,255,0.48);
+          line-height: 1.3;
+          margin-top: 1px;
+        }
+
+        /* ── Entrance animations ── */
+        @keyframes hfup {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .ha1 { animation: hfup 0.65s cubic-bezier(.22,.68,0,1.2) both 0.05s; }
+        .ha2 { animation: hfup 0.65s cubic-bezier(.22,.68,0,1.2) both 0.20s; }
+        .ha3 { animation: hfup 0.65s cubic-bezier(.22,.68,0,1.2) both 0.35s; }
+      `}</style>
+
+      {/* ── Outer padding container ── */}
+      <div
+        className="w-full mx-auto
+          px-5 py-8
+          sm:px-8 sm:py-10
+          md:px-12 md:py-12
+          lg:px-20 lg:py-14
+          xl:px-24 xl:py-16
+          2xl:px-32 2xl:py-20"
+        style={{ maxWidth: "1920px" }}
+      >
+        {/*
+          ── Responsive grid:
+             default/sm/md  →  1 col stacked
+             xl             →  12-col, 2 rows (card top-center | text+stats bottom)
+             2xl            →  12-col, 1 row  (card | text | stats)
+        */}
+        <div
+          className="
+            grid grid-cols-12
+            gap-x-6 gap-y-10
+            xl:gap-x-8 xl:gap-y-12
+            2xl:gap-x-10 2xl:gap-y-0
+            items-start
+            2xl:items-center
+          "
+        >
+          {/* ─────────────────── PROFILE CARD ─────────────────── */}
+          <aside
+            className="
+              ha1
+              col-span-12
+              sm:col-span-10 sm:col-start-2
+              md:col-span-8  md:col-start-3
+              lg:col-span-6  lg:col-start-4
+              xl:col-span-6  xl:col-start-4  xl:row-start-1
+              2xl:col-span-3 2xl:col-start-1 2xl:row-start-1
+            "
+          >
+            {/* Padding-offset wrapper creates the double-border depth effect */}
+            <div className="hp-wrap">
+              {/* Teal border behind the card */}
+              <div className="hp-border" aria-hidden="true" />
+
+              {/* Dark card */}
+              <div className="hp-card">
+
+                {/* Avatar */}
+                <div className="hp-avatar">
+                  <Image
+                    src="/profile.jpeg"
+                    alt="Caleb Adjeoda"
+                    width={120}
+                    height={120}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    priority
+                  />
+                </div>
+
+                {/* Name & role */}
+                <div className="text-center" style={{ lineHeight: 1.3 }}>
+                  <p
+                    style={{
+                      fontSize: "clamp(17px, 1.55vw, 23px)",
+                      fontWeight: 600,
+                      color: "#fff",
+                    }}
+                  >
+                    Caleb
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "clamp(10px, 0.92vw, 14px)",
+                      color: "rgba(255,255,255,0.6)",
+                      marginTop: "3px",
+                    }}
+                  >
+                    Full-Stack Developer
+                  </p>
+                </div>
+
+                {/* Info rows */}
+                <div className="hp-info">
+                  <div className="hp-row">
+                    <span className="hp-icon"><MailIcon /></span>
+                    <span className="hp-text">calebadjeoda@hotmail.com</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400"><path d="M21 10c0 6-9 13-9 13s-9-7-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    <span>Lomé, Togo</span>
+                  <div className="hp-row">
+                    <span className="hp-icon"><PinIcon /></span>
+                    <span className="hp-text">Lomé, Togo</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M16 3v4"/><path d="M8 3v4"/></svg>
-                    <span>Full-time / Freelancer</span>
+                  <div className="hp-row">
+                    <span className="hp-icon"><BriefcaseIcon /></span>
+                    <span className="hp-text">Full-time / Freelancer</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400"><path d="M10 13a5 5 0 0 1 7.9-4"/><path d="M14 15a5 5 0 0 1-7.9 4"/></svg>
-                    <span>www.calebadjeoda.com</span>
+                  <div className="hp-row">
+                    <span className="hp-icon"><GlobeIcon /></span>
+                    <span className="hp-text">www.calebadjeoda.com</span>
                   </div>
                 </div>
 
-                <div className="mt-6 w-full">
-                  <Link href="/CalebCV.pdf" target="_blank" className="inline-flex items-center justify-center w-full bg-white text-slate-900 rounded-[28px] py-3 px-6 font-medium shadow-md">
-                    Download CV
-                    <svg className="ml-3" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  </Link>
+                {/* Tech badges */}
+                <div className="hp-badges">
+                  {BADGES.map((b) => (
+                    <span key={b} className="hp-badge">{b}</span>
+                  ))}
                 </div>
-                </div>
+
+                {/* Download CV */}
+                <Link href="/CalebCV.pdf" target="_blank" className="hp-cv">
+                  Download CV
+                  <DownloadIcon />
+                </Link>
+
               </div>
             </div>
           </aside>
 
-          {/* Center hero content */}
-          <div className="md:col-span-6">
-            <div className="max-w-3xl">
-              <h1 className="text-white font-monospace font-semibold leading-tight" style={{ fontSize: 'clamp(36px, 6vw, 72px)', lineHeight: 0.95 }}>
-                Hey
-                <br />
-                I&apos;m <span className="text-cyan-400">Caleb</span>,
-                <br />
-                Full-Stack Developer
-              </h1>
+          {/* ─────────────────── HERO TEXT ─────────────────── */}
+          <div
+            className="
+              ha2
+              col-span-12
+              xl:col-span-7 xl:col-start-1 xl:row-start-2
+              2xl:col-span-6 2xl:col-start-4 2xl:row-start-1
+            "
+          >
+            {/* <h1> */}
+            <span className="ctag">&lt;h1&gt;</span>
 
-              <p className="text-neutral-grey mt-6 leading-relaxed" style={{ fontSize: 'clamp(14px, 1.3vw, 18px)', maxWidth: 680 }}>
-                I craft high-performance web and mobile applications, from robust backend architectures to seamless user experiences. If you&apos;re looking for a versatile developer to transform complex ideas into scalable digital products, let&apos;s build together.
-              </p>
+            {/* Main heading */}
+            <h1
+              style={{
+                fontSize: "clamp(38px, 5.6vw, 82px)",
+                fontWeight: 600,
+                color: "#ffffff",
+                lineHeight: 1.04,
+                letterSpacing: "-0.025em",
+                margin: "8px 0 0 0",
+              }}
+            >
+              Hey
+              <br />
+              I&apos;m <span style={{ color: CYAN }}>Caleb</span>,
+              <br />
+              Full-Stack Developer
+              {/* </h1> inline tag */}
+              <span className="ctag-i">&lt;/h1&gt;</span>
+            </h1>
 
-              <div className="mt-8 flex items-center gap-4">
-                <a href="mailto:calebadjeoda@hotmail.com" className="text-cyan-400 font-monospace text-lg inline-flex items-center gap-3">
-                  Let&apos;s Talk
-                  <span className="inline-block bg-[#2b3238] rounded-full p-2">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16v12a2 2 0 0 1-2 2H6l-2 2V4z"/></svg>
-                  </span>
-                </a>
-              </div>
-            </div>
+            {/* <p> */}
+            <span className="ctag" style={{ marginTop: "clamp(18px, 2vw, 30px)" }}>
+              &lt;p&gt;
+            </span>
+
+            {/* Description — indented like real code */}
+            <p
+              style={{
+                fontSize: "clamp(11.5px, 1.05vw, 15px)",
+                color: "rgba(255,255,255,0.78)",
+                lineHeight: 1.75,
+                maxWidth: "580px",
+                margin: "6px 0 0 clamp(12px, 1.2vw, 20px)",
+                fontFamily: "IBM Plex Mono",
+              }}
+            >
+              I craft high-performance web and mobile applications, from robust
+              backend architectures to seamless user experiences. If you&apos;re
+              looking for a versatile developer to transform complex ideas into
+              scalable digital products, let&apos;s build together.
+            </p>
+
+            {/* </p> */}
+            <span className="ctag" style={{ marginTop: "6px", marginBottom: "clamp(22px, 2.4vw, 36px)" }}>
+              &lt;/p&gt;
+            </span>
+
+            {/* Let's Talk */}
+            <a href="mailto:calebadjeoda@hotmail.com" className="btn-talk">
+              Let&apos;s Talk
+              <span className="btn-talk-icon">
+                <ChatIcon />
+              </span>
+            </a>
           </div>
 
-          {/* Right stats pill */}
-          <aside className="md:col-span-3 flex justify-end">
-            <div className="w-64 rounded-[40px] bg-[#1f2427] py-8 px-6 text-white flex flex-col gap-8 items-start shadow-lg" style={{ minHeight: 420 }}>
-              <div className="flex items-center gap-3">
-                <span className="text-cyan-400 font-monospace" style={{ fontSize: 'clamp(20px, 3vw, 36px)' }}>8</span>
-                <div>
-                  <div className="text-sm" style={{ fontSize: 'clamp(12px, 1.1vw, 14px)' }}>Programming</div>
-                  <div className="text-xs text-neutral-grey" style={{ fontSize: 'clamp(11px, 0.9vw, 12px)' }}>Language</div>
+          {/* ─────────────────── STATS PANEL ─────────────────── */}
+          <aside
+            className="
+              ha3
+              col-span-12
+              flex justify-center
+              sm:col-span-8  sm:col-start-3
+              md:col-span-6  md:col-start-4
+              lg:col-span-5  lg:col-start-5
+              xl:col-span-5  xl:col-start-8  xl:row-start-2  xl:justify-end
+              2xl:col-span-3 2xl:col-start-10 2xl:row-start-1 2xl:justify-end
+            "
+          >
+            <div className="stats-panel">
+              {STATS.map((s, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "clamp(12px, 1.4vw, 22px)",
+                  }}
+                >
+                  <span className="stat-n">{s.n}</span>
+                  <div>
+                    <div className="stat-l">{s.label}</div>
+                    <div className="stat-s">{s.sub}</div>
+                  </div>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="text-cyan-400 font-monospace" style={{ fontSize: 'clamp(20px, 3vw, 36px)' }}>5</span>
-                <div>
-                  <div className="text-sm" style={{ fontSize: 'clamp(12px, 1.1vw, 14px)' }}>Frameworks</div>
-                  <div className="text-xs text-neutral-grey" style={{ fontSize: 'clamp(11px, 0.9vw, 12px)' }}>&amp; Libs</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="text-cyan-400 font-monospace" style={{ fontSize: 'clamp(20px, 3vw, 36px)' }}>5</span>
-                <div>
-                  <div className="text-sm" style={{ fontSize: 'clamp(12px, 1.1vw, 14px)' }}>Databases</div>
-                  <div className="text-xs text-neutral-grey" style={{ fontSize: 'clamp(11px, 0.9vw, 12px)' }}>&amp; DevOps</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="text-cyan-400 font-monospace" style={{ fontSize: 'clamp(20px, 3vw, 36px)' }}>4</span>
-                <div>
-                  <div className="text-sm" style={{ fontSize: 'clamp(12px, 1.1vw, 14px)' }}>QA &amp; Design</div>
-                  <div className="text-xs text-neutral-grey" style={{ fontSize: 'clamp(11px, 0.9vw, 12px)' }}>Tools</div>
-                </div>
-              </div>
+              ))}
             </div>
           </aside>
+
         </div>
       </div>
     </section>
@@ -120,3 +459,59 @@ export function Hero() {
 }
 
 export default Hero;
+
+/* ─── SVG icons ─── */
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+      strokeLinecap="round" strokeLinejoin="round" width="100%" height="100%">
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="M2 7l10 7 10-7" />
+    </svg>
+  );
+}
+function PinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+      strokeLinecap="round" strokeLinejoin="round" width="100%" height="100%">
+      <path d="M21 10c0 6-9 13-9 13S3 16 3 10a9 9 0 0 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+function BriefcaseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+      strokeLinecap="round" strokeLinejoin="round" width="100%" height="100%">
+      <rect x="2" y="7" width="20" height="14" rx="2" />
+      <path d="M16 3v4M8 3v4M2 11h20" />
+    </svg>
+  );
+}
+function GlobeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+      strokeLinecap="round" strokeLinejoin="round" width="100%" height="100%">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  );
+}
+function DownloadIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  );
+}
+function ChatIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  );
+}
