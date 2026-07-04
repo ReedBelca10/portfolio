@@ -130,7 +130,7 @@ export function Works() {
             <div className="works-monitor works-monitor--source">
               <div className="works-monitor__screen works-monitor__screen--dark">
                 <Image
-                  src="/SourceCode.png"
+                  src="/SourceCode.jpg"
                   alt="Source code view"
                   fill
                   className="object-cover object-top"
@@ -155,7 +155,7 @@ export function Works() {
 
               <div className="works-monitor__screen works-monitor__screen--light">
                 <Image
-                  src="/Production.png"
+                  src="/Production.jpg"
                   alt="Production website view"
                   fill
                   className="object-cover object-top"
