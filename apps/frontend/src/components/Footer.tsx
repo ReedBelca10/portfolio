@@ -1,8 +1,8 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import clsx from 'clsx';
-import { GitHubIcon, LinkedInIcon, TwitterIcon } from './Icon';
+import { GitHubIcon, LinkedInIcon, DiscordIcon } from './Icon';
 
 /*
  * Footer Component
@@ -23,7 +23,7 @@ interface FooterProps {
   socialLinks?: {
     github?: string;
     linkedin?: string;
-    twitter?: string;
+    discord?: string;
   };
   className?: string;
 }
@@ -39,7 +39,7 @@ export function Footer({
   socialLinks = {
     github: 'https://github.com',
     linkedin: 'https://linkedin.com',
-    twitter: 'https://twitter.com',
+    discord: 'https://discord.com',
   },
   className,
 }: FooterProps) {
@@ -52,37 +52,29 @@ export function Footer({
   return (
     <footer
       className={clsx(
-        'bg-bg-primary border-t border-neutral-grey/20 mt-16 md:mt-20 lg:mt-24',
+        'bg-[radial-gradient(circle_at_top_left,_rgba(0,217,255,0.18),_transparent_20%),radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.08),_transparent_18%),#071216] border-t border-white/10 mt-16 md:mt-20 lg:mt-24',
         className
       )}
     >
       <div className="container-custom py-8 md:py-10 lg:py-12">
-        {/* Desktop Layout: Horizontal Row */}
         <div className="hidden md:flex items-center justify-between gap-8">
-          {/* Left: Copyright */}
-          <p className="text-xs md:text-sm text-neutral-grey flex-shrink-0">
-            {copyrightText}
-          </p>
-
-          {/* Center: Legal Links */}
+          <p className="text-xs md:text-sm text-white flex-shrink-0">{copyrightText}</p>
           <div className="flex gap-6 justify-center flex-grow">
             {legalLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-xs md:text-sm text-neutral-grey hover:text-brand-primary transition-colors duration-base"
+                className="text-xs md:text-sm text-white/80 hover:text-white transition-colors duration-base"
               >
                 {link.label}
               </a>
             ))}
           </div>
-
-          {/* Right: Social Icons */}
           <div className="flex gap-4 flex-shrink-0">
             {socialLinks.github && (
               <button
                 onClick={() => handleSocialClick(socialLinks.github)}
-                className="p-2 rounded-full bg-neutral-grey/10 hover:bg-brand-primary/20 text-neutral-grey hover:text-brand-primary transition-all duration-base"
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
                 aria-label="GitHub"
               >
                 <GitHubIcon size="md" />
@@ -91,32 +83,30 @@ export function Footer({
             {socialLinks.linkedin && (
               <button
                 onClick={() => handleSocialClick(socialLinks.linkedin)}
-                className="p-2 rounded-full bg-neutral-grey/10 hover:bg-brand-primary/20 text-neutral-grey hover:text-brand-primary transition-all duration-base"
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
                 aria-label="LinkedIn"
               >
                 <LinkedInIcon size="md" />
               </button>
             )}
-            {socialLinks.twitter && (
+            {socialLinks.discord && (
               <button
-                onClick={() => handleSocialClick(socialLinks.twitter)}
-                className="p-2 rounded-full bg-neutral-grey/10 hover:bg-brand-primary/20 text-neutral-grey hover:text-brand-primary transition-all duration-base"
-                aria-label="Twitter"
+                onClick={() => handleSocialClick(socialLinks.discord)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
+                aria-label="Discord"
               >
-                <TwitterIcon size="md" />
+                <DiscordIcon size="md" />
               </button>
             )}
           </div>
         </div>
 
-        {/* Tablet Layout: Two Stacked Rows */}
         <div className="hidden sm:flex md:hidden flex-col items-center gap-6">
-          {/* Top Row: Social Icons */}
           <div className="flex gap-4">
             {socialLinks.github && (
               <button
                 onClick={() => handleSocialClick(socialLinks.github)}
-                className="p-2 rounded-full bg-neutral-grey/10 hover:bg-brand-primary/20 text-neutral-grey hover:text-brand-primary transition-all duration-base"
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
                 aria-label="GitHub"
               >
                 <GitHubIcon size="md" />
@@ -125,32 +115,30 @@ export function Footer({
             {socialLinks.linkedin && (
               <button
                 onClick={() => handleSocialClick(socialLinks.linkedin)}
-                className="p-2 rounded-full bg-neutral-grey/10 hover:bg-brand-primary/20 text-neutral-grey hover:text-brand-primary transition-all duration-base"
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
                 aria-label="LinkedIn"
               >
                 <LinkedInIcon size="md" />
               </button>
             )}
-            {socialLinks.twitter && (
+            {socialLinks.discord && (
               <button
-                onClick={() => handleSocialClick(socialLinks.twitter)}
-                className="p-2 rounded-full bg-neutral-grey/10 hover:bg-brand-primary/20 text-neutral-grey hover:text-brand-primary transition-all duration-base"
-                aria-label="Twitter"
+                onClick={() => handleSocialClick(socialLinks.discord)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
+                aria-label="Discord"
               >
-                <TwitterIcon size="md" />
+                <DiscordIcon size="md" />
               </button>
             )}
           </div>
-
-          {/* Bottom Row: Copyright and Links */}
           <div className="flex flex-col sm:flex-row items-center gap-4 text-center">
-            <p className="text-xs text-neutral-grey">{copyrightText}</p>
+            <p className="text-xs text-white">{copyrightText}</p>
             <div className="flex gap-6">
               {legalLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-xs text-neutral-grey hover:text-brand-primary transition-colors duration-base"
+                  className="text-xs text-white/80 hover:text-white transition-colors duration-base"
                 >
                   {link.label}
                 </a>
@@ -159,14 +147,12 @@ export function Footer({
           </div>
         </div>
 
-        {/* Mobile Layout: Fully Vertical Column */}
         <div className="sm:hidden flex flex-col items-center gap-6">
-          {/* Top: Social Icons */}
           <div className="flex gap-4">
             {socialLinks.github && (
               <button
                 onClick={() => handleSocialClick(socialLinks.github)}
-                className="p-2 rounded-full bg-neutral-grey/10 hover:bg-brand-primary/20 text-neutral-grey hover:text-brand-primary transition-all duration-base"
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
                 aria-label="GitHub"
               >
                 <GitHubIcon size="md" />
@@ -175,33 +161,29 @@ export function Footer({
             {socialLinks.linkedin && (
               <button
                 onClick={() => handleSocialClick(socialLinks.linkedin)}
-                className="p-2 rounded-full bg-neutral-grey/10 hover:bg-brand-primary/20 text-neutral-grey hover:text-brand-primary transition-all duration-base"
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
                 aria-label="LinkedIn"
               >
                 <LinkedInIcon size="md" />
               </button>
             )}
-            {socialLinks.twitter && (
+            {socialLinks.discord && (
               <button
-                onClick={() => handleSocialClick(socialLinks.twitter)}
-                className="p-2 rounded-full bg-neutral-grey/10 hover:bg-brand-primary/20 text-neutral-grey hover:text-brand-primary transition-all duration-base"
-                aria-label="Twitter"
+                onClick={() => handleSocialClick(socialLinks.discord)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
+                aria-label="Discord"
               >
-                <TwitterIcon size="md" />
+                <DiscordIcon size="md" />
               </button>
             )}
           </div>
-
-          {/* Middle: Copyright */}
-          <p className="text-xs text-neutral-grey text-center">{copyrightText}</p>
-
-          {/* Bottom: Legal Links */}
+          <p className="text-xs text-white text-center">{copyrightText}</p>
           <div className="flex flex-col gap-3 text-center">
             {legalLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-xs text-neutral-grey hover:text-brand-primary transition-colors duration-base"
+                className="text-xs text-white/80 hover:text-white transition-colors duration-base"
               >
                 {link.label}
               </a>

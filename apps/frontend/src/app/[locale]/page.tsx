@@ -76,6 +76,7 @@ export default function HomePage() {
                   </div>
                 </form>
               </div>
+              <div className="mt-10 h-px bg-white/10" />
             </div>
           </Container>
         </section>
