@@ -35,7 +35,7 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
 
   const getNavLabel = (key: string, fallback: string) => {
     try {
-      const value = t(key);
+      const value = t(key, { defaultValue: fallback });
       return value || fallback;
     } catch {
       return fallback;
