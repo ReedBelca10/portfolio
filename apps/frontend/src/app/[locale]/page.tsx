@@ -1,5 +1,4 @@
-import { useTranslations } from 'next-intl';
-import { Navbar, SidebarNav, ModuleTitle, Button, Container } from '@/components';
+import { Navbar, SidebarNav, Container, Footer } from '@/components';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Skills from '@/components/Skills';
@@ -7,7 +6,7 @@ import Works from '@/components/Works';
 import Blogs from '@/components/Blogs';
 
 export default function HomePage() {
-  const t = useTranslations();
+  
 
   return (
     <>
@@ -30,67 +29,59 @@ export default function HomePage() {
         {/* Blog Section */}
         <Blogs />
 
-        {/* Contact Section */}
-        <section id="contact" className="relative min-h-screen bg-bg-primary py-24">
+        {/* Contact Section (pixel-accurate) */}
+        <section id="contact" className="relative bg-[radial-gradient(circle_at_top_left,_rgba(0,217,255,0.18),_transparent_20%),radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.08),_transparent_18%),#071216] py-20 overflow-hidden">
           <Container>
-            <ModuleTitle
-              badge="Get in Touch"
-              title="Let's Work Together"
-              description="Have a project in mind? Let's discuss how we can collaborate"
-              className="mb-16"
-            />
-
-            <div className="max-w-2xl mx-auto">
-              <div className="bg-bg-secondary rounded-xl p-8 md:p-12">
-                <div className="grid md:grid-cols-2 gap-8 mb-8">
-                  <div>
-                    <h3 className="text-h4-u font-semibold text-brand-primary mb-3">Email</h3>
-                    <a href="mailto:hello@example.com" className="text-article-u text-neutral-white hover:text-brand-primary transition-colors">
-                      hello@example.com
-                    </a>
-                  </div>
-                  <div>
-                    <h3 className="text-h4-u font-semibold text-brand-primary mb-3">Location</h3>
-                    <p className="text-article-u text-neutral-white">City, Country</p>
+            <div className="max-w-3xl mx-auto relative z-10">
+              <div className="text-center">
+                <h2 style={{ color: '#00D9FF', fontSize: 'clamp(48px, 6.2vw, 72px)', lineHeight: 1 }} className="font-semibold">Contact</h2>
+                <div className="mx-auto my-4" style={{ width: 140 }}>
+                  <div className="h-0.5 bg-[#00D9FF] mx-auto w-full relative" />
+                  <div className="flex items-center justify-between mt-2">
+                    <span className="block w-2 h-2 bg-[#00D9FF] rounded-full mx-auto"></span>
                   </div>
                 </div>
+                <p className="text-sm text-white/80 mb-8">I&apos;m currently available for freelance work</p>
 
-                <form className="space-y-6">
-                  <div>
-                    <label className="block text-label-u font-semibold text-neutral-white mb-2">Name</label>
-                    <input
-                      type="text"
-                      className="w-full px-4 py-3 rounded-lg bg-bg-primary border-2 border-neutral-grey focus:border-brand-primary text-neutral-white placeholder-neutral-grey/60 focus:outline-none transition-all"
-                      placeholder="Your name"
-                    />
+                <div className="mx-auto mb-10">
+                  <button className="inline-flex items-center justify-center border-2 border-[#00D9FF] text-[#00D9FF] rounded-tr-3xl rounded-bl-3xl px-8 py-4 text-lg font-semibold hover:bg-[#00D9FF]/10 transition-all">
+                    Send Me A Message
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-[#071216]/95 rounded-xl p-8 md:p-12 border border-white/10">
+                <form className="space-y-6 text-left">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-[#00D9FF] mb-2">Your name *</label>
+                      <input type="text" placeholder="Enter your name" className="w-full bg-transparent border-b-2 border-white/30 text-white py-3 focus:outline-none focus:border-[#00D9FF] transition-colors" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-[#00D9FF] mb-2">Your email *</label>
+                      <input type="email" placeholder="Enter your email" className="w-full bg-transparent border-b-2 border-white/30 text-white py-3 focus:outline-none focus:border-[#00D9FF] transition-colors" />
+                    </div>
                   </div>
 
                   <div>
-                    <label className="block text-label-u font-semibold text-neutral-white mb-2">Email</label>
-                    <input
-                      type="email"
-                      className="w-full px-4 py-3 rounded-lg bg-bg-primary border-2 border-neutral-grey focus:border-brand-primary text-neutral-white placeholder-neutral-grey/60 focus:outline-none transition-all"
-                      placeholder="your@email.com"
-                    />
+                    <label className="block text-sm font-semibold text-[#00D9FF] mb-2">Your message *</label>
+                    <textarea rows={6} placeholder="Enter your needs" className="w-full bg-transparent border-b-2 border-white/30 text-white py-3 focus:outline-none focus:border-[#00D9FF] resize-none transition-colors" />
                   </div>
 
-                  <div>
-                    <label className="block text-label-u font-semibold text-neutral-white mb-2">Message</label>
-                    <textarea
-                      rows={5}
-                      className="w-full px-4 py-3 rounded-lg bg-bg-primary border-2 border-neutral-grey focus:border-brand-primary text-neutral-white placeholder-neutral-grey/60 focus:outline-none transition-all resize-none"
-                      placeholder="Your message here..."
-                    />
+                  <div className="flex justify-center">
+                    <button type="button" className="inline-flex items-center gap-3 bg-[#00D9FF] text-[#071216] px-8 py-3 rounded-full font-semibold shadow-lg hover:-translate-y-1 transition-transform">
+                      Send Message
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#071216" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                    </button>
                   </div>
-
-                  <Button variant="primary" size="lg" className="w-full">
-                    Send Message
-                  </Button>
                 </form>
               </div>
             </div>
           </Container>
         </section>
+
+        {/* Footer */}
+        <Footer />
       </main>
     </>
   );
