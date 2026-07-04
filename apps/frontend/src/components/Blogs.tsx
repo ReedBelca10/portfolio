@@ -104,6 +104,7 @@ export function Blogs() {
           font-family: 'Ubuntu', sans-serif;
           color: ${CYAN};
           text-decoration: underline;
+          text-decoration-color: #ffffff;
           text-underline-offset: 4px;
           margin-bottom: 32px;
           display: inline-block;
@@ -202,7 +203,7 @@ export function Blogs() {
           <div className="blog-meta">
             <span className="blog-badge">Web Developer</span>
             <div className="blog-meta-info">
-              <div><span className="meta-label">Text</span> Caleb</div>
+              <div><span className="meta-label">Author</span> Caleb</div>
               <div><span className="meta-label">Date</span> 12.Jun 2026</div>
               <div><span className="meta-label">Read</span> 1 Min</div>
             </div>
