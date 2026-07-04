@@ -13,9 +13,10 @@ import Link from "next/link";
    ─ 2xl (≥1536px)          : single row  profile(3) | text(6) | stats(3)
    ───────────────────────────────────────────────────────────────── */
 
-const CYAN = "#2dd4bf";
+// Using the exact brand color from tailwind config
+const CYAN = "#00D9FF";
 const BG_HERO = "#292F36";
-const BG_CARD = "#263034";
+const BG_CARD = "#2A3137";
 const BG_STATS = "#181f26";
 
 const BADGES = ["TS", "NEST", "FLUTTER", "NEXT.JS"];
@@ -44,25 +45,28 @@ export function Hero() {
         .hp-wrap {
           position: relative;
           padding: 12px 0 0 12px;   /* card shifts ↘, border stays ↖ */
+          max-width: 380px;
+          margin: 0 auto;
         }
-        @media (min-width: 768px)  { .hp-wrap { padding: 14px 0 0 14px; } }
-        @media (min-width: 1536px) { .hp-wrap { padding: 16px 0 0 16px; } }
+        @media (min-width: 768px)  { .hp-wrap { padding: 14px 0 0 14px; max-width: 400px; } }
+        @media (min-width: 1536px) { .hp-wrap { padding: 16px 0 0 16px; max-width: 100%; } }
 
         /* The teal offset border (behind the card) */
         .hp-border {
           position: absolute;
           top: 0; left: 0;
           right: 12px; bottom: 12px;  /* same offset as padding */
-          border: 2px solid ${CYAN};
-          border-radius: 28px;
+          border: 2.5px solid ${CYAN};
+          /* Swoosh shape: TL large, TR small, BR large, BL small */
+          border-radius: clamp(70px, 8vw, 110px) 16px clamp(70px, 8vw, 110px) 16px;
           pointer-events: none;
           z-index: 0;
         }
         @media (min-width: 768px) {
-          .hp-border { right: 14px; bottom: 14px; border-radius: 30px; }
+          .hp-border { right: 14px; bottom: 14px; }
         }
         @media (min-width: 1536px) {
-          .hp-border { right: 16px; bottom: 16px; border-radius: 32px; }
+          .hp-border { right: 16px; bottom: 16px; }
         }
 
         /* The dark card (in front, shifted ↘ by the padding) */
@@ -70,20 +74,20 @@ export function Hero() {
           position: relative;
           z-index: 1;
           background: ${BG_CARD};
-          border-radius: 22px;
-          padding: clamp(20px, 2.8vw, 38px) clamp(18px, 2.4vw, 32px);
+          /* Exact same swoosh shape as border */
+          border-radius: clamp(70px, 8vw, 110px) 16px clamp(70px, 8vw, 110px) 16px;
+          padding: clamp(24px, 3vw, 38px) clamp(20px, 2.5vw, 32px);
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: clamp(16px, 1.8vw, 24px);
         }
-        @media (min-width: 768px) { .hp-card { border-radius: 24px; } }
 
         /* Avatar ring */
         .hp-avatar {
           border-radius: 50%;
           overflow: hidden;
-          border: 2.5px solid ${CYAN};
+          border: 2px solid ${CYAN};
           width:  clamp(84px, 8.5vw, 120px);
           height: clamp(84px, 8.5vw, 120px);
           flex-shrink: 0;
@@ -101,27 +105,27 @@ export function Hero() {
           display: flex; align-items: center; justify-content: center;
         }
         .hp-text {
-          color: rgba(255,255,255,0.82);
+          color: rgba(255,255,255,0.85);
           font-size: clamp(10px, 0.9vw, 13px);
           line-height: 1.5;
           word-break: break-all;
         }
 
-        /* Tech badges — uniform teal outline pill */
-        .hp-badges { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; }
+        /* Tech badges — solid cyan background with black text */
+        .hp-badges { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; justify-content: flex-start; }
         .hp-badge {
           display: inline-block;
-          border: 1.5px solid ${CYAN};
-          color: ${CYAN};
+          background: ${CYAN};
+          color: #111827;
           border-radius: 999px;
           font-family: 'IBM Plex Mono', monospace;
-          font-size: clamp(9px, 0.72vw, 11px);
-          font-weight: 500;
+          font-size: clamp(9px, 0.72vw, 11.5px);
+          font-weight: 600;
           padding: 4px 13px;
           letter-spacing: 0.04em;
-          transition: background 0.2s;
+          transition: transform 0.2s;
         }
-        .hp-badge:hover { background: rgba(45,212,191,0.1); }
+        .hp-badge:hover { transform: scale(1.05); }
 
         /* Download CV button */
         .hp-cv {
@@ -129,16 +133,17 @@ export function Hero() {
           align-items: center;
           justify-content: center;
           gap: 10px;
-          width: 100%;
+          width: 90%; /* Slight padding around it like in mockup */
           border-radius: 999px;
           background: #ffffff;
           color: #0f172a;
           font-family: 'IBM Plex Mono', monospace;
-          font-size: clamp(12px, 1vw, 14px);
-          font-weight: 700;
+          font-size: clamp(13px, 1vw, 15px);
+          font-weight: 600;
           padding: 13px 28px;
           text-decoration: none;
           transition: background 0.2s, transform 0.15s;
+          margin-top: 4px;
         }
         .hp-cv:hover { background: #e4ecfb; transform: translateY(-1px); color: #0f172a; }
 
@@ -148,7 +153,7 @@ export function Hero() {
           font-family: 'IBM Plex Mono', monospace;
           font-size: clamp(10px, 0.88vw, 13px);
           color: ${CYAN};
-          opacity: 0.62;
+          opacity: 0.8;
           line-height: 1;
           user-select: none;
         }
@@ -156,7 +161,7 @@ export function Hero() {
           font-family: 'IBM Plex Mono', monospace;
           font-size: clamp(9px, 0.65vw, 11px);
           color: ${CYAN};
-          opacity: 0.62;
+          opacity: 0.8;
           user-select: none;
           margin-left: 10px;
           vertical-align: baseline;
@@ -169,7 +174,7 @@ export function Hero() {
           gap: 12px;
           color: ${CYAN};
           font-family: 'IBM Plex Mono', monospace;
-          font-size: clamp(15px, 1.4vw, 22px);
+          font-size: clamp(18px, 1.6vw, 24px);
           font-weight: 500;
           text-decoration: none;
           transition: opacity 0.2s;
@@ -181,29 +186,29 @@ export function Hero() {
           justify-content: center;
           width:  clamp(34px, 2.8vw, 42px);
           height: clamp(34px, 2.8vw, 42px);
-          border-radius: 9px;
-          background: #2d363d;
+          border-radius: 10px;
+          background: rgba(0, 217, 255, 0.12);
           color: ${CYAN};
           flex-shrink: 0;
           transition: background 0.2s;
         }
-        .btn-talk:hover .btn-talk-icon { background: #384148; }
+        .btn-talk:hover .btn-talk-icon { background: rgba(0, 217, 255, 0.2); }
 
         /* ── Stats panel ── */
         .stats-panel {
           background: ${BG_STATS};
-          border-radius: clamp(28px, 3vw, 42px);
-          padding: clamp(26px, 3.5vw, 52px) clamp(20px, 2.4vw, 36px);
+          border-radius: clamp(30px, 4vw, 50px);
+          padding: clamp(30px, 3.5vw, 56px) clamp(22px, 2.5vw, 36px);
           display: flex;
           flex-direction: column;
-          gap: clamp(22px, 3.2vw, 48px);
+          gap: clamp(24px, 3.2vw, 48px);
           width: 100%;
           max-width: 280px;
         }
         .stat-n {
           font-family: 'IBM Plex Mono', monospace;
-          font-size: clamp(30px, 4vw, 58px);
-          font-weight: 500;
+          font-size: clamp(34px, 4.5vw, 62px);
+          font-weight: 400;
           color: ${CYAN};
           line-height: 1;
           flex-shrink: 0;
@@ -211,16 +216,16 @@ export function Hero() {
         }
         .stat-l {
           font-family: 'IBM Plex Mono', monospace;
-          font-size: clamp(11px, 1vw, 15px);
+          font-size: clamp(11.5px, 1vw, 15px);
           color: #ffffff;
           line-height: 1.35;
         }
         .stat-s {
           font-family: 'IBM Plex Mono', monospace;
-          font-size: clamp(10px, 0.88vw, 13px);
-          color: rgba(255,255,255,0.48);
+          font-size: clamp(10.5px, 0.88vw, 13px);
+          color: rgba(255,255,255,0.55);
           line-height: 1.3;
-          margin-top: 1px;
+          margin-top: 2px;
         }
 
         /* ── Entrance animations ── */
@@ -296,8 +301,8 @@ export function Hero() {
                 <div className="text-center" style={{ lineHeight: 1.3 }}>
                   <p
                     style={{
-                      fontSize: "clamp(17px, 1.55vw, 23px)",
-                      fontWeight: 600,
+                      fontSize: "clamp(20px, 1.8vw, 26px)",
+                      fontWeight: 500,
                       color: "#fff",
                     }}
                   >
@@ -305,9 +310,9 @@ export function Hero() {
                   </p>
                   <p
                     style={{
-                      fontSize: "clamp(10px, 0.92vw, 14px)",
-                      color: "rgba(255,255,255,0.6)",
-                      marginTop: "3px",
+                      fontSize: "clamp(11px, 0.95vw, 14px)",
+                      color: "rgba(255,255,255,0.75)",
+                      marginTop: "6px",
                     }}
                   >
                     Full-Stack Developer
@@ -366,11 +371,11 @@ export function Hero() {
             {/* Main heading */}
             <h1
               style={{
-                fontSize: "clamp(38px, 5.6vw, 82px)",
-                fontWeight: 600,
+                fontSize: "clamp(42px, 5.8vw, 88px)",
+                fontWeight: 500,
                 color: "#ffffff",
-                lineHeight: 1.04,
-                letterSpacing: "-0.025em",
+                lineHeight: 1.05,
+                letterSpacing: "-0.015em",
                 margin: "8px 0 0 0",
               }}
             >
@@ -384,18 +389,18 @@ export function Hero() {
             </h1>
 
             {/* <p> */}
-            <span className="ctag" style={{ marginTop: "clamp(18px, 2vw, 30px)" }}>
+            <span className="ctag" style={{ marginTop: "clamp(24px, 2.5vw, 36px)" }}>
               &lt;p&gt;
             </span>
 
             {/* Description — indented like real code */}
             <p
               style={{
-                fontSize: "clamp(11.5px, 1.05vw, 15px)",
-                color: "rgba(255,255,255,0.78)",
-                lineHeight: 1.75,
-                maxWidth: "580px",
-                margin: "6px 0 0 clamp(12px, 1.2vw, 20px)",
+                fontSize: "clamp(12px, 1.1vw, 15px)",
+                color: "rgba(255,255,255,0.72)",
+                lineHeight: 1.7,
+                maxWidth: "600px",
+                margin: "8px 0 0 clamp(16px, 1.5vw, 24px)",
                 fontFamily: "IBM Plex Mono",
               }}
             >
@@ -406,7 +411,7 @@ export function Hero() {
             </p>
 
             {/* </p> */}
-            <span className="ctag" style={{ marginTop: "6px", marginBottom: "clamp(22px, 2.4vw, 36px)" }}>
+            <span className="ctag" style={{ marginTop: "8px", marginBottom: "clamp(28px, 2.8vw, 42px)" }}>
               &lt;/p&gt;
             </span>
 
@@ -439,7 +444,7 @@ export function Hero() {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "clamp(12px, 1.4vw, 22px)",
+                    gap: "clamp(16px, 1.6vw, 24px)",
                   }}
                 >
                   <span className="stat-n">{s.n}</span>
@@ -493,14 +498,14 @@ function GlobeIcon() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
       strokeLinecap="round" strokeLinejoin="round" width="100%" height="100%">
       <circle cx="12" cy="12" r="10" />
-      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
     </svg>
   );
 }
 function DownloadIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
       <polyline points="7 10 12 15 17 10" />
       <line x1="12" y1="15" x2="12" y2="3" />
@@ -510,7 +515,7 @@ function DownloadIcon() {
 function ChatIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
     </svg>
   );
