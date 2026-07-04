@@ -3,6 +3,7 @@ import { Navbar, SidebarNav, ModuleTitle, Button, Container } from '@/components
 import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Skills from '@/components/Skills';
+import Works from '@/components/Works';
 
 export default function HomePage() {
   const t = useTranslations();
@@ -22,38 +23,8 @@ export default function HomePage() {
         {/* Skills Section */}
         <Skills />
 
-        {/* Projects Section */}
-        <section id="projects" className="relative min-h-screen bg-bg-secondary py-24">
-          <Container>
-            <ModuleTitle
-              badge="Portfolio"
-              title="Recent Works"
-              description="A selection of projects I've worked on recently"
-              className="mb-16"
-            />
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <div key={item} className="group bg-bg-primary rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300">
-                  <div className="aspect-video bg-gradient-to-br from-brand-primary/20 to-brand-secondary/20 flex items-center justify-center">
-                    <span className="text-h3-u font-bold text-brand-primary/50">Project {item}</span>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-h4-u font-semibold text-neutral-white mb-2">
-                      {t(`pages.home.projects.item${item}.title`) || `Project ${item}`}
-                    </h3>
-                    <p className="text-label-u text-neutral-grey mb-4">
-                      {t(`pages.home.projects.item${item}.description`) || 'Brief project description goes here'}
-                    </p>
-                    <Button variant="ghost" size="sm" className="w-full">
-                      View Project →
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Container>
-        </section>
+        {/* Works Section */}
+        <Works />
 
         {/* Blog Section */}
         <section id="blog" className="relative min-h-screen bg-bg-secondary py-24">

@@ -192,7 +192,7 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
 
       {/* Level */}
       <div className="skill-footer">
-        <span className="skill-level" style={{ color: levelColor }}>
+        <span className="skill-level" style={{ color: "#ffffff" }}>
           {skill.level}
         </span>
 
@@ -403,6 +403,8 @@ export function Skills() {
           display: grid;
           grid-template-columns: 1fr;
           gap: clamp(14px, 2vw, 24px);
+          justify-items: center;
+          align-items: stretch;
         }
         @media (min-width: 640px) {
           .skills-grid { grid-template-columns: repeat(2, 1fr); }
@@ -429,10 +431,14 @@ export function Skills() {
           padding: clamp(16px, 2vw, 24px) clamp(14px, 1.8vw, 22px);
           display: flex;
           flex-direction: column;
+          align-items: center;
+          text-align: center;
           gap: clamp(8px, 1vw, 12px);
           transition: transform 0.22s ease, box-shadow 0.22s ease;
           animation: skillFadeUp 0.45s cubic-bezier(.22,.68,0,1.15) both;
           cursor: default;
+          width: 100%;
+          max-width: 280px;
         }
         .skill-card:hover {
           transform: translateY(-4px);
@@ -456,6 +462,7 @@ export function Skills() {
           font-weight: 500;
           text-transform: uppercase;
           font-family: "IBM Plex Mono", monospace;
+          text-align: center;
         }
         .skill-name {
           font-size: clamp(15px, 1.4vw, 20px);
@@ -464,12 +471,14 @@ export function Skills() {
           letter-spacing: 0.04em;
           margin: 0;
           font-family: "IBM Plex Mono", monospace;
+          text-align: center;
         }
         .skill-icon-wrap {
           display: flex;
           align-items: center;
-          justify-content: flex-start;
+          justify-content: center;
           padding: clamp(4px, 0.5vw, 8px) 0;
+          width: 100%;
         }
         .skill-emoji {
           font-size: clamp(30px, 3.5vw, 48px);
@@ -480,13 +489,17 @@ export function Skills() {
           margin-top: auto;
           display: flex;
           flex-direction: column;
+          align-items: stretch;
           gap: 6px;
+          width: 100%;
         }
         .skill-level {
           font-size: clamp(10px, 0.78vw, 12px);
           font-weight: 600;
           letter-spacing: 0.08em;
           font-family: "IBM Plex Mono", monospace;
+          text-align: left;
+          color: #ffffff;
         }
         .skill-bar-track {
           width: 100%;

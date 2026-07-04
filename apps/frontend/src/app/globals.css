@@ -249,3 +249,378 @@ a {
   }
 }
 
+/* ================================================================
+   WORKS SECTION
+   ================================================================ */
+
+/* Import cursive font for the "Works" title */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+/* ── Section wrapper ── */
+.works-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+  overflow: hidden;
+}
+
+/* ── Code-texture background ── */
+.works-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.works-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 12, 18, 0.72);
+}
+
+/* ── Content container ── */
+.works-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Title block ── */
+.works-title-block {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.works-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 72px;
+  font-weight: 700;
+  color: #00D9FF;
+  line-height: 1.1;
+  margin: 0 0 4px 0;
+}
+
+.works-title-underline {
+  width: 120px;
+  height: 3px;
+  margin: 0 auto 20px auto;
+  background: linear-gradient(90deg, transparent, #00D9FF 20%, #00D9FF 80%, transparent);
+  border-radius: 2px;
+}
+
+.works-subtitle {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* ── Showcase area (monitors + arrows) ── */
+.works-showcase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  position: relative;
+}
+
+/* ── Navigation arrows ── */
+.works-nav-arrow {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(55, 65, 81, 0.7);
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(4px);
+  z-index: 5;
+}
+
+.works-nav-arrow:hover {
+  background: rgba(55, 65, 81, 0.95);
+  color: #00D9FF;
+  transform: scale(1.08);
+}
+
+.works-nav-arrow:active {
+  transform: scale(0.96);
+}
+
+/* ── Dual-monitor container ── */
+.works-monitors {
+  position: relative;
+  width: 580px;
+  height: 400px;
+  flex-shrink: 0;
+}
+
+/* ── Single monitor ── */
+.works-monitor {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Source Code monitor — positioned left and slightly behind */
+.works-monitor--source {
+  left: 0;
+  bottom: 30px;
+  z-index: 1;
+  width: 260px;
+}
+
+/* Production monitor — positioned right and in front */
+.works-monitor--production {
+  right: 10px;
+  bottom: 50px;
+  z-index: 2;
+  width: 290px;
+}
+
+/* ── Monitor screen ── */
+.works-monitor__screen {
+  position: relative;
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.works-monitor__screen--dark {
+  aspect-ratio: 4 / 3.2;
+  background: #1a1a2e;
+  border: 3px solid #3a3a4a;
+}
+
+.works-monitor__screen--light {
+  aspect-ratio: 16 / 10.5;
+  background: #f5f5f5;
+  border: 3px solid #b0b0b0;
+}
+
+/* ── Monitor stand ── */
+.works-monitor__stand {
+  width: 20%;
+  height: 20px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+}
+
+.works-monitor__stand--dark {
+  background: linear-gradient(to bottom, #3a3a4a, #2a2a3a);
+}
+
+.works-monitor__stand--light {
+  background: linear-gradient(to bottom, #c0c0c0, #a8a8a8);
+}
+
+/* ── Monitor base ── */
+.works-monitor__base {
+  width: 40%;
+  height: 6px;
+  border-radius: 0 0 4px 4px;
+}
+
+.works-monitor__base--dark {
+  background: #3a3a4a;
+}
+
+.works-monitor__base--light {
+  background: #b0b0b0;
+}
+
+/* ── Labels ("View Website", "View Source Code") ── */
+.works-label {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  z-index: 10;
+}
+
+.works-label:hover {
+  transform: translateY(-2px);
+}
+
+.works-label__text {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  color: #00D9FF;
+  border-bottom: 2px solid #00D9FF;
+  padding-bottom: 2px;
+  letter-spacing: 0.02em;
+}
+
+.works-label__cursor {
+  color: #00D9FF;
+  flex-shrink: 0;
+}
+
+/* "View Website" — top-right of the production monitor */
+.works-label--website {
+  top: -30px;
+  right: -40px;
+}
+
+.works-label--website .works-label__cursor {
+  transform: rotate(160deg);
+}
+
+/* "View Source Code" — bottom-left, below the source monitor */
+.works-label--source {
+  bottom: -35px;
+  left: 30px;
+}
+
+.works-label--source .works-label__cursor {
+  transform: rotate(10deg);
+}
+
+/* ── Dots indicator ── */
+.works-dots {
+  display: flex;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.works-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 217, 255, 0.4);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.works-dot--active {
+  background: #00D9FF;
+  border-color: #00D9FF;
+  box-shadow: 0 0 8px rgba(0, 217, 255, 0.5);
+}
+
+.works-dot:hover:not(.works-dot--active) {
+  border-color: #00D9FF;
+  background: rgba(0, 217, 255, 0.25);
+}
+
+/* ── Responsive ── */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .works-section {
+    padding: 60px 0;
+  }
+
+  .works-title {
+    font-size: 52px;
+  }
+
+  .works-subtitle {
+    font-size: 13px;
+    padding: 0 12px;
+  }
+
+  .works-monitors {
+    width: 420px;
+    height: 320px;
+  }
+
+  .works-monitor--source {
+    width: 200px;
+  }
+
+  .works-monitor--production {
+    width: 220px;
+  }
+
+  .works-nav-arrow {
+    width: 44px;
+    height: 44px;
+  }
+
+  .works-label__text {
+    font-size: 13px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .works-section {
+    padding: 48px 0;
+    min-height: auto;
+  }
+
+  .works-title {
+    font-size: 42px;
+  }
+
+  .works-title-block {
+    margin-bottom: 32px;
+  }
+
+  .works-monitors {
+    width: 300px;
+    height: 260px;
+  }
+
+  .works-monitor--source {
+    width: 150px;
+    bottom: 20px;
+  }
+
+  .works-monitor--production {
+    width: 170px;
+    bottom: 40px;
+  }
+
+  .works-nav-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .works-nav-arrow svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .works-showcase {
+    gap: 8px;
+  }
+
+  .works-label__text {
+    font-size: 11px;
+  }
+
+  .works-label--website {
+    top: -14px;
+    right: -4px;
+  }
+
+  .works-label--source {
+    bottom: -4px;
+    left: 20px;
+  }
+}
+

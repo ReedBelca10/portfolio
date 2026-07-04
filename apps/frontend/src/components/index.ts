@@ -21,3 +21,4 @@ export { SidebarNav } from './SidebarNav';
 export { Navbar } from './Navbar';
 export { Footer } from './Footer';
 export { Skills } from './Skills';
+export { Works } from './Works';
