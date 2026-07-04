@@ -296,7 +296,7 @@ a {
 /* ── Title block ── */
 .works-title-block {
   text-align: center;
-  margin-bottom: 64px;
+  margin-bottom: 24px;
 }
 
 .works-title {
@@ -478,7 +478,7 @@ a {
 
 /* "View Website" — top-right of the production monitor */
 .works-label--website {
-  top: -45px;
+  top: -65px;
   right: -40px;
 }
 
@@ -569,7 +569,7 @@ a {
   }
 
   .works-label--website {
-    top: -40px;
+    top: -55px;
     right: -20px;
   }
 
@@ -628,7 +628,7 @@ a {
   }
 
   .works-label--website {
-    top: -26px;
+    top: -36px;
     right: -6px;
   }
 
