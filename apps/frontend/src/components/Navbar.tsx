@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
+import { Link, usePathname } from '@/i18n';
 import clsx from 'clsx';
 import { GitHubIcon, LinkedInIcon, DiscordIcon } from './Icon';
 
