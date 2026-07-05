@@ -50,11 +50,14 @@ export function Navbar({
     }
   };
 
-  // Derive locale from the current path to build localised links (client-side only)
-  const getLocaleFromPath = () => {
-    if (typeof window === 'undefined') return 'en';
-    const segs = window.location.pathname.split('/').filter(Boolean);
-    return segs[0] || 'en';
+  // Client-side navigation handler for links that require locale-aware routing
+  const handleNavClick = (e: React.MouseEvent, href: string) => {
+    if (href === '#blog') {
+      e.preventDefault();
+      const segs = window.location.pathname.split('/').filter(Boolean);
+      const locale = segs[0] || 'en';
+      window.location.href = `/${locale}/blog`;
+    }
   };
 
   useEffect(() => {
@@ -120,12 +123,11 @@ export function Navbar({
             {/* Links + Search Toggle Container */}
             <div className="relative flex flex-col items-end">
               <div className="flex items-center gap-5 md:gap-8">
-                {links.map((link) => {
-                  const hrefForLink = link.href === '#blog' ? `/${getLocaleFromPath()}/blog` : link.href;
-                  return (
+                {links.map((link) => (
                   <a
                     key={link.href}
-                    href={hrefForLink}
+                    href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     className={clsx(
                       "font-semibold transition-colors duration-200",
                       link.label === 'Home' ? "text-[#00D9FF]" : "text-gray-300 hover:text-[#00D9FF]"
@@ -134,8 +136,7 @@ export function Navbar({
                   >
                     {link.label}
                   </a>
-                  );
-                })}
+                ))}
                 
                 {/* Search Toggle Button */}
                 <button
