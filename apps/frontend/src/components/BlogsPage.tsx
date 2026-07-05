@@ -96,30 +96,9 @@ const BLOG_POSTS: BlogPost[] = [
 
 function BlogCard({ post }: { post: BlogPost }) {
   return (
-    <article
-      style={{
-        width: '100%',
-        maxWidth: '800px',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        gap: '32px',
-        padding: '40px 0',
-        fontFamily: "'Ubuntu', sans-serif",
-      }}
-    >
+    <article className="flex flex-col md:flex-row items-start gap-5 md:gap-8 py-8 md:py-10 w-full max-w-[800px] font-ubuntu mx-auto">
       {/* Thumbnail */}
-      <div
-        style={{
-          flexShrink: 0,
-          width: '160px',
-          height: '120px',
-          position: 'relative',
-          borderRadius: '4px',
-          overflow: 'hidden',
-        }}
-        className="blog-page-img"
-      >
+      <div className="relative shrink-0 w-full md:w-[160px] h-[180px] md:h-[120px] rounded overflow-hidden">
         <Image
           src={post.image}
           alt={post.imageAlt}
@@ -238,12 +217,13 @@ export function BlogsPage() {
         backgroundColor: BG_SECTION,
         fontFamily: "'IBM Plex Mono', monospace",
         minHeight: '100vh',
+        paddingBottom: '48px',
       }}
     >
       <style>{`
         .blogs-page-subscribe-btn {
           border: 2px solid ${CYAN};
-          color: ${CYAN};
+          color: #ffffff;
           background: transparent;
           font-family: 'IBM Plex Mono', monospace;
           font-size: 14px;
@@ -271,19 +251,6 @@ export function BlogsPage() {
           flex-direction: column;
           align-items: center;
           padding: 0 24px;
-        }
-
-        /* Responsive: stack image on small screens */
-        @media (max-width: 600px) {
-          .blog-page-img {
-            width: 100% !important;
-            height: 180px !important;
-          }
-
-          .blogs-page-list article {
-            flex-direction: column !important;
-            gap: 20px !important;
-          }
         }
       `}</style>
 
