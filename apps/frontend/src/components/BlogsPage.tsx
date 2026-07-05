@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { Link } from '@/i18n';
 
 /*
  * BlogsPage Component
@@ -13,7 +14,7 @@ import Image from 'next/image';
 const CYAN = '#00D9FF';
 const BG_SECTION = '#292F36';
 
-interface BlogPost {
+export interface BlogPost {
   id: number;
   image: string;
   imageAlt: string;
@@ -26,7 +27,7 @@ interface BlogPost {
   showReadMore?: boolean;
 }
 
-const BLOG_POSTS: BlogPost[] = [
+export const BLOG_POSTS: BlogPost[] = [
   {
     id: 1,
     image: '/Blog.jpg',
@@ -94,9 +95,9 @@ const BLOG_POSTS: BlogPost[] = [
   },
 ];
 
-function BlogCard({ post }: { post: BlogPost }) {
+export function BlogCard({ post }: { post: BlogPost }) {
   return (
-    <article className="flex flex-col md:flex-row items-start gap-5 md:gap-8 py-8 md:py-10 w-full max-w-[800px] font-ubuntu mx-auto">
+    <article className="flex flex-col md:flex-row items-start gap-5 md:gap-8 py-8 md:py-10 w-full max-w-[800px] font-primary mx-auto">
       {/* Thumbnail */}
       <div className="relative shrink-0 w-full md:w-[160px] h-[180px] md:h-[120px] rounded overflow-hidden">
         <Image
@@ -139,8 +140,8 @@ function BlogCard({ post }: { post: BlogPost }) {
         {/* Read More link (only on some cards) */}
         {post.showReadMore && (
           <div>
-            <a
-              href="#"
+            <Link
+              href={`/blog/${post.id}`}
               style={{
                 fontFamily: "'Ubuntu', sans-serif",
                 fontSize: '14px',
@@ -151,7 +152,7 @@ function BlogCard({ post }: { post: BlogPost }) {
               }}
             >
               Read More &gt;&gt;
-            </a>
+            </Link>
           </div>
         )}
 
