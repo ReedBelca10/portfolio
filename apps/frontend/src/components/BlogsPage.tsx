@@ -38,7 +38,7 @@ const BLOG_POSTS: BlogPost[] = [
     author: 'Caleb',
     date: '12.Jun 2026',
     readTime: '1 Min',
-    showReadMore: false,
+    showReadMore: true,
   },
   {
     id: 2,
@@ -238,45 +238,9 @@ export function BlogsPage() {
         backgroundColor: BG_SECTION,
         fontFamily: "'IBM Plex Mono', monospace",
         minHeight: '100vh',
-        paddingBottom: '80px',
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Ubuntu:wght@400;500;700&display=swap');
-
-        .blogs-page-header {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          padding: 60px 24px 40px;
-        }
-
-        .blogs-page-title {
-          font-family: 'Dancing Script', cursive;
-          font-size: clamp(52px, 6vw, 72px);
-          font-weight: 700;
-          color: ${CYAN};
-          line-height: 1.1;
-          margin-bottom: 6px;
-        }
-
-        .blogs-page-underline {
-          width: 120px;
-          height: 3px;
-          margin: 0 auto 18px auto;
-          background: linear-gradient(90deg, transparent, ${CYAN} 20%, ${CYAN} 80%, transparent);
-          border-radius: 2px;
-        }
-
-        .blogs-page-subtitle {
-          font-family: 'IBM Plex Mono', monospace;
-          font-size: clamp(12px, 1.4vw, 14px);
-          color: rgba(255, 255, 255, 0.8);
-          margin-bottom: 36px;
-          letter-spacing: 0.02em;
-        }
-
         .blogs-page-subscribe-btn {
           border: 2px solid ${CYAN};
           color: ${CYAN};
@@ -324,10 +288,31 @@ export function BlogsPage() {
       `}</style>
 
       {/* Header */}
-      <div className="blogs-page-header">
-        <h1 className="blogs-page-title">Blogs</h1>
-        <div className="blogs-page-underline" />
-        <p className="blogs-page-subtitle">
+      <div className="flex flex-col items-center text-center px-6 pt-16 pb-10">
+        <h2 style={{
+          fontFamily: "'Dancing Script', cursive",
+          fontSize: "clamp(52px, 6vw, 72px)",
+          fontWeight: 700,
+          color: CYAN,
+          lineHeight: 1.1,
+          marginBottom: "4px"
+        }}>
+          Blogs
+        </h2>
+        <div style={{
+          width: "120px",
+          height: "3px",
+          margin: "0 auto 20px auto",
+          background: `linear-gradient(90deg, transparent, ${CYAN} 20%, ${CYAN} 80%, transparent)`,
+          borderRadius: "2px"
+        }} />
+        <p style={{
+          fontFamily: "'IBM Plex Mono', monospace",
+          fontSize: "clamp(13px, 1.5vw, 15px)",
+          color: "rgba(255, 255, 255, 0.85)",
+          marginBottom: "36px",
+          letterSpacing: "0.02em"
+        }}>
           My thoughts on technology and business, welcome to subscribe
         </p>
         <button className="blogs-page-subscribe-btn">Subscribe My Blogs</button>

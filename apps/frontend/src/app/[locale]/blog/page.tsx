@@ -12,7 +12,7 @@ export default function BlogPage() {
       <Navbar />
       <main className="min-h-screen">
         <BlogsPage />
-        <Footer />
+        <Footer className="!mt-0" />
       </main>
     </>
   );
