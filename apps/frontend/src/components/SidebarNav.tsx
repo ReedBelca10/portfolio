@@ -49,7 +49,7 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
           id: 'modules',
           label: getNavLabel('modules', 'Modules'),
           icon: <ProjectsIcon />,
-          sectionId: 'modules',
+          sectionId: 'home',
         },
         {
           id: 'about',
@@ -202,9 +202,9 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
                   'focus:outline-none focus-ring',
                   'border-2',
                   activeSection === item.id
-                    ? 'border-white bg-white/5'
-                    : 'border-white/50 hover:border-white/70 bg-transparent',
-                  hoveredId === item.id && 'ring-1 ring-white/30'
+                    ? 'border-[#00D9FF] bg-[#00D9FF]/10 shadow-[0_0_0_1px_rgba(0,217,255,0.15)]'
+                    : 'border-white/50 hover:border-[#00D9FF]/70 bg-transparent',
+                  hoveredId === item.id && 'ring-1 ring-[#00D9FF]/30'
                 )}
                 aria-label={item.label}
                 aria-current={activeSection === item.id ? 'page' : undefined}
@@ -215,8 +215,8 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
                     'w-5 h-5 flex items-center justify-center',
                     'transition-colors duration-300',
                     activeSection === item.id
-                      ? 'text-cyan-400'
-                      : 'text-white group-hover:text-cyan-300'
+                      ? 'text-[#00D9FF]'
+                      : 'text-white group-hover:text-[#00D9FF]'
                   )}
                 >
                   {item.icon}

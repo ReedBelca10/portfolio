@@ -102,14 +102,6 @@ const SKILL_CATEGORIES: SkillCategory[] = [
   },
 ];
 
-const LEVEL_COLOR: Record<string, string> = {
-  BEGINNER: "#6EE7B7",
-  INTERMEDIATE: "#60A5FA",
-  PROFICIENT: CYAN,
-  SENIOR: CYAN,
-  EXPERT: "#F59E0B",
-};
-
 /* ── Category Icon ── */
 function CategoryIcon({ type, color = CYAN }: { type: SkillCategory["icon"]; color?: string }) {
   const size = "22px";
@@ -170,8 +162,6 @@ function CategoryIcon({ type, color = CYAN }: { type: SkillCategory["icon"]; col
 
 /* ── Single Skill Card ── */
 function SkillCard({ skill, index }: { skill: Skill; index: number }) {
-  const levelColor = LEVEL_COLOR[skill.level] ?? CYAN;
-
   return (
     <div
       className="skill-card"
@@ -310,7 +300,7 @@ export function Skills() {
         }
         .skills-subtitle {
           color: rgba(255,255,255,0.85);
-          font-size: clamp(11px, 0.9vw, 13px);
+          font-size: clamp(12px, 1.05vw, 15px);
           margin-top: 14px;
           line-height: 1.6;
           letter-spacing: 0.02em;
