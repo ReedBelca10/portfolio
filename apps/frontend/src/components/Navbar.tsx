@@ -50,6 +50,13 @@ export function Navbar({
     }
   };
 
+  // Derive locale from the current path to build localised links (client-side only)
+  const getLocaleFromPath = () => {
+    if (typeof window === 'undefined') return 'en';
+    const segs = window.location.pathname.split('/').filter(Boolean);
+    return segs[0] || 'en';
+  };
+
   useEffect(() => {
     if (searchOpen) {
       const onKey = (e: KeyboardEvent) => {
@@ -113,10 +120,12 @@ export function Navbar({
             {/* Links + Search Toggle Container */}
             <div className="relative flex flex-col items-end">
               <div className="flex items-center gap-5 md:gap-8">
-                {links.map((link) => (
+                {links.map((link) => {
+                  const hrefForLink = link.href === '#blog' ? `/${getLocaleFromPath()}/blog` : link.href;
+                  return (
                   <a
                     key={link.href}
-                    href={link.href}
+                    href={hrefForLink}
                     className={clsx(
                       "font-semibold transition-colors duration-200",
                       link.label === 'Home' ? "text-[#00D9FF]" : "text-gray-300 hover:text-[#00D9FF]"
@@ -125,7 +134,8 @@ export function Navbar({
                   >
                     {link.label}
                   </a>
-                ))}
+                  );
+                })}
                 
                 {/* Search Toggle Button */}
                 <button
