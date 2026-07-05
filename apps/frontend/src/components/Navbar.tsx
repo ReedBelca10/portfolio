@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import { GitHubIcon, LinkedInIcon, DiscordIcon } from './Icon';
 
@@ -51,14 +52,14 @@ export function Navbar({
   };
 
   // Client-side navigation handler for links that require locale-aware routing
-  const handleNavClick = (e: React.MouseEvent, href: string) => {
-    if (href === '#blog') {
-      e.preventDefault();
-      const segs = window.location.pathname.split('/').filter(Boolean);
+    const pathname = usePathname();
+    const router = useRouter();
+
+    const navigateToBlog = () => {
+      const segs = (pathname || '').split('/').filter(Boolean);
       const locale = segs[0] || 'en';
-      window.location.href = `/${locale}/blog`;
-    }
-  };
+      router.push(`/${locale}/blog`);
+    };
 
   useEffect(() => {
     if (searchOpen) {
@@ -124,19 +125,38 @@ export function Navbar({
             <div className="relative flex flex-col items-end">
               <div className="flex items-center gap-5 md:gap-8">
                 {links.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
-                    className={clsx(
-                      "font-semibold transition-colors duration-200",
-                      link.label === 'Home' ? "text-[#00D9FF]" : "text-gray-300 hover:text-[#00D9FF]"
-                    )}
-                    style={{ fontSize: 'clamp(13px, 1.1vw, 15px)' }}
-                  >
-                    {link.label}
-                  </a>
-                ))}
+                  {links.map((link) => {
+                    if (link.href === '#blog') {
+                      return (
+                        <button
+                          key={link.href}
+                          onClick={navigateToBlog}
+                          className={clsx(
+                            "font-semibold transition-colors duration-200",
+                            link.label === 'Home' ? "text-[#00D9FF]" : "text-gray-300 hover:text-[#00D9FF]"
+                          )}
+                          style={{ fontSize: 'clamp(13px, 1.1vw, 15px)' }}
+                          aria-label={link.label}
+                        >
+                          {link.label}
+                        </button>
+                      );
+                    }
+
+                    return (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        className={clsx(
+                          "font-semibold transition-colors duration-200",
+                          link.label === 'Home' ? "text-[#00D9FF]" : "text-gray-300 hover:text-[#00D9FF]"
+                        )}
+                        style={{ fontSize: 'clamp(13px, 1.1vw, 15px)' }}
+                      >
+                        {link.label}
+                      </a>
+                    );
+                  })}
                 
                 {/* Search Toggle Button */}
                 <button
