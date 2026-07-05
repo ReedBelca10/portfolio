@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import clsx from 'clsx';
 import { GitHubIcon, LinkedInIcon, DiscordIcon } from './Icon';
 
@@ -104,9 +105,9 @@ export function Navbar({
           
           {/* Left: Brand logo <ca/> */}
           <div className={clsx("relative flex items-center transition-opacity duration-300", searchOpen && "opacity-40")}>
-            <span className="font-bold md:font-medium text-[#00D9FF]" style={{ fontSize: 'clamp(22px, 2vw, 32px)' }}>
+            <Link href="/" className="font-bold md:font-medium text-[#00D9FF] no-underline hover:opacity-80 transition-opacity" style={{ fontSize: 'clamp(22px, 2vw, 32px)', textDecoration: 'none' }}>
               &lt;ca/&gt;
-            </span>
+            </Link>
           </div>
 
           {/* Right: Nav links, Search, Socials */}
@@ -121,17 +122,17 @@ export function Navbar({
                       ? pathname === '/' || pathname === ''
                       : pathname.startsWith(link.href);
                   return (
-                    <a
+                    <Link
                       key={link.href}
                       href={link.href}
                       className={clsx(
                         'font-semibold transition-colors duration-200',
                         isActive ? 'text-[#00D9FF]' : 'text-gray-300 hover:text-[#00D9FF]'
                       )}
-                      style={{ fontSize: 'clamp(13px, 1.1vw, 15px)' }}
+                      style={{ fontSize: 'clamp(13px, 1.1vw, 15px)', textDecoration: 'none' }}
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   );
                 })}
                 
