@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { BlogCard } from './BlogsPage';
 import { BlogPost, BLOG_POSTS } from '@/lib/blogData';
 
-const CYAN = '#00D9FF';
 const BG_SECTION = '#292F36';
 
 interface ArticlePageProps {

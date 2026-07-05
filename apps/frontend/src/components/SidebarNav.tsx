@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 
@@ -33,14 +33,14 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
   const [showTooltip, setShowTooltip] = useState<string | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const getNavLabel = (key: string, fallback: string) => {
+  const getNavLabel = useCallback((key: string, fallback: string) => {
     try {
       const value = t(key, { defaultValue: fallback });
       return value || fallback;
     } catch {
       return fallback;
     }
-  };
+  }, [t]);
 
   const defaultItems: NavItem[] = useMemo(
     () =>
@@ -60,7 +60,7 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
         {
           id: 'skills',
           label: getNavLabel('skills', 'Skills'),
-          icon: <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/FFFFFF/source-code.png" alt="source-code" />,
+          icon: <CodeIcon />,
           sectionId: 'skills',
         },
         {
@@ -82,7 +82,7 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
           sectionId: 'contact',
         },
       ],
-    [items, t]
+    [items, getNavLabel]
   );
 
   // Use IntersectionObserver to highlight the active section
@@ -272,7 +272,15 @@ function ProjectsIcon() {
   );
 }
 
-
+function CodeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-full h-full">
+      <path d="m8 8-4 4 4 4" />
+      <path d="m16 8 4 4-4 4" />
+      <path d="m13 4-2 16" />
+    </svg>
+  );
+}
 
 function ContactIcon() {
   return (
