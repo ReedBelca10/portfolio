@@ -1,13 +1,17 @@
-import { Navbar, SidebarNav, Footer } from '@/components';
-import Blogs from '@/components/Blogs';
+import { Navbar, Footer } from '@/components';
+import BlogsPage from '@/components/BlogsPage';
+
+export const metadata = {
+  title: 'Blogs | My Portfolio',
+  description: 'My thoughts on technology and business. Welcome to subscribe.',
+};
 
 export default function BlogPage() {
   return (
     <>
       <Navbar />
-      <SidebarNav />
       <main className="min-h-screen">
-        <Blogs />
+        <BlogsPage />
         <Footer />
       </main>
     </>

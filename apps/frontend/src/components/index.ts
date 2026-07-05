@@ -23,3 +23,4 @@ export { Footer } from './Footer';
 export { Skills } from './Skills';
 export { Works } from './Works';
 export { Blogs } from './Blogs';
+export { BlogsPage } from './BlogsPage';

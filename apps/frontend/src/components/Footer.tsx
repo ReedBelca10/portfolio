@@ -34,7 +34,7 @@ const defaultLegalLinks: FooterLink[] = [
 ];
 
 export function Footer({
-  copyrightText = `© ${new Date().getFullYear()} All rights reserved.`,
+  copyrightText = `© ${new Date().getFullYear()} Caleb Adjeoda. All rights reserved.`,
   legalLinks = defaultLegalLinks,
   socialLinks = {
     github: 'https://github.com',
@@ -56,10 +56,10 @@ export function Footer({
         className
       )}
     >
-      <div className="container-custom py-8 md:py-10 lg:py-12">
-        <div className="hidden md:flex items-center justify-between gap-8">
+      <div className="container-custom px-4 sm:px-6 lg:px-8 py-8 md:py-10 lg:py-12">
+        <div className="hidden md:flex flex-wrap items-center justify-between gap-6 md:gap-8">
           <p className="text-xs md:text-sm text-white flex-shrink-0">{copyrightText}</p>
-          <div className="flex gap-6 justify-center flex-grow">
+          <div className="flex flex-wrap gap-4 md:gap-6 justify-center flex-grow">
             {legalLinks.map((link) => (
               <a
                 key={link.href}
@@ -70,7 +70,7 @@ export function Footer({
               </a>
             ))}
           </div>
-          <div className="flex gap-4 flex-shrink-0">
+          <div className="flex gap-3 md:gap-4 flex-shrink-0 justify-center">
             {socialLinks.github && (
               <button
                 onClick={() => handleSocialClick(socialLinks.github)}
@@ -102,7 +102,7 @@ export function Footer({
         </div>
 
         <div className="hidden sm:flex md:hidden flex-col items-center gap-6">
-          <div className="flex gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             {socialLinks.github && (
               <button
                 onClick={() => handleSocialClick(socialLinks.github)}
@@ -131,9 +131,9 @@ export function Footer({
               </button>
             )}
           </div>
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 text-center">
             <p className="text-xs text-white">{copyrightText}</p>
-            <div className="flex gap-6">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
               {legalLinks.map((link) => (
                 <a
                   key={link.href}
@@ -147,8 +147,8 @@ export function Footer({
           </div>
         </div>
 
-        <div className="sm:hidden flex flex-col items-center gap-6">
-          <div className="flex gap-4">
+        <div className="sm:hidden flex flex-col items-center gap-6 px-2">
+          <div className="flex flex-wrap justify-center gap-4">
             {socialLinks.github && (
               <button
                 onClick={() => handleSocialClick(socialLinks.github)}
