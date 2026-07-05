@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Navbar, Footer } from '@/components';
 import ArticlePage from '@/components/ArticlePage';
-import { BLOG_POSTS } from '@/components/BlogsPage';
+import { BLOG_POSTS } from '@/lib/blogData';
 
 export const metadata = {
   title: 'Article | My Portfolio',
