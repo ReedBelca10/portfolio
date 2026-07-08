@@ -5,7 +5,7 @@ import { routing } from '@/i18n';
 import '../globals.css';
 
 export const metadata: Metadata = {
-  title: 'My Portfolio',
+  title: 'Caleb Adjeoda Portfolio',
   description: 'Professional portfolio website',
 };
 

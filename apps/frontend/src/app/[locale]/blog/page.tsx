@@ -2,7 +2,7 @@ import { Navbar, Footer } from '@/components';
 import BlogsPage from '@/components/BlogsPage';
 
 export const metadata = {
-  title: 'Blogs | My Portfolio',
+  title: 'Caleb Portfolio - Blogs',
   description: 'My thoughts on technology and business. Welcome to subscribe.',
 };
 
