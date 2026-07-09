@@ -32,6 +32,10 @@
   "overrides": {
     "ajv-draft-04": {
       "ajv": "^8.20.0"
-    }
+    },
+    "date-fns": "2.30.0"
+  },
+  "dependencies": {
+    "date-fns": "2.30.0"
   }
 }
