@@ -10,10 +10,10 @@
   "scripts": {
     "dev": "npm run dev --workspaces",
     "dev:frontend": "npm run dev -w apps/frontend",
-    "dev:cms": "npm run dev -w apps/cms",
+    "dev:cms": "npm run --prefix apps/cms develop",
     "build": "npm run build --workspaces",
     "build:frontend": "npm run build -w apps/frontend",
-    "build:cms": "npm run build -w apps/cms",
+    "build:cms": "npm run --prefix apps/cms build",
     "lint": "npm run lint --workspaces --if-present",
     "type-check": "npm run type-check --workspaces --if-present",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",

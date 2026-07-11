@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   auth: {
     secret: process.env.ADMIN_JWT_SECRET || 'your_jwt_secret_here',
   },

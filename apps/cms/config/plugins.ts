@@ -5,7 +5,7 @@
  * to customize this model
  */
 
-module.exports = {
+export default {
   settings: {
     bulkActions: false,
     filterBar: true,

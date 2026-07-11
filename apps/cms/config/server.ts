@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   host: process.env.STRAPI_HOST || '0.0.0.0',
   port: process.env.STRAPI_PORT || 1337,
   app: {
