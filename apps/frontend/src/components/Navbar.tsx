@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, usePathname } from '@/i18n';
 import clsx from 'clsx';
-import { GitHubIcon, LinkedInIcon, DiscordIcon } from './Icon';
+import { GitHubIcon, LinkedInIcon, DiscordIcon, GitLabIcon } from './Icon';
 
 interface NavbarLink {
   label: string;
@@ -13,7 +13,7 @@ interface NavbarLink {
 interface SocialLink {
   name: string;
   url: string;
-  icon: 'github' | 'linkedin' | 'discord';
+  icon: 'github' | 'linkedin' | 'discord' | 'gitlab';
 }
 
 interface NavbarProps {
@@ -29,9 +29,10 @@ export function Navbar({
     { label: 'Blogs', href: '/blog' },
   ],
   socialLinks = [
-    { name: 'linkedin', url: 'https://linkedin.com', icon: 'linkedin' },
-    { name: 'discord', url: 'https://discord.com', icon: 'discord' },
-    { name: 'github', url: 'https://github.com', icon: 'github' },
+    { name: 'linkedin', url: 'https://www.linkedin.com/in/caleb-adjeoda-410b34415', icon: 'linkedin' },
+    { name: 'discord', url: 'https://discord.com/users/1425091386709115007', icon: 'discord' },
+    { name: 'gitlab', url: 'https://gitlab.com/ReedBelca10', icon: 'gitlab' },
+    { name: 'github', url: 'https://github.com/ReedBelca10', icon: 'github' },
   ],
   onSearch,
   className,
@@ -78,7 +79,7 @@ export function Navbar({
     window.open(url, '_blank');
   };
 
-  const renderSocialIcon = (icon: 'github' | 'linkedin' | 'discord') => {
+  const renderSocialIcon = (icon: 'github' | 'linkedin' | 'discord' | 'gitlab') => {
     switch (icon) {
       case 'github':
         return <GitHubIcon size="md" />;
@@ -86,6 +87,8 @@ export function Navbar({
         return <LinkedInIcon size="md" />;
       case 'discord':
         return <DiscordIcon size="md" />;
+      case 'gitlab':
+        return <GitLabIcon size="md" />;
       default:
         return null;
     }

@@ -1,8 +1,8 @@
-﻿'use client';
+'use client';
 
 import React from 'react';
 import clsx from 'clsx';
-import { GitHubIcon, LinkedInIcon, DiscordIcon } from './Icon';
+import { GitHubIcon, LinkedInIcon, DiscordIcon, GitLabIcon } from './Icon';
 
 /*
  * Footer Component
@@ -24,6 +24,7 @@ interface FooterProps {
     github?: string;
     linkedin?: string;
     discord?: string;
+    gitlab?: string;
   };
   className?: string;
 }
@@ -37,9 +38,10 @@ export function Footer({
   copyrightText = `© ${new Date().getFullYear()} Caleb Adjeoda. All rights reserved.`,
   legalLinks = defaultLegalLinks,
   socialLinks = {
-    github: 'https://github.com',
-    linkedin: 'https://linkedin.com',
-    discord: 'https://discord.com',
+    github: 'https://github.com/ReedBelca10',
+    linkedin: 'https://www.linkedin.com/in/caleb-adjeoda-410b34415',
+    discord: 'https://discord.com/users/1425091386709115007',
+    gitlab: 'https://gitlab.com/ReedBelca10',
   },
   className,
 }: FooterProps) {
@@ -98,6 +100,15 @@ export function Footer({
                 <DiscordIcon size="md" />
               </button>
             )}
+            {socialLinks.gitlab && (
+              <button
+                onClick={() => handleSocialClick(socialLinks.gitlab)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
+                aria-label="GitLab"
+              >
+                <GitLabIcon size="md" />
+              </button>
+            )}
           </div>
         </div>
 
@@ -128,6 +139,15 @@ export function Footer({
                 aria-label="Discord"
               >
                 <DiscordIcon size="md" />
+              </button>
+            )}
+            {socialLinks.gitlab && (
+              <button
+                onClick={() => handleSocialClick(socialLinks.gitlab)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
+                aria-label="GitLab"
+              >
+                <GitLabIcon size="md" />
               </button>
             )}
           </div>
@@ -174,6 +194,15 @@ export function Footer({
                 aria-label="Discord"
               >
                 <DiscordIcon size="md" />
+              </button>
+            )}
+            {socialLinks.gitlab && (
+              <button
+                onClick={() => handleSocialClick(socialLinks.gitlab)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
+                aria-label="GitLab"
+              >
+                <GitLabIcon size="md" />
               </button>
             )}
           </div>

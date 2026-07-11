@@ -104,12 +104,12 @@ export function DiscordIcon({ size = 'md' }: Omit<IconProps, 'children'>) {
   );
 }
 
-export function TwitterIcon({ size = 'md' }: Omit<IconProps, 'children'>) {
+export function GitLabIcon({ size = 'md' }: Omit<IconProps, 'children'>) {
   const sizeValue = sizeMap[size];
   return (
-    <Icon size={size} title="twitter">
+    <Icon size={size} title="gitlab">
       <svg width={sizeValue} height={sizeValue} viewBox="0 0 24 24" fill="currentColor">
-        <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7" />
+        <path d="M22.65 14.39L12 22.17 1.35 14.39a.84.84 0 0 1-.3-.94l1.22-3.78 2.44-7.51A.42.42 0 0 1 5.1 2h.02a.43.43 0 0 1 .4.27l2.95 9.11h6.98l2.95-9.11a.42.42 0 0 1 .41-.27h.01a.42.42 0 0 1 .4.27l2.44 7.51 1.22 3.78a.84.84 0 0 1-.23.93z" />
       </svg>
     </Icon>
   );
