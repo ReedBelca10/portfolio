@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: portfolio-cms
+    env: node
+    region: frankfurt # You can change this to your preferred region (e.g., oregon, ohio)
+    buildCommand: npm install && npm run build:cms
+    startCommand: npm run --prefix apps/cms start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # You will need to paste your Neon DB connection string manually in the Render dashboard
+      - key: APP_KEYS
+        generateValue: true
+      - key: API_TOKEN_SALT
+        generateValue: true
+      - key: ADMIN_JWT_SECRET
+        generateValue: true
+      - key: TRANSFER_TOKEN_SALT
+        generateValue: true
+      - key: JWT_SECRET
+        generateValue: true
