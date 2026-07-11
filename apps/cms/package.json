@@ -4,9 +4,9 @@
   "description": "Strapi CMS for portfolio",
   "private": true,
   "scripts": {
-    "develop": "strapi develop",
+    "develop": "concurrently \"node scripts/sync-schemas.js --watch\" \"strapi develop\"",
     "start": "strapi start",
-    "build": "strapi build",
+    "build": "strapi build && node scripts/sync-schemas.js",
     "strapi": "strapi",
     "clean": "rm -rf node_modules/.cache .next dist"
   },
@@ -29,6 +29,7 @@
   "devDependencies": {
     "@strapi/typescript-utils": "^4.25.0",
     "@types/node": "^20.10.6",
+    "concurrently": "^8.2.2",
     "typescript": "^5.3.3"
   },
   "engines": {
