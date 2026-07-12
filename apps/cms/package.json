@@ -11,9 +11,9 @@
     "clean": "rm -rf node_modules/.cache .next dist"
   },
   "dependencies": {
-    "@strapi/plugin-i18n": "^4.25.0",
-    "@strapi/plugin-users-permissions": "^4.25.0",
-    "@strapi/strapi": "^4.25.0",
+    "@strapi/plugin-i18n": "4.26.2",
+    "@strapi/plugin-users-permissions": "4.26.2",
+    "@strapi/strapi": "4.26.2",
     "date-fns": "^2.30.0",
     "fs-extra": "^10.0.0",
     "jose": "^6.2.3",
@@ -27,7 +27,7 @@
     "winston": "^3.19.0"
   },
   "devDependencies": {
-    "@strapi/typescript-utils": "^4.25.0",
+    "@strapi/typescript-utils": "4.26.2",
     "@types/node": "^20.10.6",
     "concurrently": "^8.2.2",
     "typescript": "^5.3.3"
