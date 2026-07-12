@@ -66,6 +66,18 @@ export async function fetchSkills() {
   }
 }
 
+export async function fetchWorks() {
+  try {
+    const response = await strapiClient.get<StrapiResponse<any>>(
+      '/works?populate=*'
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching works:', error);
+    throw error;
+  }
+}
+
 export async function submitMessage(data: {
   name: string;
   email: string;

@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { fetchWorks } from '@/lib/strapi';
 
 /*
  * Works Component
@@ -9,27 +10,37 @@ import Image from 'next/image';
  * carousel navigation arrows, and code-texture background.
  */
 
-/* ── Static project data (will be replaced by Strapi data later) ── */
-const PROJECTS = [
-  {
-    id: 1,
-    title: 'E-Commerce Platform',
-    websiteUrl: '#',
-    sourceUrl: '#',
-  },
-  {
-    id: 2,
-    title: 'SaaS Dashboard',
-    websiteUrl: '#',
-    sourceUrl: '#',
-  },
-  {
-    id: 3,
-    title: 'Mobile App',
-    websiteUrl: '#',
-    sourceUrl: '#',
-  },
-];
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+
+function getImageUrl(url?: string) {
+  if (!url) return null;
+  if (url.startsWith("http")) return url;
+  return `${API_URL}${url}`;
+}
+
+interface StrapiWork {
+  id: number;
+  attributes: {
+    title: string;
+    description: string;
+    sourceCodeLink: string;
+    appLink: string;
+    sourceCodeImage?: {
+      data?: {
+        attributes?: {
+          url: string;
+        };
+      };
+    };
+    appImage?: {
+      data?: {
+        attributes?: {
+          url: string;
+        };
+      };
+    };
+  };
+}
 
 /* ── Cursor SVG icon (pointer click cursor) ── */
 function CursorIcon({ className }: { className?: string }) {
@@ -71,15 +82,33 @@ function ChevronRight() {
 }
 
 export function Works() {
+  const [works, setWorks] = useState<StrapiWork[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadWorks() {
+      try {
+        const data = await fetchWorks();
+        setWorks(data || []);
+      } catch (error) {
+        console.error("Failed to load works:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadWorks();
+  }, []);
 
   const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev === 0 ? PROJECTS.length - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? works.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) => (prev === PROJECTS.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev === works.length - 1 ? 0 : prev + 1));
   };
+
+  const currentWork = works[currentIndex];
 
   return (
     <section
@@ -95,6 +124,7 @@ export function Works() {
           className="object-cover"
           quality={80}
           priority={false}
+          unoptimized
         />
         <div className="works-bg-overlay" />
       </div>
@@ -111,93 +141,115 @@ export function Works() {
           </p>
         </div>
 
-        {/* ── Monitors showcase ── */}
-        <div className="works-showcase">
-
-          {/* Left arrow */}
-          <button
-            onClick={goToPrevious}
-            className="works-nav-arrow works-nav-arrow--left"
-            aria-label="Previous project"
-          >
-            <ChevronLeft />
-          </button>
-
-          {/* Dual monitor display */}
-          <div className="works-monitors">
-
-            {/* Source Code monitor (left, behind) */}
-            <div className="works-monitor works-monitor--source">
-              <div className="works-monitor__screen works-monitor__screen--dark">
-                <Image
-                  src="/SourceCode.jpg"
-                  alt="Source code view"
-                  fill
-                  className="object-cover object-top"
-                />
-              </div>
-              <div className="works-monitor__stand works-monitor__stand--dark" />
-              <div className="works-monitor__base works-monitor__base--dark" />
-            </div>
-
-            {/* Production monitor (right, in front) */}
-            <div className="works-monitor works-monitor--production">
-              {/* "View Website" label */}
-              <a
-                href={PROJECTS[currentIndex]?.websiteUrl || '#'}
-                className="works-label works-label--website"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="works-label__text">View App</span>
-                <CursorIcon className="works-label__cursor" />
-              </a>
-
-              <div className="works-monitor__screen works-monitor__screen--light">
-                <Image
-                  src="/Production.jpg"
-                  alt="Production website view"
-                  fill
-                  className="object-cover object-top"
-                />
-              </div>
-              <div className="works-monitor__stand works-monitor__stand--light" />
-              <div className="works-monitor__base works-monitor__base--light" />
-            </div>
-
-            {/* "View Source Code" label (below left monitor) */}
-            <a
-              href={PROJECTS[currentIndex]?.sourceUrl || '#'}
-              className="works-label works-label--source"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="works-label__text">View Source Code</span>
-              <CursorIcon className="works-label__cursor" />
-            </a>
+        {loading ? (
+          <div style={{ textAlign: "center", color: "#fff", marginTop: "40px", fontFamily: "IBM Plex Mono, monospace" }}>
+            Loading projects...
           </div>
+        ) : works.length === 0 ? (
+          <div style={{ textAlign: "center", color: "#fff", marginTop: "40px", fontFamily: "IBM Plex Mono, monospace" }}>
+            No projects available. Please add some in the CMS.
+          </div>
+        ) : (
+          <>
+            {/* ── Monitors showcase ── */}
+            <div className="works-showcase">
 
-          {/* Right arrow */}
-          <button
-            onClick={goToNext}
-            className="works-nav-arrow works-nav-arrow--right"
-            aria-label="Next project"
-          >
-            <ChevronRight />
-          </button>
-        </div>
+              {/* Left arrow */}
+              <button
+                onClick={goToPrevious}
+                className="works-nav-arrow works-nav-arrow--left"
+                aria-label="Previous project"
+              >
+                <ChevronLeft />
+              </button>
 
-        {/* ── Dots indicator ── */}
-        <div className="works-dots">
-          {PROJECTS.map((project, index) => (
-            <button
-              key={project.id}
-              onClick={() => setCurrentIndex(index)}
-              className={`works-dot ${index === currentIndex ? 'works-dot--active' : ''}`}
-              aria-label={`Go to project ${index + 1}`}
-            />
-          ))}
-        </div>
+              {/* Dual monitor display */}
+              <div className="works-monitors">
+
+                {/* Source Code monitor (left, behind) */}
+                <div className="works-monitor works-monitor--source">
+                  <div className="works-monitor__screen works-monitor__screen--dark">
+                    <Image
+                      src={getImageUrl(currentWork.attributes.sourceCodeImage?.data?.attributes?.url) || "/SourceCode.jpg"}
+                      alt={`${currentWork.attributes.title} Source Code`}
+                      fill
+                      className="object-cover object-top"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="works-monitor__stand works-monitor__stand--dark" />
+                  <div className="works-monitor__base works-monitor__base--dark" />
+                </div>
+
+                {/* Production monitor (right, in front) */}
+                <div className="works-monitor works-monitor--production">
+                  {/* "View Website" label */}
+                  <a
+                    href={currentWork.attributes.appLink || '#'}
+                    className="works-label works-label--website"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="works-label__text">View App</span>
+                    <CursorIcon className="works-label__cursor" />
+                  </a>
+
+                  <div className="works-monitor__screen works-monitor__screen--light">
+                    <Image
+                      src={getImageUrl(currentWork.attributes.appImage?.data?.attributes?.url) || "/Production.jpg"}
+                      alt={`${currentWork.attributes.title} App View`}
+                      fill
+                      className="object-cover object-top"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="works-monitor__stand works-monitor__stand--light" />
+                  <div className="works-monitor__base works-monitor__base--light" />
+                </div>
+
+                {/* "View Source Code" label (below left monitor) */}
+                <a
+                  href={currentWork.attributes.sourceCodeLink || '#'}
+                  className="works-label works-label--source"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="works-label__text">View Source Code</span>
+                  <CursorIcon className="works-label__cursor" />
+                </a>
+              </div>
+
+              {/* Right arrow */}
+              <button
+                onClick={goToNext}
+                className="works-nav-arrow works-nav-arrow--right"
+                aria-label="Next project"
+              >
+                <ChevronRight />
+              </button>
+            </div>
+
+            {/* ── Project Description ── */}
+            <div className="works-description-block" style={{ marginTop: '40px', textAlign: 'center', maxWidth: '800px', marginLeft: 'auto', marginRight: 'auto', padding: '20px', background: 'rgba(18, 24, 30, 0.68)', borderRadius: '12px', border: '1px solid rgba(0, 217, 255, 0.25)', backdropFilter: 'blur(10px)' }}>
+              <h3 style={{ color: '#00D9FF', fontFamily: '"IBM Plex Mono", monospace', fontSize: '20px', marginBottom: '12px' }}>{currentWork.attributes.title}</h3>
+              <p style={{ color: 'rgba(255,255,255,0.85)', fontFamily: '"IBM Plex Mono", monospace', fontSize: '14px', lineHeight: '1.6' }}>
+                {currentWork.attributes.description}
+              </p>
+            </div>
+
+            {/* ── Dots indicator ── */}
+            <div className="works-dots">
+              {works.map((work, index) => (
+                <button
+                  key={work.id}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`works-dot ${index === currentIndex ? 'works-dot--active' : ''}`}
+                  aria-label={`Go to project ${work.attributes.title}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
