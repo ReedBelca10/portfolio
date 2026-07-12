@@ -18,7 +18,7 @@ const BG_HERO = "#292F36";
 const BG_CARD = "#2A3137";
 const BG_STATS = "#181f26";
 
-const BADGES = ["TS", "NEST", "FLUTTER", "NEXT.JS"];
+const BADGES = ["TS", "PY", "NEST", "FLUTTER", "NEXT.JS"];
 
 const STATS = [
   { n: 8, label: "Programming", sub: "Language" },
@@ -309,7 +309,7 @@ export function Hero() {
                       color: "#fff",
                     }}
                   >
-                    Caleb K. Adjeoda
+                    Caleb Kokou Adjeoda
                   </p>
                   <p
                     style={{

@@ -6,6 +6,10 @@
  */
 
 export default {
+  'users-permissions': {
+    enabled: true,
+    resolve: './node_modules/@strapi/plugin-users-permissions'
+  },
   settings: {
     bulkActions: false,
     filterBar: true,
