@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Read the full article.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function BlogPostPage({
   params,
 }: {

@@ -37,10 +37,22 @@ export interface Project {
 export interface Skill {
   id: string;
   name: string;
-  category: 'programming' | 'design' | 'tool' | 'soft-skill';
-  level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
-  icon?: string;
-  description?: string;
+  stack: 
+    | 'Programming Languages' 
+    | 'Web Development' 
+    | 'Mobile Development' 
+    | 'Backend Development' 
+    | 'Database & DevOps' 
+    | 'Design & Tools';
+  subcategory: string;
+  proficiency: number;
+  icon?: {
+    data?: {
+      attributes?: {
+        url: string;
+      };
+    };
+  };
 }
 
 export interface Message {

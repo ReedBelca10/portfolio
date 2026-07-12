@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { fetchSkills } from "@/lib/strapi";
 
 /* ─────────────────────────────────────────────────────────────────
    SKILLS SECTION
@@ -16,91 +18,55 @@ const CYAN = "#00D9FF";
 const BORDER_CARD = "#00D9FF";
 
 /* ── Skill data ── */
-interface Skill {
-  name: string;
-  category: string;
-  level: "BEGINNER" | "INTERMEDIATE" | "PROFICIENT" | "SENIOR" | "EXPERT";
-  percent: number;
-  icon: string; // emoji or image path
-  useImg?: boolean;
+interface StrapiSkill {
+  id: number;
+  attributes: {
+    name: string;
+    stack: string;
+    subcategory: string;
+    proficiency: number;
+    icon?: {
+      data?: {
+        attributes?: {
+          url: string;
+        };
+      };
+    };
+  };
 }
 
 interface SkillCategory {
   id: string;
   label: string;
-  icon: "monitor" | "server" | "database" | "tool" | "design" | "mobile";
+  icon: "monitor" | "server" | "database" | "tool" | "design" | "mobile" | "code";
   tags: string;
-  skills: Skill[];
+  skills: StrapiSkill[];
 }
 
-const SKILL_CATEGORIES: SkillCategory[] = [
-  {
-    id: "frontend",
-    label: "Web Development",
-    icon: "monitor",
-    tags: "HTML · CSS · TS · JS · NEXT.JS · REACT · VITE",
-    skills: [
-      { name: "REACT", category: "Frontend & UI", level: "SENIOR", percent: 85, icon: "⚛️" },
-      { name: "VITE", category: "Frontend & UI", level: "PROFICIENT", percent: 75, icon: "⚡" },
-      { name: "NEXT.JS", category: "Frontend & UI", level: "PROFICIENT", percent: 80, icon: "▲" },
-      { name: "HTML5 / CSS3", category: "Frontend & UI", level: "SENIOR", percent: 90, icon: "🌐" },
-      { name: "JAVASCRIPT", category: "Frontend & UI", level: "SENIOR", percent: 86, icon: "🟨" },
-      { name: "TYPESCRIPT", category: "Frontend & UI", level: "SENIOR", percent: 85, icon: "🔷" },
-      { name: "TAILWIND CSS", category: "Frontend & UI", level: "SENIOR", percent: 88, icon: "🎨" },
-      { name: "SASS / SCSS", category: "Frontend & UI", level: "PROFICIENT", percent: 78, icon: "💅" },
-    ],
-  },
-  {
-    id: "backend",
-    label: "Backend Development",
-    icon: "server",
-    tags: "NODE · NEST · EXPRESS · REST · GRAPHQL",
-    skills: [
-      { name: "NODE.JS", category: "Backend", level: "SENIOR", percent: 84, icon: "🟢" },
-      { name: "NESTJS", category: "Backend", level: "PROFICIENT", percent: 78, icon: "🐱" },
-      { name: "EXPRESS", category: "Backend", level: "SENIOR", percent: 82, icon: "🚂" },
-      { name: "GRAPHQL", category: "Backend", level: "INTERMEDIATE", percent: 65, icon: "◈" },
-      { name: "REST API", category: "Backend", level: "EXPERT", percent: 92, icon: "🔗" },
-      { name: "STRAPI", category: "Backend", level: "PROFICIENT", percent: 76, icon: "🎛️" },
-    ],
-  },
-  {
-    id: "database",
-    label: "Database & DevOps",
-    icon: "database",
-    tags: "POSTGRESQL · MONGODB · REDIS · DOCKER · GIT",
-    skills: [
-      { name: "POSTGRESQL", category: "Database", level: "PROFICIENT", percent: 77, icon: "🐘" },
-      { name: "MONGODB", category: "Database", level: "PROFICIENT", percent: 75, icon: "🍃" },
-      { name: "REDIS", category: "Database", level: "INTERMEDIATE", percent: 62, icon: "🔴" },
-      { name: "DOCKER", category: "DevOps", level: "PROFICIENT", percent: 74, icon: "🐳" },
-      { name: "GIT / GITHUB", category: "DevOps", level: "SENIOR", percent: 88, icon: "🐙" },
-      { name: "LINUX / CLI", category: "DevOps", level: "PROFICIENT", percent: 73, icon: "🐧" },
-    ],
-  },
-  {
-    id: "mobile",
-    label: "Mobile Development",
-    icon: "mobile",
-    tags: "FLUTTER · DART · REACT NATIVE",
-    skills: [
-      { name: "FLUTTER", category: "Mobile", level: "PROFICIENT", percent: 80, icon: "💙" },
-      { name: "DART", category: "Mobile", level: "PROFICIENT", percent: 78, icon: "🎯" },
-      { name: "REACT NATIVE", category: "Mobile", level: "INTERMEDIATE", percent: 60, icon: "📱" },
-    ],
-  },
-  {
-    id: "design",
-    label: "Design & Tools",
-    icon: "design",
-    tags: "FIGMA · PHOTOSHOP · ILLUSTRATOR",
-    skills: [
-      { name: "FIGMA", category: "Design", level: "PROFICIENT", percent: 80, icon: "🎨" },
-      { name: "PHOTOSHOP", category: "Design", level: "INTERMEDIATE", percent: 60, icon: "🖼️" },
-      { name: "ILLUSTRATOR", category: "Design", level: "BEGINNER", percent: 40, icon: "✏️" },
-    ],
-  },
-];
+const TAB_MAPPING: Record<string, { id: string; icon: SkillCategory["icon"]; tags: string }> = {
+  "Programming Languages": { id: "languages", icon: "code", tags: "TS · JS · PYTHON · JAVA · C++" },
+  "Web Development": { id: "web", icon: "monitor", tags: "REACT · NEXT.JS · HTML · CSS" },
+  "Mobile Development": { id: "mobile", icon: "mobile", tags: "FLUTTER · REACT NATIVE" },
+  "Backend Development": { id: "backend", icon: "server", tags: "NODE · NEST · EXPRESS" },
+  "Database & DevOps": { id: "database", icon: "database", tags: "POSTGRESQL · MONGODB · DOCKER" },
+  "Design & Tools": { id: "design", icon: "design", tags: "FIGMA · GIT · VS CODE" },
+};
+
+function getProficiencyLevel(percent: number) {
+  if (percent < 40) return "BEGINNER";
+  if (percent < 60) return "INTERMEDIATE";
+  if (percent < 80) return "PROFICIENT";
+  if (percent < 90) return "SENIOR";
+  return "EXPERT";
+}
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+
+function getImageUrl(url?: string) {
+  if (!url) return null;
+  if (url.startsWith("http")) return url;
+  return `${API_URL}${url}`;
+}
 
 /* ── Category Icon ── */
 function CategoryIcon({ type, color = CYAN }: { type: SkillCategory["icon"]; color?: string }) {
@@ -150,6 +116,14 @@ function CategoryIcon({ type, color = CYAN }: { type: SkillCategory["icon"]; col
           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
         </svg>
       );
+    case "code":
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+          stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
+        </svg>
+      );
     default:
       return (
         <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
@@ -161,29 +135,45 @@ function CategoryIcon({ type, color = CYAN }: { type: SkillCategory["icon"]; col
 }
 
 /* ── Single Skill Card ── */
-function SkillCard({ skill, index }: { skill: Skill; index: number }) {
+function SkillCard({ skill, index }: { skill: StrapiSkill; index: number }) {
+  const { name, subcategory, proficiency, icon } = skill.attributes;
+  const level = getProficiencyLevel(proficiency);
+  const imageUrl = getImageUrl(icon?.data?.attributes?.url);
+
   return (
     <div
       className="skill-card"
       style={{ animationDelay: `${index * 0.07}s` }}
     >
-      {/* Category label */}
-      <span className="skill-category">{skill.category}</span>
+      {/* Subcategory label */}
+      <span className="skill-category">{subcategory}</span>
 
       {/* Skill name */}
-      <h3 className="skill-name">{skill.name}</h3>
+      <h3 className="skill-name">{name}</h3>
 
       {/* Icon */}
       <div className="skill-icon-wrap">
-        <span className="skill-emoji" role="img" aria-label={skill.name}>
-          {skill.icon}
-        </span>
+        {imageUrl ? (
+          <div style={{ position: 'relative', width: '48px', height: '48px' }}>
+            <Image 
+              src={imageUrl} 
+              alt={name} 
+              fill 
+              style={{ objectFit: 'contain' }} 
+              unoptimized
+            />
+          </div>
+        ) : (
+          <span className="skill-emoji" role="img" aria-label={name}>
+            ⚡
+          </span>
+        )}
       </div>
 
       {/* Level */}
       <div className="skill-footer">
         <span className="skill-level" style={{ color: "#ffffff" }}>
-          {skill.level}
+          {level}
         </span>
 
         {/* Progress bar */}
@@ -191,12 +181,12 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
           <div
             className="skill-bar-fill"
             style={{
-              width: `${skill.percent}%`,
+              width: `${proficiency}%`,
               background: `linear-gradient(90deg, ${CYAN}99, ${CYAN})`,
             }}
           />
         </div>
-        <span className="skill-percent">{skill.percent}%</span>
+        <span className="skill-percent">{proficiency}%</span>
       </div>
     </div>
   );
@@ -204,9 +194,49 @@ function SkillCard({ skill, index }: { skill: Skill; index: number }) {
 
 /* ── Main Skills Component ── */
 export function Skills() {
-  const [activeTab, setActiveTab] = useState("frontend");
+  const [categories, setCategories] = useState<SkillCategory[]>([]);
+  const [activeTab, setActiveTab] = useState<string>("");
+  const [loading, setLoading] = useState(true);
 
-  const currentCategory = SKILL_CATEGORIES.find((c) => c.id === activeTab)!;
+  useEffect(() => {
+    async function loadSkills() {
+      try {
+        const data = await fetchSkills();
+        
+        // Group skills by stack
+        const grouped = data.reduce((acc: Record<string, StrapiSkill[]>, skill: StrapiSkill) => {
+          const stack = skill.attributes.stack;
+          if (!acc[stack]) acc[stack] = [];
+          acc[stack].push(skill);
+          return acc;
+        }, {});
+
+        // Format into SkillCategory array
+        const formattedCategories: SkillCategory[] = Object.keys(grouped).map(stackName => {
+          const mapping = TAB_MAPPING[stackName] || { id: stackName.toLowerCase().replace(/\s+/g, '-'), icon: 'monitor', tags: '' };
+          return {
+            id: mapping.id,
+            label: stackName,
+            icon: mapping.icon,
+            tags: mapping.tags,
+            skills: grouped[stackName],
+          };
+        });
+
+        setCategories(formattedCategories);
+        if (formattedCategories.length > 0) {
+          setActiveTab(formattedCategories[0].id);
+        }
+      } catch (error) {
+        console.error("Failed to load skills:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadSkills();
+  }, []);
+
+  const currentCategory = categories.find((c) => c.id === activeTab);
 
   return (
     <section
@@ -319,16 +349,11 @@ export function Skills() {
 
         /* ── Category tabs — card style ── */
         .skills-tabs {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
           gap: clamp(8px, 1.2vw, 14px);
           margin-bottom: clamp(28px, 4vw, 48px);
-        }
-        @media (min-width: 640px) {
-          .skills-tabs { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (min-width: 1024px) {
-          .skills-tabs { grid-template-columns: repeat(5, 1fr); }
         }
 
         .skills-tab {
@@ -349,7 +374,8 @@ export function Skills() {
           transition: all 0.22s ease;
           outline: none;
           text-align: center;
-          width: 100%;
+          flex: 1 1 150px;
+          max-width: 200px;
         }
         .skills-tab:hover {
           border-color: rgba(0, 217, 255, 0.6);
@@ -525,38 +551,52 @@ export function Skills() {
           <p className="skills-subtitle">I am striving to never stop learning and improving</p>
         </div>
 
-        {/* ── Category Tabs ── */}
-        <div className="skills-tabs" role="tablist" aria-label="Skill categories">
-          {SKILL_CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              role="tab"
-              aria-selected={activeTab === cat.id}
-              aria-controls={`skillpanel-${cat.id}`}
-              id={`skilltab-${cat.id}`}
-              className={`skills-tab${activeTab === cat.id ? " active" : ""}`}
-              onClick={() => setActiveTab(cat.id)}
-            >
-              <span className="skills-tab-icon">
-                <CategoryIcon type={cat.icon} color={activeTab === cat.id ? "#0f1a22" : CYAN} />
-              </span>
-              <span className="skills-tab-label">{cat.label}</span>
-              <span className="skills-tab-tags">{cat.tags}</span>
-            </button>
-          ))}
-        </div>
+        {loading ? (
+          <div style={{ textAlign: "center", color: "#fff", marginTop: "40px" }}>
+            Loading skills...
+          </div>
+        ) : categories.length === 0 ? (
+          <div style={{ textAlign: "center", color: "#fff", marginTop: "40px" }}>
+            No skills available. Please add some in the CMS.
+          </div>
+        ) : (
+          <>
+            {/* ── Category Tabs ── */}
+            <div className="skills-tabs" role="tablist" aria-label="Skill categories">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  role="tab"
+                  aria-selected={activeTab === cat.id}
+                  aria-controls={`skillpanel-${cat.id}`}
+                  id={`skilltab-${cat.id}`}
+                  className={`skills-tab${activeTab === cat.id ? " active" : ""}`}
+                  onClick={() => setActiveTab(cat.id)}
+                >
+                  <span className="skills-tab-icon">
+                    <CategoryIcon type={cat.icon} color={activeTab === cat.id ? "#0f1a22" : CYAN} />
+                  </span>
+                  <span className="skills-tab-label">{cat.label}</span>
+                  <span className="skills-tab-tags">{cat.tags}</span>
+                </button>
+              ))}
+            </div>
 
-        {/* ── Skills Grid ── */}
-        <div
-          className="skills-grid"
-          id={`skillpanel-${currentCategory.id}`}
-          role="tabpanel"
-          aria-labelledby={`skilltab-${currentCategory.id}`}
-        >
-          {currentCategory.skills.map((skill, i) => (
-            <SkillCard key={`${activeTab}-${skill.name}`} skill={skill} index={i} />
-          ))}
-        </div>
+            {/* ── Skills Grid ── */}
+            {currentCategory && (
+              <div
+                className="skills-grid"
+                id={`skillpanel-${currentCategory.id}`}
+                role="tabpanel"
+                aria-labelledby={`skilltab-${currentCategory.id}`}
+              >
+                {currentCategory.skills.map((skill, i) => (
+                  <SkillCard key={`${activeTab}-${skill.attributes.name}`} skill={skill} index={i} />
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
     </section>
   );

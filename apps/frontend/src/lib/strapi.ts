@@ -57,7 +57,7 @@ export async function fetchProjects() {
 export async function fetchSkills() {
   try {
     const response = await strapiClient.get<StrapiResponse<any>>(
-      '/skills?sort=category'
+      '/skills?populate=*&sort=stack'
     );
     return response.data.data;
   } catch (error) {

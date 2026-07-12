@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "skills",
+  "info": {
+    "singularName": "skill",
+    "pluralName": "skills",
+    "displayName": "Skill",
+    "description": "Skills and proficiencies"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "stack": {
+      "type": "enumeration",
+      "enum": [
+        "Programming Languages",
+        "Web Development",
+        "Mobile Development",
+        "Backend Development",
+        "Database & DevOps",
+        "Design & Tools"
+      ],
+      "required": true
+    },
+    "subcategory": {
+      "type": "string",
+      "required": true
+    },
+    "proficiency": {
+      "type": "integer",
+      "required": true,
+      "min": 0,
+      "max": 100
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}
