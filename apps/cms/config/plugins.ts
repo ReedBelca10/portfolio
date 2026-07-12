@@ -5,17 +5,24 @@
  * to customize this model
  */
 
-export default {
+export default ({ env }) => ({
   'users-permissions': {
     enabled: true,
     resolve: './node_modules/@strapi/plugin-users-permissions'
   },
-  settings: {
-    bulkActions: false,
-    filterBar: true,
-    pageSize: 20,
-    optimizeEntitiesQueryCount: true,
-    sideEffects: true,
-    searchWithRegex: true,
+  upload: {
+    config: {
+      provider: 'cloudinary',
+      providerOptions: {
+        cloud_name: env('CLOUDINARY_NAME'),
+        api_key: env('CLOUDINARY_KEY'),
+        api_secret: env('CLOUDINARY_SECRET'),
+      },
+      actionOptions: {
+        upload: {},
+        uploadStream: {},
+        delete: {},
+      },
+    },
   },
-};
+});
