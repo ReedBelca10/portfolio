@@ -20,23 +20,21 @@ function getImageUrl(url?: string) {
 
 interface StrapiWork {
   id: number;
-  attributes: {
-    title: string;
-    description: string;
-    sourceCodeLink: string;
-    appLink: string;
-    sourceCodeImage?: {
-      data?: {
-        attributes?: {
-          url: string;
-        };
+  title: string;
+  description: string;
+  sourceCodeLink: string;
+  appLink: string;
+  sourceCodeImage?: {
+    data?: {
+      attributes?: {
+        url: string;
       };
     };
-    appImage?: {
-      data?: {
-        attributes?: {
-          url: string;
-        };
+  };
+  appImage?: {
+    data?: {
+      attributes?: {
+        url: string;
       };
     };
   };
@@ -170,8 +168,8 @@ export function Works() {
                 <div className="works-monitor works-monitor--source">
                   <div className="works-monitor__screen works-monitor__screen--dark">
                     <Image
-                      src={getImageUrl(currentWork.attributes.sourceCodeImage?.data?.attributes?.url) || "/SourceCode.jpg"}
-                      alt={`${currentWork.attributes.title} Source Code`}
+                      src={getImageUrl(currentWork.sourceCodeImage?.data?.attributes?.url) || "/SourceCode.jpg"}
+                      alt={`${currentWork.title} Source Code`}
                       fill
                       className="object-cover object-top"
                       unoptimized
@@ -185,7 +183,7 @@ export function Works() {
                 <div className="works-monitor works-monitor--production">
                   {/* "View Website" label */}
                   <a
-                    href={currentWork.attributes.appLink || '#'}
+                    href={currentWork.appLink || '#'}
                     className="works-label works-label--website"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -196,8 +194,8 @@ export function Works() {
 
                   <div className="works-monitor__screen works-monitor__screen--light">
                     <Image
-                      src={getImageUrl(currentWork.attributes.appImage?.data?.attributes?.url) || "/Production.jpg"}
-                      alt={`${currentWork.attributes.title} App View`}
+                      src={getImageUrl(currentWork.appImage?.data?.attributes?.url) || "/Production.jpg"}
+                      alt={`${currentWork.title} App View`}
                       fill
                       className="object-cover object-top"
                       unoptimized
@@ -209,7 +207,7 @@ export function Works() {
 
                 {/* "View Source Code" label (below left monitor) */}
                 <a
-                  href={currentWork.attributes.sourceCodeLink || '#'}
+                  href={currentWork.sourceCodeLink || '#'}
                   className="works-label works-label--source"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -231,9 +229,9 @@ export function Works() {
 
             {/* ── Project Description ── */}
             <div className="works-description-block" style={{ marginTop: '40px', textAlign: 'center', maxWidth: '800px', marginLeft: 'auto', marginRight: 'auto', padding: '20px', background: 'rgba(18, 24, 30, 0.68)', borderRadius: '12px', border: '1px solid rgba(0, 217, 255, 0.25)', backdropFilter: 'blur(10px)' }}>
-              <h3 style={{ color: '#00D9FF', fontFamily: '"IBM Plex Mono", monospace', fontSize: '20px', marginBottom: '12px' }}>{currentWork.attributes.title}</h3>
+              <h3 style={{ color: '#00D9FF', fontFamily: '"IBM Plex Mono", monospace', fontSize: '20px', marginBottom: '12px' }}>{currentWork.title}</h3>
               <p style={{ color: 'rgba(255,255,255,0.85)', fontFamily: '"IBM Plex Mono", monospace', fontSize: '14px', lineHeight: '1.6' }}>
-                {currentWork.attributes.description}
+                {currentWork.description}
               </p>
             </div>
 
@@ -244,7 +242,7 @@ export function Works() {
                   key={work.id}
                   onClick={() => setCurrentIndex(index)}
                   className={`works-dot ${index === currentIndex ? 'works-dot--active' : ''}`}
-                  aria-label={`Go to project ${work.attributes.title}`}
+                  aria-label={`Go to project ${work.title}`}
                 />
               ))}
             </div>

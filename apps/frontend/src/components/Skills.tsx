@@ -136,7 +136,7 @@ function CategoryIcon({ type, color = CYAN }: { type: SkillCategory["icon"]; col
 
 /* ── Single Skill Card ── */
 function SkillCard({ skill, index }: { skill: StrapiSkill; index: number }) {
-  const { name, subcategory, proficiency, icon } = skill.attributes;
+  const { name, subcategory, proficiency, icon } = skill;
   const level = getProficiencyLevel(proficiency);
   const imageUrl = getImageUrl(icon?.data?.attributes?.url);
 
@@ -205,7 +205,7 @@ export function Skills() {
         
         // Group skills by stack
         const grouped = data.reduce((acc: Record<string, StrapiSkill[]>, skill: StrapiSkill) => {
-          const stack = skill.attributes.stack;
+          const stack = skill.stack;
           if (!acc[stack]) acc[stack] = [];
           acc[stack].push(skill);
           return acc;
@@ -591,7 +591,7 @@ export function Skills() {
                 aria-labelledby={`skilltab-${currentCategory.id}`}
               >
                 {currentCategory.skills.map((skill, i) => (
-                  <SkillCard key={`${activeTab}-${skill.attributes.name}`} skill={skill} index={i} />
+                  <SkillCard key={`${activeTab}-${skill.name}`} skill={skill} index={i} />
                 ))}
               </div>
             )}
