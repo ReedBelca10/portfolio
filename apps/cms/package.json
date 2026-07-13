@@ -4,6 +4,7 @@
   "description": "Strapi CMS for portfolio",
   "private": true,
   "scripts": {
+    "dev": "npm run develop",
     "develop": "concurrently \"node scripts/sync-schemas.js --watch\" \"strapi develop\"",
     "start": "strapi start",
     "build": "strapi build && node scripts/sync-schemas.js",
