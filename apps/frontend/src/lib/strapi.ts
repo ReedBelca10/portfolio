@@ -35,7 +35,8 @@ export async function fetchPortfolioInfo() {
     const response = await strapiClient.get<StrapiResponse<any>>(
       '/portfolio-info?populate=*'
     );
-    return response.data.data;
+    const data = response.data.data;
+    return data ? { id: data.id, ...data.attributes } : null;
   } catch (error) {
     console.error('Error fetching portfolio info:', error);
     throw error;
@@ -47,7 +48,8 @@ export async function fetchProjects() {
     const response = await strapiClient.get<StrapiResponse<any>>(
       '/projects?populate=*&sort=createdAt:desc'
     );
-    return response.data.data;
+    const data = response.data.data;
+    return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
   } catch (error) {
     console.error('Error fetching projects:', error);
     throw error;
@@ -59,7 +61,8 @@ export async function fetchSkills() {
     const response = await strapiClient.get<StrapiResponse<any>>(
       '/skills?populate=*&sort=stack'
     );
-    return response.data.data;
+    const data = response.data.data;
+    return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
   } catch (error) {
     console.error('Error fetching skills:', error);
     throw error;
@@ -71,7 +74,8 @@ export async function fetchWorks() {
     const response = await strapiClient.get<StrapiResponse<any>>(
       '/works?populate=*'
     );
-    return response.data.data;
+    const data = response.data.data;
+    return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
   } catch (error) {
     console.error('Error fetching works:', error);
     throw error;
@@ -99,7 +103,8 @@ export async function fetchBlogs() {
     const response = await strapiClient.get<StrapiResponse<any>>(
       '/blogs?populate=*&sort=publishedDate:desc'
     );
-    return response.data.data;
+    const data = response.data.data;
+    return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
   } catch (error) {
     console.error('Error fetching blogs:', error);
     throw error;
@@ -111,7 +116,8 @@ export async function fetchBlogById(id: string | number) {
     const response = await strapiClient.get<StrapiResponse<any>>(
       `/blogs/${id}?populate=*`
     );
-    return response.data.data;
+    const data = response.data.data;
+    return data ? { id: data.id, ...data.attributes } : null;
   } catch (error) {
     console.error('Error fetching blog:', error);
     throw error;
