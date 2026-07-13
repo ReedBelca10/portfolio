@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Link } from '@/i18n';
-import { BlogPost, BLOG_POSTS } from '@/lib/blogData';
+import Link from 'next/link';
+import { fetchBlogs, subscribeToNewsletter } from '@/lib/strapi';
 
 /*
  * BlogsPage Component
@@ -15,14 +15,42 @@ import { BlogPost, BLOG_POSTS } from '@/lib/blogData';
 const CYAN = '#00D9FF';
 const BG_SECTION = '#292F36';
 
-export function BlogCard({ post }: { post: BlogPost }) {
+export function BlogCard({ post }: { post: any }) {
+  const truncateText = (text: string, length = 150) => {
+    if (!text) return '';
+    const plainText = text.replace(/(<([^>]+)>)/gi, "");
+    if (plainText.length <= length) return plainText;
+    return plainText.substring(0, length) + '...';
+  };
+
+  const calculateReadTime = (richText: any) => {
+    let text = '';
+    if (typeof richText === 'string') {
+      text = richText;
+    } else if (Array.isArray(richText)) {
+      text = JSON.stringify(richText);
+    }
+    const words = text.split(/\s+/).length;
+    const minutes = Math.ceil(words / 200);
+    return `${minutes} Min`;
+  };
+
+  const id = post.documentId || post.id;
+  const title = post.title;
+  const excerpt = truncateText(post.content, 200);
+  const author = post.author || 'Caleb';
+  const date = new Date(post.publishedDate || post.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  const readTime = calculateReadTime(post.content);
+  const tag = post.seoTags ? post.seoTags.split(',')[0] : 'Blog';
+  const imageUrl = post.media && post.media.length > 0 ? post.media[0].url : '/Blog.jpg';
+
   return (
     <article className="flex flex-col md:flex-row items-start gap-5 md:gap-8 py-8 md:py-10 w-full max-w-[800px] font-primary mx-auto">
       {/* Thumbnail */}
       <div className="relative shrink-0 w-full md:w-[160px] h-[180px] md:h-[120px] rounded overflow-hidden">
         <Image
-          src={post.image}
-          alt={post.imageAlt}
+          src={imageUrl}
+          alt={title}
           fill
           className="object-cover"
         />
@@ -41,7 +69,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
             margin: 0,
           }}
         >
-          {post.title}
+          {title}
         </h3>
 
         {/* Excerpt */}
@@ -54,27 +82,25 @@ export function BlogCard({ post }: { post: BlogPost }) {
             margin: 0,
           }}
         >
-          {post.excerpt}
+          {excerpt}
         </p>
 
-        {/* Read More link (only on some cards) */}
-        {post.showReadMore && (
-          <div>
-            <Link
-              href={`/blog/${post.id}`}
-              style={{
-                fontFamily: "'Ubuntu', sans-serif",
-                fontSize: '14px',
-                color: CYAN,
-                textDecoration: 'underline',
-                textDecorationColor: 'rgba(255,255,255,0.6)',
-                textUnderlineOffset: '3px',
-              }}
-            >
-              Read More &gt;&gt;
-            </Link>
-          </div>
-        )}
+        {/* Read More link */}
+        <div>
+          <Link
+            href={`/blog/${id}`}
+            style={{
+              fontFamily: "'Ubuntu', sans-serif",
+              fontSize: '14px',
+              color: CYAN,
+              textDecoration: 'underline',
+              textDecorationColor: 'rgba(255,255,255,0.6)',
+              textUnderlineOffset: '3px',
+            }}
+          >
+            Read More &gt;&gt;
+          </Link>
+        </div>
 
         {/* Meta row */}
         <div
@@ -97,7 +123,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
               fontFamily: "'Ubuntu', sans-serif",
             }}
           >
-            {post.tag}
+            {tag}
           </span>
 
           {/* Meta info */}
@@ -114,15 +140,15 @@ export function BlogCard({ post }: { post: BlogPost }) {
           >
             <span>
               <strong style={{ color: '#fff', fontWeight: 700 }}>Author</strong>{' '}
-              {post.author}
+              {author}
             </span>
             <span>
               <strong style={{ color: '#fff', fontWeight: 700 }}>Date</strong>{' '}
-              {post.date}
+              {date}
             </span>
             <span>
               <strong style={{ color: '#fff', fontWeight: 700 }}>Read</strong>{' '}
-              {post.readTime}
+              {readTime}
             </span>
           </div>
         </div>
@@ -132,6 +158,46 @@ export function BlogCard({ post }: { post: BlogPost }) {
 }
 
 export function BlogsPage() {
+  const [blogs, setBlogs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [subscribeEmail, setSubscribeEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSubscribeForm, setShowSubscribeForm] = useState(false);
+
+  useEffect(() => {
+    async function loadBlogs() {
+      try {
+        const data = await fetchBlogs();
+        if (data) {
+          setBlogs(data);
+        }
+      } catch (err) {
+        console.error('Failed to load blogs', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadBlogs();
+  }, []);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subscribeEmail) return;
+    setIsSubmitting(true);
+    setSubscribeStatus({ type: null, message: '' });
+    try {
+      await subscribeToNewsletter(subscribeEmail);
+      setSubscribeStatus({ type: 'success', message: 'Successfully subscribed!' });
+      setSubscribeEmail('');
+      setTimeout(() => setShowSubscribeForm(false), 3000);
+    } catch (err: any) {
+      setSubscribeStatus({ type: 'error', message: err.message || 'Failed to subscribe.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section
       style={{
@@ -157,6 +223,27 @@ export function BlogsPage() {
 
         .blogs-page-subscribe-btn:hover {
           background: rgba(0, 217, 255, 0.12);
+        }
+
+        .subscribe-form-page {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+          margin-top: 16px;
+        }
+
+        .subscribe-input-page {
+          background: transparent;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          color: #fff;
+          padding: 10px 16px;
+          border-radius: 999px;
+          outline: none;
+          font-family: 'Ubuntu', sans-serif;
+        }
+
+        .subscribe-input-page:focus {
+          border-color: ${CYAN};
         }
 
         .blogs-page-separator {
@@ -203,23 +290,53 @@ export function BlogsPage() {
         }}>
           My thoughts on technology and business, welcome to subscribe
         </p>
-        <button className="blogs-page-subscribe-btn">Subscribe My Blogs</button>
+
+        {!showSubscribeForm ? (
+          <button onClick={() => setShowSubscribeForm(true)} className="blogs-page-subscribe-btn">Subscribe My Blogs</button>
+        ) : (
+          <form onSubmit={handleSubscribe} className="subscribe-form-page flex-col sm:flex-row">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              required 
+              className="subscribe-input-page"
+              value={subscribeEmail}
+              onChange={(e) => setSubscribeEmail(e.target.value)}
+            />
+            <button type="submit" className="blogs-page-subscribe-btn" disabled={isSubmitting}>
+              {isSubmitting ? 'Subscribing...' : 'Submit'}
+            </button>
+          </form>
+        )}
+        
+        {subscribeStatus.message && (
+          <div className={`mt-4 text-sm ${subscribeStatus.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+            {subscribeStatus.message}
+          </div>
+        )}
       </div>
 
       {/* Blog list */}
       <div className="blogs-page-list">
-        {BLOG_POSTS.map((post, idx) => (
-          <React.Fragment key={post.id}>
-            <hr className="blogs-page-separator" />
-            <BlogCard post={post} />
-            {idx === BLOG_POSTS.length - 1 && (
+        {loading ? (
+          <div className="py-20 text-white/50">Loading blogs...</div>
+        ) : blogs.length === 0 ? (
+          <div className="py-20 text-white/50">No blogs found.</div>
+        ) : (
+          blogs.map((post, idx) => (
+            <React.Fragment key={post.id}>
               <hr className="blogs-page-separator" />
-            )}
-          </React.Fragment>
-        ))}
+              <BlogCard post={post} />
+              {idx === blogs.length - 1 && (
+                <hr className="blogs-page-separator" />
+              )}
+            </React.Fragment>
+          ))
+        )}
       </div>
     </section>
   );
 }
 
 export default BlogsPage;
+

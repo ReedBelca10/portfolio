@@ -1,7 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { fetchBlogs, subscribeToNewsletter } from '@/lib/strapi';
 
 /*
  * Blogs Component
@@ -14,10 +16,69 @@ const CYAN = "#00D9FF";
 const TEXT_MUTED = "rgba(255,255,255,0.85)";
 
 export function Blogs() {
+  const [latestBlog, setLatestBlog] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [subscribeEmail, setSubscribeEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    async function loadBlogs() {
+      try {
+        const data = await fetchBlogs();
+        if (data && data.length > 0) {
+          setLatestBlog(data[0]);
+        }
+      } catch (err) {
+        console.error('Failed to load latest blog', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadBlogs();
+  }, []);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subscribeEmail) return;
+    setIsSubmitting(true);
+    setSubscribeStatus({ type: null, message: '' });
+    try {
+      await subscribeToNewsletter(subscribeEmail);
+      setSubscribeStatus({ type: 'success', message: 'Successfully subscribed!' });
+      setSubscribeEmail('');
+    } catch (err: any) {
+      setSubscribeStatus({ type: 'error', message: err.message || 'Failed to subscribe.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const calculateReadTime = (richText: any) => {
+    // Basic word count logic for strapi rich text or string
+    let text = '';
+    if (typeof richText === 'string') {
+      text = richText;
+    } else if (Array.isArray(richText)) {
+      // blocks
+      text = JSON.stringify(richText);
+    }
+    const words = text.split(/\s+/).length;
+    const minutes = Math.ceil(words / 200); // 200 words per minute
+    return `${minutes} Min`;
+  };
+
+  const truncateText = (text: string, length = 150) => {
+    if (!text) return '';
+    const plainText = text.replace(/(<([^>]+)>)/gi, "");
+    if (plainText.length <= length) return plainText;
+    return plainText.substring(0, length) + '...';
+  };
+
   return (
     <section
       id="blog"
-      className="py-24 px-6 flex flex-col items-center"
+      className="py-24 px-6 flex flex-col items-center relative"
       style={{ backgroundColor: BG_SECTION, fontFamily: "'IBM Plex Mono', monospace" }}
     >
       <style>{`
@@ -141,6 +202,7 @@ export function Blogs() {
           justify-content: center;
           gap: 24px;
           margin-top: 48px;
+          flex-wrap: wrap;
         }
         .btn-cyan {
           background: ${CYAN};
@@ -153,6 +215,23 @@ export function Blogs() {
           transition: opacity 0.2s;
         }
         .btn-cyan:hover { opacity: 0.8; }
+        .subscribe-form {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+        .subscribe-input {
+          background: transparent;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          color: #fff;
+          padding: 10px 16px;
+          border-radius: 999px;
+          outline: none;
+          font-family: 'Ubuntu', sans-serif;
+        }
+        .subscribe-input:focus {
+          border-color: ${CYAN};
+        }
         .btn-outline-cyan {
           background: transparent;
           color: #fff;
@@ -163,6 +242,7 @@ export function Blogs() {
           padding: 10px 30px;
           border-radius: 999px;
           transition: background 0.2s;
+          cursor: pointer;
         }
         .btn-outline-cyan:hover {
           background: rgba(0, 217, 255, 0.1);
@@ -179,46 +259,80 @@ export function Blogs() {
 
       <hr className="blogs-separator" />
 
-      <article className="blog-card">
-        <div className="blog-img-wrapper">
-          <Image
-            src="/Blog.jpg"
-            alt="Web developer"
-            fill
-            className="object-cover"
-          />
-        </div>
-        <div className="blog-content">
-          <h3 className="blog-post-title">
-            What does it take to<br className="hidden md:block" /> become a web developer?
-          </h3>
-          <p className="blog-excerpt">
-            Web development, also known as website development, encompasses a variety of tasks and
-            processes involved in creating websites for the internet...
-          </p>
-          <div>
-            <a href="#" className="blog-readmore">Read More &gt;&gt;</a>
+      {loading ? (
+        <div className="py-20 text-white/50">Loading latest blog...</div>
+      ) : latestBlog ? (
+        <article className="blog-card">
+          <div className="blog-img-wrapper">
+            {latestBlog.media && latestBlog.media.length > 0 ? (
+              <Image
+                src={latestBlog.media[0].url}
+                alt={latestBlog.title}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <Image
+                src="/Blog.jpg"
+                alt="Web developer"
+                fill
+                className="object-cover"
+              />
+            )}
           </div>
-          
-          <div className="blog-meta">
-            <span className="blog-badge">Web Developer</span>
-            <div className="blog-meta-info">
-              <div><span className="meta-label">Author</span> Caleb</div>
-              <div><span className="meta-label">Date</span> 12.Jun 2026</div>
-              <div><span className="meta-label">Read</span> 1 Min</div>
+          <div className="blog-content">
+            <h3 className="blog-post-title">
+              {latestBlog.title}
+            </h3>
+            <p className="blog-excerpt">
+              {truncateText(latestBlog.content)}
+            </p>
+            <div>
+              <Link href={`/blog/${latestBlog.documentId || latestBlog.id}`} className="blog-readmore">Read More &gt;&gt;</Link>
+            </div>
+            
+            <div className="blog-meta">
+              {latestBlog.seoTags && (
+                <span className="blog-badge">{latestBlog.seoTags.split(',')[0]}</span>
+              )}
+              <div className="blog-meta-info">
+                <div><span className="meta-label">Author</span> {latestBlog.author || 'Caleb'}</div>
+                <div><span className="meta-label">Date</span> {new Date(latestBlog.publishedDate || latestBlog.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                <div><span className="meta-label">Read</span> {calculateReadTime(latestBlog.content)}</div>
+              </div>
             </div>
           </div>
-        </div>
-      </article>
+        </article>
+      ) : (
+        <div className="py-20 text-white/50">No blogs published yet.</div>
+      )}
 
       <hr className="blogs-separator" />
 
       <div className="blogs-actions">
-        <a href="#" className="btn-cyan">View More</a>
-        <a href="#" className="btn-outline-cyan">Subscribe</a>
+        <Link href="/blog" className="btn-cyan">View More</Link>
+        <form onSubmit={handleSubscribe} className="subscribe-form flex-col sm:flex-row">
+          <input 
+            type="email" 
+            placeholder="Enter your email" 
+            required 
+            className="subscribe-input"
+            value={subscribeEmail}
+            onChange={(e) => setSubscribeEmail(e.target.value)}
+          />
+          <button type="submit" className="btn-outline-cyan" disabled={isSubmitting}>
+            {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+          </button>
+        </form>
       </div>
+      {subscribeStatus.message && (
+        <div className={`mt-4 text-sm ${subscribeStatus.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+          {subscribeStatus.message}
+        </div>
+      )}
     </section>
   );
 }
 
 export default Blogs;
+

@@ -303,6 +303,32 @@ export interface AdminUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiBlogBlog extends Schema.CollectionType {
+  collectionName: 'blogs';
+  info: {
+    description: 'Blog articles';
+    displayName: 'Blog';
+    pluralName: 'blogs';
+    singularName: 'blog';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    author: Attribute.String;
+    content: Attribute.RichText & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::blog.blog', 'oneToOne', 'admin::user'> & Attribute.Private;
+    media: Attribute.Media<'images' | 'videos' | 'audios', true>;
+    publishedAt: Attribute.DateTime;
+    publishedDate: Attribute.Date;
+    seoTags: Attribute.String;
+    title: Attribute.String & Attribute.Required;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<'api::blog.blog', 'oneToOne', 'admin::user'> & Attribute.Private;
+  };
+}
+
 export interface ApiSkillSkill extends Schema.CollectionType {
   collectionName: 'skills';
   info: {
@@ -350,7 +376,7 @@ export interface ApiSkillSkill extends Schema.CollectionType {
 export interface ApiWorkWork extends Schema.CollectionType {
   collectionName: 'works';
   info: {
-    description: 'Portfolio Projects / Works';
+    description: 'Portfolio projects and works';
     displayName: 'Work';
     pluralName: 'works';
     singularName: 'work';
@@ -359,8 +385,8 @@ export interface ApiWorkWork extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
+    appImage: Attribute.Media<'images'>;
     appLink: Attribute.String;
-    appPresentationImage: Attribute.Media<'images'>;
     createdAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::work.work', 'oneToOne', 'admin::user'> & Attribute.Private;
     description: Attribute.Text & Attribute.Required;
@@ -738,6 +764,7 @@ declare module '@strapi/types' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::blog.blog': ApiBlogBlog;
       'api::skill.skill': ApiSkillSkill;
       'api::work.work': ApiWorkWork;
       'plugin::content-releases.release': PluginContentReleasesRelease;

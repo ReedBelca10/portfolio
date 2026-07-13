@@ -20,7 +20,10 @@ export default {
           'api::skill.skill.find',
           'api::skill.skill.findOne',
           'api::work.work.find',
-          'api::work.work.findOne'
+          'api::work.work.findOne',
+          'api::blog.blog.find',
+          'api::blog.blog.findOne',
+          'api::subscriber.subscriber.create'
         ];
         
         for (const action of actions) {

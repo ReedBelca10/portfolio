@@ -1,14 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { BlogCard } from './BlogsPage';
-import { BlogPost, BLOG_POSTS } from '@/lib/blogData';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { subscribeToNewsletter } from '@/lib/strapi';
 
 const BG_SECTION = '#292F36';
+const CYAN = '#00D9FF';
 
 interface ArticlePageProps {
-  post: BlogPost;
+  post: any;
+  related?: any[];
 }
 
 function ArticleMetaRow({ author, date, readTime }: { author: string; date: string; readTime: string }) {
@@ -32,7 +36,58 @@ function ArticleMetaRow({ author, date, readTime }: { author: string; date: stri
   );
 }
 
-export function ArticlePage({ post }: ArticlePageProps) {
+export function ArticlePage({ post, related = [] }: ArticlePageProps) {
+  const [subscribeEmail, setSubscribeEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSubscribeForm, setShowSubscribeForm] = useState(false);
+
+  const calculateReadTime = (richText: any) => {
+    let text = '';
+    if (typeof richText === 'string') {
+      text = richText;
+    } else if (Array.isArray(richText)) {
+      text = JSON.stringify(richText);
+    }
+    const words = text.split(/\s+/).length;
+    const minutes = Math.ceil(words / 200);
+    return `${minutes} Min`;
+  };
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subscribeEmail) return;
+    setIsSubmitting(true);
+    setSubscribeStatus({ type: null, message: '' });
+    try {
+      await subscribeToNewsletter(subscribeEmail);
+      setSubscribeStatus({ type: 'success', message: 'Successfully subscribed!' });
+      setSubscribeEmail('');
+      setTimeout(() => setShowSubscribeForm(false), 3000);
+    } catch (err: any) {
+      setSubscribeStatus({ type: 'error', message: err.message || 'Failed to subscribe.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const author = post.author || 'Caleb';
+  const date = new Date(post.publishedDate || post.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  const readTime = calculateReadTime(post.content);
+  const imageUrl = post.media && post.media.length > 0 ? post.media[0].url : '/Blog.jpg';
+  const tags = post.seoTags ? post.seoTags.split(',').map((t: string) => t.trim()) : ['Blog'];
+
+  // Filter out the current post from related
+  const relatedPosts = related.filter((p) => (p.documentId || p.id) !== (post.documentId || post.id)).slice(0, 5);
+
+  let rawContent = '';
+  if (typeof post.content === 'string') {
+    rawContent = post.content;
+  } else {
+    // Basic fallback if Strapi returns blocks JSON
+    rawContent = JSON.stringify(post.content);
+  }
+
   return (
     <section
       style={{
@@ -42,85 +97,129 @@ export function ArticlePage({ post }: ArticlePageProps) {
       }}
       className="pt-24 px-6 flex flex-col items-center"
     >
+      <style>{`
+        .markdown-content p {
+          margin-bottom: 1em;
+          line-height: 1.8;
+        }
+        .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4 {
+          color: ${CYAN};
+          margin-top: 1.5em;
+          margin-bottom: 0.5em;
+          font-weight: 400;
+        }
+        .markdown-content h1 { font-size: 24px; }
+        .markdown-content h2 { font-size: 20px; }
+        .markdown-content h3 { font-size: 16px; }
+        .markdown-content ul, .markdown-content ol {
+          margin-left: 20px;
+          margin-bottom: 1em;
+        }
+        .markdown-content li {
+          margin-bottom: 0.5em;
+        }
+        .markdown-content img {
+          max-width: 100%;
+          border-radius: 4px;
+          margin: 1em 0;
+        }
+        .subscribe-input-article {
+          background: transparent;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          color: #fff;
+          padding: 10px 16px;
+          border-radius: 999px;
+          outline: none;
+          font-family: 'Ubuntu', sans-serif;
+          margin-right: 8px;
+        }
+        .subscribe-input-article:focus {
+          border-color: ${CYAN};
+        }
+      `}</style>
+
       {/* Title */}
       <h1 className="font-primary text-center text-3xl md:text-[32px] text-[#00D9FF] font-normal leading-snug max-w-[800px] mx-auto mb-6">
         {post.title}
       </h1>
 
       {/* Top Meta */}
-      <ArticleMetaRow author={post.author} date={post.date} readTime={post.readTime} />
+      <ArticleMetaRow author={author} date={date} readTime={readTime} />
 
       {/* Hero Image */}
       <div className="w-full max-w-[800px] aspect-[16/9] md:aspect-[2/1] relative mt-4 mb-10 rounded overflow-hidden">
         <Image
-          src={post.image}
-          alt={post.imageAlt}
+          src={imageUrl}
+          alt={post.title}
           fill
           className="object-cover"
         />
       </div>
 
       {/* Article Content */}
-      <div className="w-full max-w-[800px] font-primary text-[15px] text-[#E2E8F0] leading-[1.8] flex flex-col gap-6">
-        <p>
-          Web development, also known as website development, encompasses a variety of tasks and processes involved in creating websites for the internet. It involves writing code and markup logic, to build front-end web development, to build back-end infrastructure, and database management logic. Because of these, web developers use programming languages to construct websites.
-        </p>
-
-        <h3 className="text-[#00D9FF] text-[16px] font-normal mt-4">Front-end development</h3>
-        <p>
-          Front-end development is responsible for the visual aspects of a website – whatever a user interacts with. Its focus is to design elements that users interact with directly, to ensure a site displays correctly, and works adequately on all devices, and across operating systems. Due to the rapid, dynamic and expansive nature of the internet, they need to have extensive knowledge, constantly staying updated with the rapid advancement of the web space to ensure that users have an optimal, seamless and easy user interface.
-        </p>
-
-        <h3 className="text-[#00D9FF] text-[16px] font-normal mt-4">Back-end development</h3>
-        <p>
-          Back-end development, on the other hand, deals with the core functions and features of a website running under the hood (the database and the server that connects to it, the unseen structure that makes the website work smoothly). Since it handles the data necessary for the internet, and servers, web applications, apps, and more, as well as features such as accounts, passwords and security, it ensures everything works effectively without experiencing outages, or the database can crash the website.
-        </p>
-
-        <h3 className="text-[#00D9FF] text-[16px] font-normal mt-4">Maintaining website and software</h3>
-        <p>
-          Maintaining is one of the key tasks of software development. Due to the shift dynamics in code, libraries and tools will need to reflect real, up to date scenarios. Web developers deal with continuous issues, and testing for software quality. This is generally possible via automated software development process - in which coding, building, testing, and deployment processes are mostly done automatically, allowing developers and system engineers to continuously test software without relying on manual and redundant operations.
-        </p>
-
-        <h3 className="text-[#00D9FF] text-[16px] font-normal mt-4">Career</h3>
-        <p>
-          Mastering a broad aspect of web development (the focus on back-end server, algorithms and databases, and front-end interface (UI/UX design)) takes time and a well-rounded mind to build a website. You work closely with project teams and software engineers, as well as clients, system engineers, and other web developers to ensure that the user requirements are achieved and met explicitly in the requested development application or website.
-        </p>
-        <p>
-          More than that, at the stage of the internet, the relevance of web developers is ever present. Almost all modern businesses must rely on a well-designed website or application as an important tool to interface and to connect effectively with a broader base, to push their business reach and service to the world at large. To build an optimal and effective site, websites that meet the needs of modern users.
-        </p>
+      <div className="w-full max-w-[800px] font-primary text-[15px] text-[#E2E8F0] leading-[1.8] flex flex-col gap-6 markdown-content">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {rawContent}
+        </ReactMarkdown>
       </div>
 
       {/* Tags */}
       <div className="w-full max-w-[800px] flex flex-wrap gap-4 mt-12 mb-8 font-primary">
-        <span className="bg-[#424952] text-[#E2E8F0] px-4 py-1.5 rounded-full text-[12px]">Web Developer</span>
-        <span className="bg-[#424952] text-[#E2E8F0] px-4 py-1.5 rounded-full text-[12px]">Web Designer</span>
-        <span className="bg-[#424952] text-[#E2E8F0] px-4 py-1.5 rounded-full text-[12px]">Web Management</span>
+        {tags.map((tag: string, i: number) => (
+          <span key={i} className="bg-[#424952] text-[#E2E8F0] px-4 py-1.5 rounded-full text-[12px]">{tag}</span>
+        ))}
       </div>
 
       {/* Bottom Meta */}
-      <ArticleMetaRow author={post.author} date={post.date} readTime={post.readTime} />
+      <ArticleMetaRow author={author} date={date} readTime={readTime} />
 
       {/* Subscribe Button */}
-      <div className="w-full max-w-[800px] flex justify-center mt-12 mb-20">
-        <button className="border-2 border-[#00D9FF] text-white bg-transparent font-monospace text-[14px] px-8 py-2.5 rounded-full cursor-pointer transition-colors hover:bg-[#00D9FF]/10 tracking-wide">
-          Subscribe My Blogs
-        </button>
+      <div className="w-full max-w-[800px] flex flex-col items-center mt-12 mb-20">
+        {!showSubscribeForm ? (
+          <button 
+            onClick={() => setShowSubscribeForm(true)}
+            className="border-2 border-[#00D9FF] text-white bg-transparent font-monospace text-[14px] px-8 py-2.5 rounded-full cursor-pointer transition-colors hover:bg-[#00D9FF]/10 tracking-wide"
+          >
+            Subscribe My Blogs
+          </button>
+        ) : (
+          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row items-center gap-4">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              required 
+              className="subscribe-input-article"
+              value={subscribeEmail}
+              onChange={(e) => setSubscribeEmail(e.target.value)}
+            />
+            <button type="submit" className="border-2 border-[#00D9FF] text-[#000] bg-[#00D9FF] font-monospace text-[14px] px-8 py-2.5 rounded-full cursor-pointer hover:opacity-80 transition-opacity tracking-wide" disabled={isSubmitting}>
+              {isSubmitting ? 'Subscribing...' : 'Submit'}
+            </button>
+          </form>
+        )}
+        {subscribeStatus.message && (
+          <div className={`mt-4 text-sm ${subscribeStatus.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+            {subscribeStatus.message}
+          </div>
+        )}
       </div>
 
       {/* You Might Also Like Section */}
-      <div className="w-full max-w-[800px] flex flex-col items-center mt-8">
-        <h2 className="text-[#00D9FF] font-primary text-3xl md:text-[32px] mb-12 text-center">
-          You Might Also Like
-        </h2>
-        <div className="w-full flex flex-col">
-          {BLOG_POSTS.slice(0, 5).map((relatedPost, idx) => (
-            <React.Fragment key={relatedPost.id}>
-              {idx > 0 && <hr className="w-full border-t border-white/20 my-0" />}
-              <BlogCard post={relatedPost} />
-            </React.Fragment>
-          ))}
+      {relatedPosts.length > 0 && (
+        <div className="w-full max-w-[800px] flex flex-col items-center mt-8">
+          <h2 className="text-[#00D9FF] font-primary text-3xl md:text-[32px] mb-12 text-center">
+            You Might Also Like
+          </h2>
+          <div className="w-full flex flex-col">
+            {relatedPosts.map((relatedPost, idx) => (
+              <React.Fragment key={relatedPost.id || relatedPost.documentId}>
+                {idx > 0 && <hr className="w-full border-t border-white/20 my-0" />}
+                <BlogCard post={relatedPost} />
+              </React.Fragment>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

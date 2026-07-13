@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 import { Navbar, Footer } from '@/components';
 import ArticlePage from '@/components/ArticlePage';
-import { BLOG_POSTS } from '@/lib/blogData';
+import { fetchBlogById, fetchBlogs } from '@/lib/strapi';
 
 export const metadata = {
-  title: 'Article | My Portfolio',
+  title: 'Article | Caleb Portfolio',
   description: 'Read the full article.',
 };
 
@@ -16,8 +16,15 @@ export default async function BlogPostPage({
   params: Promise<{ id: string }>;
 }) {
   const resolvedParams = await params;
-  const postId = parseInt(resolvedParams.id, 10);
-  const post = BLOG_POSTS.find((p) => p.id === postId);
+  let post = null;
+  let relatedBlogs = [];
+
+  try {
+    post = await fetchBlogById(resolvedParams.id);
+    relatedBlogs = await fetchBlogs();
+  } catch (error) {
+    console.error('Error fetching blog', error);
+  }
 
   if (!post) {
     notFound();
@@ -27,7 +34,7 @@ export default async function BlogPostPage({
     <>
       <Navbar />
       <main className="min-h-screen">
-        <ArticlePage post={post} />
+        <ArticlePage post={post} related={relatedBlogs} />
         <Footer className="!mt-0" />
       </main>
     </>
