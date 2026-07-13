@@ -15,7 +15,10 @@ interface ArticlePageProps {
   related?: any[];
 }
 
-function ArticleMetaRow({ author, date, readTime }: { author: string; date: string; readTime: string }) {
+function ArticleMetaRow({ author, date, readTime, title }: { author: string; date: string; readTime: string; title: string }) {
+  const [showShare, setShowShare] = useState(false);
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+
   return (
     <div className="flex flex-wrap items-center justify-between w-full max-w-[800px] mx-auto py-4 font-primary text-[13px] text-[#E2E8F0]">
       <div className="flex items-center gap-4">
@@ -23,15 +26,24 @@ function ArticleMetaRow({ author, date, readTime }: { author: string; date: stri
         <span><strong className="text-white font-bold">Date</strong> {date}</span>
         <span><strong className="text-white font-bold">Read</strong> {readTime}</span>
       </div>
-      <button className="flex items-center justify-center w-8 h-8 rounded-full border border-[#00D9FF] text-[#00D9FF] hover:bg-[#00D9FF]/10 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="18" cy="5" r="3"></circle>
-          <circle cx="6" cy="12" r="3"></circle>
-          <circle cx="18" cy="19" r="3"></circle>
-          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-        </svg>
-      </button>
+      <div className="relative">
+        <button onClick={() => setShowShare(!showShare)} className="flex items-center justify-center w-8 h-8 rounded-full border border-[#00D9FF] text-[#00D9FF] hover:bg-[#00D9FF]/10 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
+        {showShare && (
+          <div className="absolute right-0 mt-2 py-2 w-36 bg-[#1A222C] rounded-md shadow-xl border border-[#00D9FF]/20 z-10 flex flex-col">
+            <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(title)}`} target="_blank" rel="noopener noreferrer" className="px-4 py-2 hover:bg-[#00D9FF]/10 text-white text-sm text-left transition-colors">Share on X</a>
+            <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(currentUrl)}`} target="_blank" rel="noopener noreferrer" className="px-4 py-2 hover:bg-[#00D9FF]/10 text-white text-sm text-left transition-colors">LinkedIn</a>
+            <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`} target="_blank" rel="noopener noreferrer" className="px-4 py-2 hover:bg-[#00D9FF]/10 text-white text-sm text-left transition-colors">Facebook</a>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -74,7 +86,11 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
   const author = post.author || 'Caleb';
   const date = new Date(post.publishedDate || post.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   const readTime = calculateReadTime(post.content);
-  const imageUrl = post.media && post.media.length > 0 ? post.media[0].url : '/Blog.jpg';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+  const rawImageUrl = post.media?.data?.[0]?.attributes?.url;
+  const imageUrl = rawImageUrl 
+    ? (rawImageUrl.startsWith('http') ? rawImageUrl : `${API_URL}${rawImageUrl}`) 
+    : '/Blog.jpg';
   const tags = post.seoTags ? post.seoTags.split(',').map((t: string) => t.trim()) : ['Blog'];
 
   // Filter out the current post from related
@@ -144,7 +160,7 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
       </h1>
 
       {/* Top Meta */}
-      <ArticleMetaRow author={author} date={date} readTime={readTime} />
+      <ArticleMetaRow author={author} date={date} readTime={readTime} title={post.title} />
 
       {/* Hero Image */}
       <div className="w-full max-w-[800px] aspect-[16/9] md:aspect-[2/1] relative mt-4 mb-10 rounded overflow-hidden">
@@ -171,7 +187,7 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
       </div>
 
       {/* Bottom Meta */}
-      <ArticleMetaRow author={author} date={date} readTime={readTime} />
+      <ArticleMetaRow author={author} date={date} readTime={readTime} title={post.title} />
 
       {/* Subscribe Button */}
       <div className="w-full max-w-[800px] flex flex-col items-center mt-12 mb-20">

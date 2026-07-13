@@ -75,6 +75,12 @@ export function Blogs() {
     return plainText.substring(0, length) + '...';
   };
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+  const rawImageUrl = latestBlog?.media?.data?.[0]?.attributes?.url;
+  const imageUrl = rawImageUrl 
+    ? (rawImageUrl.startsWith('http') ? rawImageUrl : `${API_URL}${rawImageUrl}`) 
+    : '/Blog.jpg';
+
   return (
     <section
       id="blog"
@@ -264,21 +270,12 @@ export function Blogs() {
       ) : latestBlog ? (
         <article className="blog-card">
           <div className="blog-img-wrapper">
-            {latestBlog.media && latestBlog.media.length > 0 ? (
-              <Image
-                src={latestBlog.media[0].url}
-                alt={latestBlog.title}
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <Image
-                src="/Blog.jpg"
-                alt="Web developer"
-                fill
-                className="object-cover"
-              />
-            )}
+            <Image
+              src={imageUrl}
+              alt={latestBlog.title || "Blog image"}
+              fill
+              className="object-cover"
+            />
           </div>
           <div className="blog-content">
             <h3 className="blog-post-title">

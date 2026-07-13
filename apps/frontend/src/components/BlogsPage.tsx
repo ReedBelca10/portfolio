@@ -42,7 +42,11 @@ export function BlogCard({ post }: { post: any }) {
   const date = new Date(post.publishedDate || post.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   const readTime = calculateReadTime(post.content);
   const tag = post.seoTags ? post.seoTags.split(',')[0] : 'Blog';
-  const imageUrl = post.media && post.media.length > 0 ? post.media[0].url : '/Blog.jpg';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+  const rawImageUrl = post.media?.data?.[0]?.attributes?.url;
+  const imageUrl = rawImageUrl 
+    ? (rawImageUrl.startsWith('http') ? rawImageUrl : `${API_URL}${rawImageUrl}`) 
+    : '/Blog.jpg';
 
   return (
     <article className="flex flex-col md:flex-row items-start gap-5 md:gap-8 py-8 md:py-10 w-full max-w-[800px] font-primary mx-auto">

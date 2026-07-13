@@ -19,15 +19,18 @@ const BORDER_CARD = "#00D9FF";
 
 /* ── Skill data ── */
 interface StrapiSkill {
+  stack: any;
   id: number;
-  name: string;
-  stack: string;
-  subcategory: string;
-  proficiency: number;
-  icon?: {
-    data?: {
-      attributes?: {
-        url: string;
+  attributes: {
+    name: string;
+    stack: string;
+    subcategory: string;
+    proficiency: number;
+    icon?: {
+      data?: {
+        attributes?: {
+          url: string;
+        };
       };
     };
   };
