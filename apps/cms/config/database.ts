@@ -3,7 +3,8 @@ export default ({ env }: any) => ({
     client: 'postgres',
     connection: env('DATABASE_URL') ? {
       connectionString: env('DATABASE_URL'),
-      ssl: { rejectUnauthorized: false }
+      ssl: { rejectUnauthorized: false },
+      keepAlive: true,
     } : {
       host: env('DATABASE_HOST', 'localhost'),
       port: env.int('DATABASE_PORT', 5432),

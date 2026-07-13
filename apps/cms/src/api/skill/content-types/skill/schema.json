@@ -4,12 +4,13 @@
   "info": {
     "singularName": "skill",
     "pluralName": "skills",
-    "displayName": "Skill",
+    "displayName": "Skills",
     "description": "Skills and proficiencies"
   },
   "options": {
     "draftAndPublish": false
   },
+  "pluginOptions": {},
   "attributes": {
     "name": {
       "type": "string",
