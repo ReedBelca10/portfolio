@@ -5,7 +5,7 @@ export default {
     try {
       console.log(`[Message Lifecycle] New message from ${result.name} <${result.email}>`);
 
-      await strapi.plugins['email'].services.email.send({
+      await strapi.plugin('email').service('email').send({
         to: 'calebadjeoda@hotmail.com',
         from: process.env.SMTP_USERNAME || 'noreply@calebadjeoda.com',
         replyTo: result.email,
