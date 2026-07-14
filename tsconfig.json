@@ -16,6 +16,7 @@
     "noImplicitReturns": true,
     "resolveJsonModule": true,
     "moduleResolution": "bundler",
+    "emitDeclarationOnly": true,
     "allowImportingTsExtensions": true,
     "paths": {
       "@/*": ["./apps/frontend/src/*"],
