@@ -45,13 +45,28 @@ interface SkillCategory {
   skills: StrapiSkill[];
 }
 
+const STACK_ORDER = [
+  "Programming Languages",
+  "AI & Data Science",
+  "Theoretical Computer Science",
+  "Backend Development",
+  "Web Development",
+  "Mobile Development",
+  "Database & Cloud Computing",
+  "DevOps & Security",
+  "Design & Tools",
+] as const;
+
 const TAB_MAPPING: Record<string, { id: string; icon: SkillCategory["icon"]; tags: string }> = {
-  "Programming Languages": { id: "languages", icon: "code", tags: "TS · JS · PYTHON · JAVA · C++" },
-  "Web Development": { id: "web", icon: "monitor", tags: "REACT · NEXT.JS · HTML · CSS" },
-  "Mobile Development": { id: "mobile", icon: "mobile", tags: "FLUTTER · REACT NATIVE" },
+  "Programming Languages": { id: "languages", icon: "code", tags: "TS · RUST · PYTHON · JAVA · C++" },
+  "AI & Data Science": { id: "ai-data", icon: "code", tags: "PYTHON · PANDAS · NUMPY · SQL" },
+  "Theoretical Computer Science": { id: "theory", icon: "code", tags: "ALGORITHMS · DATA STRUCTURES · SYSTEMS" },
+  "Web Development": { id: "web", icon: "monitor", tags: "REACT · NEXT.JS · HTML5 · CSS3" },
+  "Mobile Development": { id: "mobile", icon: "mobile", tags: "FLUTTER · REACT NATIVE · DART" },
   "Backend Development": { id: "backend", icon: "server", tags: "NODE · NEST · EXPRESS" },
-  "Database & DevOps": { id: "database", icon: "database", tags: "POSTGRESQL · MONGODB · DOCKER" },
-  "Design & Tools": { id: "design", icon: "design", tags: "FIGMA · GIT · VS CODE" },
+  "Database & Cloud Computing": { id: "database", icon: "database", tags: "POSTGRESQL · MONGODB · REDIS · AWS · GCP" },
+  "DevOps & Security": { id: "devops", icon: "database", tags: "DOCKER · KUBERNETES · CI/CD · GNU/LINUX · GIT" },
+  "Design & Tools": { id: "design", icon: "design", tags: "FIGMA · PHOTOSHOP · ODOO · GITHUB · GITLAB" },
 };
 
 function getProficiencyLevel(percent: number) {
@@ -213,9 +228,14 @@ export function Skills() {
           return acc;
         }, {});
 
-        // Format into SkillCategory array
-        const formattedCategories: SkillCategory[] = Object.keys(grouped).map(stackName => {
-          const mapping = TAB_MAPPING[stackName] || { id: stackName.toLowerCase().replace(/\s+/g, '-'), icon: 'monitor', tags: '' };
+        // Format into SkillCategory array in the requested display order
+        const orderedStackNames = [
+          ...STACK_ORDER.filter((stackName) => Boolean(grouped[stackName])),
+          ...Object.keys(grouped).filter((stackName) => !STACK_ORDER.includes(stackName as typeof STACK_ORDER[number])),
+        ] as string[];
+
+        const formattedCategories: SkillCategory[] = orderedStackNames.map(stackName => {
+          const mapping = TAB_MAPPING[stackName] || { id: stackName.toLowerCase().replace(/\s+/g, '-'), icon: 'monitor' as SkillCategory['icon'], tags: '' };
           return {
             id: mapping.id,
             label: stackName,
