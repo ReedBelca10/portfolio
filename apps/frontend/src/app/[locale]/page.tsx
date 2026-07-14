@@ -1,4 +1,4 @@
-import { Navbar, SidebarNav, Container, Footer } from '@/components';
+import { Navbar, SidebarNav, Footer } from '@/components';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Skills from '@/components/Skills';
