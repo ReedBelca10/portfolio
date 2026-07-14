@@ -19,6 +19,7 @@ const BORDER_CARD = "#00D9FF";
 
 /* ── Skill data ── */
 interface StrapiSkill {
+  name: any;
   stack: any;
   id: number;
   attributes: {
@@ -137,7 +138,7 @@ function CategoryIcon({ type, color = CYAN }: { type: SkillCategory["icon"]; col
 
 /* ── Single Skill Card ── */
 function SkillCard({ skill, index }: { skill: StrapiSkill; index: number }) {
-  const { name, subcategory, proficiency, icon } = skill;
+  const { name, subcategory, proficiency, icon } = skill.attributes;
   const level = getProficiencyLevel(proficiency);
   const imageUrl = getImageUrl(icon?.data?.attributes?.url);
 
