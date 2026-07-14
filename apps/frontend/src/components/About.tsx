@@ -208,7 +208,7 @@ export function About() {
           <div className="about-image-wrap">
             <div className="about-image-inner">
               <Image
-                src="/Me.jpg"
+                src="/setup.jpg"
                 alt="Caleb Adjeoda working on a laptop"
                 fill
                 style={{ objectFit: "cover" }}
