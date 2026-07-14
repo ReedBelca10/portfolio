@@ -7,7 +7,7 @@ export default {
 
       await strapi.plugins['email'].services.email.send({
         to: 'calebadjeoda@hotmail.com',
-        from: 'noreply@calebadjeoda.com',
+        from: process.env.SMTP_USERNAME || 'noreply@calebadjeoda.com',
         replyTo: result.email,
         subject: result.subject
           ? `Portfolio Contact: ${result.subject}`

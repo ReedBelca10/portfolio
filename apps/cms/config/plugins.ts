@@ -37,7 +37,7 @@ export default ({ env }) => ({
         },
       },
       settings: {
-        defaultFrom: 'noreply@calebadjeoda.com',
+        defaultFrom: env('SMTP_USERNAME'),
         defaultReplyTo: 'calebadjeoda@hotmail.com',
       },
     },
