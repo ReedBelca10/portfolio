@@ -93,6 +93,7 @@ export async function submitMessage(data: {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ data }),
+      cache: 'no-store',
     });
 
     const responseData = await response.json();

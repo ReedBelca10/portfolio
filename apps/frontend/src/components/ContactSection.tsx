@@ -19,16 +19,24 @@ export function ContactSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.message) return;
 
-    setStatus({ type: 'sending', message: '' });
+    const trimmedForm = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      subject: form.subject.trim(),
+      message: form.message.trim(),
+    };
+
+    if (!trimmedForm.name || !trimmedForm.email || !trimmedForm.message) return;
+
+    setStatus({ type: 'sending', message: 'Sending your message…' });
 
     try {
-      await submitMessage(form);
+      await submitMessage(trimmedForm);
       setStatus({ type: 'success', message: 'Message sent successfully! I\'ll get back to you soon.' });
       setForm({ name: '', email: '', subject: '', message: '' });
     } catch (err: any) {
-      const msg = err?.response?.data?.error?.message || 'Failed to send message. Please try again.';
+      const msg = err?.message || 'Failed to send message. Please try again.';
       setStatus({ type: 'error', message: msg });
     }
   };
