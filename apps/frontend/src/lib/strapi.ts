@@ -89,8 +89,19 @@ export async function submitMessage(data: {
   message: string;
 }) {
   try {
-    const response = await strapiClient.post('/messages', { data });
-    return response.data;
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data }),
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(responseData?.error?.message || 'Unable to send message.');
+    }
+
+    return responseData;
   } catch (error) {
     console.error('Error submitting message:', error);
     throw error;
