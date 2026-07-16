@@ -320,7 +320,7 @@ export function Hero() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    Full-Stack Developer
+                    Software Engineer
                   </p>
                 </div>
 
@@ -340,7 +340,7 @@ export function Hero() {
                   </div>
                   <div className="hp-row">
                     <span className="hp-icon"><GlobeIcon /></span>
-                    <span className="hp-text">www.calebadjeoda.com</span>
+                    <span className="hp-text">www.calebadjeoda.dev</span>
                   </div>
                 </div>
 
