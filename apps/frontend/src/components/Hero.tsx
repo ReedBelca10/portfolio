@@ -376,12 +376,14 @@ export function Hero() {
             {/* Main heading */}
             <h1
               style={{
-                fontSize: "clamp(42px, 5.8vw, 88px)",
+                fontSize: "clamp(30px, 7vw, 88px)",
                 fontWeight: 500,
                 color: "#ffffff",
                 lineHeight: 1.05,
                 letterSpacing: "-0.015em",
                 margin: "8px 0 0 0",
+                wordBreak: "break-word",
+                overflowWrap: "anywhere",
               }}
             >
               Hey

@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15000);
+  const timeout = setTimeout(() => controller.abort(), 50000);
 
   try {
     const body = await request.json();
