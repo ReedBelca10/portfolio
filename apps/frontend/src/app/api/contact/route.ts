@@ -38,11 +38,19 @@ export async function POST(request: Request) {
       data = { message: text };
     }
 
+    if (response.ok) {
+      return NextResponse.json(data, { status: response.status });
+    }
+
     return NextResponse.json(data, { status: response.status });
   } catch (error: any) {
     if (error?.name === 'AbortError') {
       return NextResponse.json(
-        { error: { message: 'The message service is temporarily slow. Please try again in a moment.' } },
+        {
+          error: {
+            message: 'The message service is taking longer than expected. Your message may still have been received.',
+          },
+        },
         { status: 504 }
       );
     }

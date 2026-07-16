@@ -295,8 +295,9 @@ export function Hero() {
                     alt="Caleb Adjeoda"
                     width={120}
                     height={120}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", imageRendering: "auto" }}
                     priority
+                    quality={100}
                   />
                 </div>
 
