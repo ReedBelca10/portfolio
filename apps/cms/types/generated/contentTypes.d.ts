@@ -383,10 +383,13 @@ export interface ApiSkillSkill extends Schema.CollectionType {
     stack: Attribute.Enumeration<
       [
         'Programming Languages',
+        'AI & Data Science',
+        'Theoretical Computer Science',
+        'Backend Development',
         'Web Development',
         'Mobile Development',
-        'Backend Development',
-        'Database & DevOps',
+        'Database & Cloud Computing',
+        'DevOps & Security',
         'Design & Tools'
       ]
     > &
