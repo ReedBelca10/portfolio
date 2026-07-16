@@ -388,7 +388,7 @@ export function Hero() {
               <br />
               I&apos;m <span style={{ color: CYAN }}>Caleb</span>,
               <br />
-              <span style={{ whiteSpace: "nowrap" }}>Full-Stack Developer</span>
+              <span style={{ whiteSpace: "nowrap" }}>Software Engineer</span>
               {/* </h1> inline tag */}
               <span className="ctag">&lt;/h1&gt;</span>
             </h1>
