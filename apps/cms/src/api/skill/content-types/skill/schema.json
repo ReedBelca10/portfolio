@@ -8,7 +8,7 @@
     "description": "Skills and proficiencies"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {

@@ -6,9 +6,9 @@ export default {
 
     if (result.publishedAt) {
       await notifySubscribers({
-        contentType: 'blog',
-        title: result.title,
-        summary: result.description || result.content || undefined,
+        contentType: 'skill',
+        title: result.name,
+        summary: result.subcategory || undefined,
       });
     }
   },
@@ -17,7 +17,7 @@ export default {
     const { result } = event;
 
     if (result.publishedAt) {
-      console.log(`Blog "${result.title}" updated and is published.`);
+      console.log(`Skill "${result.name}" updated and is published.`);
     }
   },
 };

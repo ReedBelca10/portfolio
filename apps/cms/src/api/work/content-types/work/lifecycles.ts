@@ -6,9 +6,9 @@ export default {
 
     if (result.publishedAt) {
       await notifySubscribers({
-        contentType: 'blog',
+        contentType: 'project',
         title: result.title,
-        summary: result.description || result.content || undefined,
+        summary: result.description || undefined,
       });
     }
   },
@@ -17,7 +17,7 @@ export default {
     const { result } = event;
 
     if (result.publishedAt) {
-      console.log(`Blog "${result.title}" updated and is published.`);
+      console.log(`Project "${result.title}" updated and is published.`);
     }
   },
 };
