@@ -21,10 +21,10 @@ const BG_STATS = "#181f26";
 const BADGES = ["TS", "PY", "NEST", "FLUTTER", "NEXT.JS"];
 
 const STATS = [
-  { n: 8, label: "Programming", sub: "Language" },
-  { n: 5, label: "Frameworks", sub: "& Libs" },
-  { n: 5, label: "Databases", sub: "& DevOps" },
-  { n: 4, label: "QA & Design", sub: "Tools" },
+  { n: "8+", label: "Programming", sub: "Language" },
+  { n: "5+", label: "Frameworks", sub: "& Libs" },
+  { n: "5+", label: "Databases", sub: "& DevOps" },
+  { n: "4+", label: "QA & Design", sub: "Tools" },
 ];
 
 export function Hero() {
