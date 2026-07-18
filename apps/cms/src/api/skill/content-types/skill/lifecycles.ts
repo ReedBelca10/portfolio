@@ -18,6 +18,11 @@ export default {
 
     if (result.publishedAt) {
       console.log(`Skill "${result.name}" updated and is published.`);
+      await notifySubscribers({
+        contentType: 'skill',
+        title: result.name,
+        summary: result.subcategory || undefined,
+      });
     }
   },
 };

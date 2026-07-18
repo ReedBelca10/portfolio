@@ -18,6 +18,11 @@ export default {
 
     if (result.publishedAt) {
       console.log(`Blog "${result.title}" updated and is published.`);
+      await notifySubscribers({
+        contentType: 'blog',
+        title: result.title,
+        summary: result.description || result.content || undefined,
+      });
     }
   },
 };
