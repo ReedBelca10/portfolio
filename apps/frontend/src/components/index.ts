@@ -6,7 +6,7 @@
 export { Button } from './Button';
 export { Badge } from './Badge';
 export { Card } from './Card';
-export { Icon, ChevronRightIcon, ExternalLinkIcon, GitHubIcon, LinkedInIcon, GitLabIcon, DiscordIcon } from './Icon';
+export { Icon, ChevronRightIcon, ExternalLinkIcon, GitHubIcon, LinkedInIcon, GitLabIcon, DiscordIcon, LeetCodeIcon } from './Icon';
 export { Heading } from './Heading';
 export { Section } from './Section';
 export { SkillBadge } from './SkillBadge';

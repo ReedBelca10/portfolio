@@ -2,7 +2,7 @@
 
 import React from 'react';
 import clsx from 'clsx';
-import { GitHubIcon, LinkedInIcon, DiscordIcon, GitLabIcon } from './Icon';
+import { GitHubIcon, LeetCodeIcon, LinkedInIcon, GitLabIcon, DiscordIcon } from './Icon';
 
 /*
  * Footer Component
@@ -25,6 +25,7 @@ interface FooterProps {
     linkedin?: string;
     discord?: string;
     gitlab?: string;
+    leetcode?: string;
   };
   className?: string;
 }
@@ -42,6 +43,7 @@ export function Footer({
     linkedin: 'https://www.linkedin.com/in/caleb-adjeoda-410b34415',
     discord: 'https://discord.com/users/1425091386709115007',
     gitlab: 'https://gitlab.com/ReedBelca10',
+    leetcode: 'https://leetcode.com/reedbelca10',
   },
   className,
 }: FooterProps) {
@@ -80,6 +82,33 @@ export function Footer({
                 aria-label="GitHub"
               >
                 <GitHubIcon size="md" />
+              </button>
+            )}
+            {socialLinks.leetcode && (
+              <button
+                onClick={() => handleSocialClick(socialLinks.leetcode)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#FFA116]/20 text-white hover:text-[#FFA116] transition-all duration-base"
+                aria-label="LeetCode"
+              >
+                <LeetCodeIcon size="md" />
+              </button>
+            )}
+            {socialLinks.leetcode && (
+              <button
+                onClick={() => handleSocialClick(socialLinks.leetcode)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#FFA116]/20 text-white hover:text-[#FFA116] transition-all duration-base"
+                aria-label="LeetCode"
+              >
+                <LeetCodeIcon size="md" />
+              </button>
+            )}
+            {socialLinks.leetcode && (
+              <button
+                onClick={() => handleSocialClick(socialLinks.leetcode)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#FFA116]/20 text-white hover:text-[#FFA116] transition-all duration-base"
+                aria-label="LeetCode"
+              >
+                <LeetCodeIcon size="md" />
               </button>
             )}
             {socialLinks.linkedin && (

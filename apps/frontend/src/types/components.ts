@@ -164,7 +164,9 @@ export interface FooterLink {
 export interface FooterSocialLinks {
   github?: string;
   linkedin?: string;
-  twitter?: string;
+  gitlab?: string;
+  leetcode?: string;
+  discord?: string;
 }
 
 export interface FooterProps {

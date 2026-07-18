@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, usePathname } from '@/i18n';
 import clsx from 'clsx';
-import { GitHubIcon, LinkedInIcon, DiscordIcon, GitLabIcon } from './Icon';
+import { GitHubIcon, LinkedInIcon, DiscordIcon, GitLabIcon, LeetCodeIcon } from './Icon';
 
 interface NavbarLink {
   label: string;
@@ -13,7 +13,7 @@ interface NavbarLink {
 interface SocialLink {
   name: string;
   url: string;
-  icon: 'github' | 'linkedin' | 'discord' | 'gitlab';
+  icon: 'github' | 'linkedin' | 'leetcode' | 'discord' | 'gitlab';
 }
 
 interface NavbarProps {
@@ -29,6 +29,7 @@ export function Navbar({
     { label: 'Blogs', href: '/blog' },
   ],
   socialLinks = [
+    { name: 'leetcode', url: 'https://leetcode.com/reedbelca10', icon: 'leetcode' },
     { name: 'linkedin', url: 'https://www.linkedin.com/in/caleb-adjeoda-410b34415', icon: 'linkedin' },
     { name: 'discord', url: 'https://discord.com/users/1425091386709115007', icon: 'discord' },
     { name: 'gitlab', url: 'https://gitlab.com/ReedBelca10', icon: 'gitlab' },
@@ -79,7 +80,9 @@ export function Navbar({
     window.open(url, '_blank');
   };
 
-  const renderSocialIcon = (icon: 'github' | 'linkedin' | 'discord' | 'gitlab') => {
+  
+
+  const renderSocialIcon = (icon: 'github' | 'linkedin' | 'discord' | 'gitlab' | 'leetcode') => {
     switch (icon) {
       case 'github':
         return <GitHubIcon size="md" />;
@@ -89,6 +92,8 @@ export function Navbar({
         return <DiscordIcon size="md" />;
       case 'gitlab':
         return <GitLabIcon size="md" />;
+      case 'leetcode':
+        return <LeetCodeIcon size="md" />;
       default:
         return null;
     }

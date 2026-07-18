@@ -114,3 +114,14 @@ export function GitLabIcon({ size = 'md' }: Omit<IconProps, 'children'>) {
     </Icon>
   );
 }
+
+export function LeetCodeIcon({ size = 'md' }: Omit<IconProps, 'children'>) {
+  const sizeValue = sizeMap[size];
+  return (
+    <Icon size={size} title="leetcode">
+      <svg width={sizeValue} height={sizeValue} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C7.589 2 4 5.589 4 10c0 4.412 3.589 8 8 8s8-3.588 8-8c0-4.411-3.589-8-8-8zm1.5 5.5c.827 0 1.5.673 1.5 1.5S14.327 10.5 13.5 10.5 12 9.827 12 9s.673-1.5 1.5-1.5zM8 14.5c-.276 0-.5-.224-.5-.5 0-1.933 1.567-3.5 3.5-3.5.276 0 .5.224.5.5s-.224.5-.5.5c-1.105 0-2 1.12-2 2.5 0 .276-.224.5-.5.5zM15.5 17c-.276 0-.5-.224-.5-.5 0-1.657-1.343-3-3-3-.276 0-.5-.224-.5-.5s.224-.5.5-.5c2.206 0 4 1.794 4 4 0 .276-.224.5-.5.5z" />
+      </svg>
+    </Icon>
+  );
+}
