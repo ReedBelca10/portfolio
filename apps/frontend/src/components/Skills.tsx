@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { fetchSkills } from "@/lib/strapi";
+import { useLocale, useTranslations } from 'next-intl';
 
 /* ─────────────────────────────────────────────────────────────────
    SKILLS SECTION
@@ -57,24 +58,24 @@ const STACK_ORDER = [
   "Design & Tools",
 ] as const;
 
-const TAB_MAPPING: Record<string, { id: string; icon: SkillCategory["icon"]; tags: string }> = {
-  "Programming Languages": { id: "languages", icon: "code", tags: "TS · RUST · PYTHON · JAVA · C++" },
-  "AI & Data Science": { id: "ai-data", icon: "code", tags: "PYTHON · PANDAS · NUMPY · SQL" },
-  "Theoretical Computer Science": { id: "theory", icon: "code", tags: "ALGORITHMS · DATA STRUCTURES · SYSTEMS" },
-  "Web Development": { id: "web", icon: "monitor", tags: "REACT · NEXT.JS · HTML5 · CSS3" },
-  "Mobile Development": { id: "mobile", icon: "mobile", tags: "FLUTTER · REACT NATIVE · DART" },
-  "Backend Development": { id: "backend", icon: "server", tags: "NODE · NEST · EXPRESS" },
-  "Database & Cloud Computing": { id: "database", icon: "database", tags: "POSTGRESQL · MONGODB · REDIS · AWS · GCP" },
-  "DevOps & Security": { id: "devops", icon: "database", tags: "DOCKER · KUBERNETES · CI/CD · GNU/LINUX · GIT" },
-  "Design & Tools": { id: "design", icon: "design", tags: "FIGMA · PHOTOSHOP · ODOO · GITHUB · GITLAB" },
+const TAB_MAPPING: Record<string, { id: string; icon: SkillCategory["icon"]; tags: string; tKey: string }> = {
+  "Programming Languages": { id: "languages", icon: "code", tags: "TS · RUST · PYTHON · JAVA · C++", tKey: "programmingLanguages" },
+  "AI & Data Science": { id: "ai-data", icon: "code", tags: "PYTHON · PANDAS · NUMPY · SQL", tKey: "aiDataScience" },
+  "Theoretical Computer Science": { id: "theory", icon: "code", tags: "ALGORITHMS · DATA STRUCTURES · SYSTEMS", tKey: "theory" },
+  "Web Development": { id: "web", icon: "monitor", tags: "REACT · NEXT.JS · HTML5 · CSS3", tKey: "web" },
+  "Mobile Development": { id: "mobile", icon: "mobile", tags: "FLUTTER · REACT NATIVE · DART", tKey: "mobile" },
+  "Backend Development": { id: "backend", icon: "server", tags: "NODE · NEST · EXPRESS", tKey: "backend" },
+  "Database & Cloud Computing": { id: "database", icon: "database", tags: "POSTGRESQL · MONGODB · REDIS · AWS · GCP", tKey: "database" },
+  "DevOps & Security": { id: "devops", icon: "database", tags: "DOCKER · KUBERNETES · CI/CD · GNU/LINUX · GIT", tKey: "devops" },
+  "Design & Tools": { id: "design", icon: "design", tags: "FIGMA · PHOTOSHOP · ODOO · GITHUB · GITLAB", tKey: "design" },
 };
 
 function getProficiencyLevel(percent: number) {
-  if (percent < 40) return "BEGINNER";
-  if (percent < 60) return "INTERMEDIATE";
-  if (percent < 80) return "PROFICIENT";
-  if (percent < 90) return "SENIOR";
-  return "EXPERT";
+  if (percent < 40) return "beginner";
+  if (percent < 60) return "intermediate";
+  if (percent < 80) return "proficient";
+  if (percent < 90) return "senior";
+  return "expert";
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
@@ -153,6 +154,7 @@ function CategoryIcon({ type, color = CYAN }: { type: SkillCategory["icon"]; col
 
 /* ── Single Skill Card ── */
 function SkillCard({ skill, index }: { skill: StrapiSkill; index: number }) {
+  const t = useTranslations('pages.home.skills');
   const { name, subcategory, proficiency, icon } = skill.attributes;
   const level = getProficiencyLevel(proficiency);
   const imageUrl = getImageUrl(icon?.data?.attributes?.url);
@@ -190,7 +192,7 @@ function SkillCard({ skill, index }: { skill: StrapiSkill; index: number }) {
       {/* Level */}
       <div className="skill-footer">
         <span className="skill-level" style={{ color: "#ffffff" }}>
-          {level}
+          {t(`levels.${level}`)}
         </span>
 
         {/* Progress bar */}
@@ -211,6 +213,9 @@ function SkillCard({ skill, index }: { skill: StrapiSkill; index: number }) {
 
 /* ── Main Skills Component ── */
 export function Skills() {
+  const locale = useLocale();
+  const t = useTranslations('pages.home.skills');
+  
   const [categories, setCategories] = useState<SkillCategory[]>([]);
   const [activeTab, setActiveTab] = useState<string>("");
   const [loading, setLoading] = useState(true);
@@ -218,7 +223,7 @@ export function Skills() {
   useEffect(() => {
     async function loadSkills() {
       try {
-        const data = await fetchSkills();
+        const data = await fetchSkills(locale);
         
         // Group skills by stack
         const grouped = data.reduce((acc: Record<string, StrapiSkill[]>, skill: StrapiSkill) => {
@@ -235,10 +240,10 @@ export function Skills() {
         ] as string[];
 
         const formattedCategories: SkillCategory[] = orderedStackNames.map(stackName => {
-          const mapping = TAB_MAPPING[stackName] || { id: stackName.toLowerCase().replace(/\s+/g, '-'), icon: 'monitor' as SkillCategory['icon'], tags: '' };
+          const mapping = TAB_MAPPING[stackName] || { id: stackName.toLowerCase().replace(/\s+/g, '-'), icon: 'monitor' as SkillCategory['icon'], tags: '', tKey: '' };
           return {
             id: mapping.id,
-            label: stackName,
+            label: mapping.tKey ? (t as any)(`categories.${mapping.tKey}`) : stackName,
             icon: mapping.icon,
             tags: mapping.tags,
             skills: grouped[stackName],
@@ -563,23 +568,23 @@ export function Skills() {
         {/* ── Header ── */}
         <div className="skills-header-row">
           <div className="skills-title-container">
-            <h2 className="skills-title">Skills</h2>
+            <h2 className="skills-title">{t('title')}</h2>
             <div className="skills-title-underline" aria-hidden="true">
               <span className="dot" />
               <span className="line-spacer" />
               <span className="dot" />
             </div>
           </div>
-          <p className="skills-subtitle">I am striving to never stop learning and improving</p>
+          <p className="skills-subtitle">{t('subtitle')}</p>
         </div>
 
         {loading ? (
           <div style={{ textAlign: "center", color: "#fff", marginTop: "40px" }}>
-            Loading skills...
+            {t('loading')}
           </div>
         ) : categories.length === 0 ? (
           <div style={{ textAlign: "center", color: "#fff", marginTop: "40px" }}>
-            No skills available. Please add some in the CMS.
+            {t('empty')}
           </div>
         ) : (
           <>

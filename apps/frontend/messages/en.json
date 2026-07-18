@@ -10,61 +10,63 @@
       "skills": "Skills",
       "blog": "Blogs",
       "contact": "Contact"
+    },
+    "footer": {
+      "copyright": "© {year} Caleb Adjeoda. All rights reserved.",
+      "privacyPolicy": "Privacy Policy",
+      "termsConditions": "Terms & Conditions"
     }
   },
   "pages": {
     "home": {
       "hero": {
-        "title": "Welcome to My Portfolio",
-        "subtitle": "Crafting beautiful digital experiences through design and development",
-        "cta": "View My Work",
-        "contact": "Get in Touch"
+        "role": "Software Engineer",
+        "availability": "Full-time / Freelancer",
+        "downloadCv": "Download CV",
+        "greeting": "Hey",
+        "im": "I'm",
+        "description": "I craft high-performance web and mobile applications, from robust backend architectures to seamless user experiences. If you're looking for a versatile developer to transform complex ideas into scalable digital products, let's build together.",
+        "letsTalk": "Let's Talk"
       },
       "about": {
-        "badge": "About",
-        "title": "Get to know me",
-        "description": "A brief introduction about who I am and what I do",
-        "paragraph1": "I am a passionate developer and designer with a keen eye for creating intuitive and engaging user experiences.",
-        "paragraph2": "With expertise in modern web technologies, I bring ideas to life through clean, efficient code and thoughtful design.",
-        "highlights": "Key Highlights",
-        "skill1": "Full-stack development with React & Next.js",
-        "skill2": "UI/UX Design & Prototyping",
-        "skill3": "Database Design & Optimization",
-        "skill4": "Team Leadership & Mentoring"
+        "title": "About Me",
+        "hello": "Hello!",
+        "p1": "My name is Caleb and I specialize in engineering full-stack web and mobile systems utilizing modern ecosystems like <hl>Next.js</hl>, <hl>NestJS</hl>, and <hl>Flutter</hl>.",
+        "p2": "I am a highly motivated professional dedicated to architectural stability, writing clean, robust, and well-tested code that scales. I bridge the gap between technical project design and clean execution to deliver reliable, end-to-end digital solutions.",
+        "p3": "When I'm not coding or optimizing database queries, I enjoy <hl>designing modern interfaces in Figma</hl>, <hl>analyzing complex system workflows</hl>, or diving into technical documentation. I also like to fuel my curiosity by <hl>reading</hl>, <hl>exploring philosophical concepts</hl>, <hl>creating digital</hl> content especially for <hl>YouTube</hl>, or unwinding with a good <hl>gaming session</hl>.",
+        "p4": "I love building impactful platforms that solve real-world problems and continuously pushing the boundaries of my technical capabilities."
       },
       "projects": {
-        "badge": "Portfolio",
-        "title": "Recent Works",
-        "description": "A selection of projects I've worked on recently",
-        "item1": {
-          "title": "E-Commerce Platform",
-          "description": "Modern e-commerce solution with React and Node.js"
-        },
-        "item2": {
-          "title": "SaaS Dashboard",
-          "description": "Analytics dashboard for business intelligence"
-        },
-        "item3": {
-          "title": "Mobile App",
-          "description": "Cross-platform mobile application using React Native"
-        },
-        "item4": {
-          "title": "CMS System",
-          "description": "Headless CMS with GraphQL API"
-        },
-        "item5": {
-          "title": "Design System",
-          "description": "Comprehensive component library and design tokens"
-        },
-        "item6": {
-          "title": "Web Portal",
-          "description": "Enterprise web portal with advanced features"
-        }
+        "title": "Works",
+        "description": "I had the pleasure of working with these awesome projects",
+        "loading": "Loading projects...",
+        "empty": "No projects available. Please add some in the CMS.",
+        "viewApp": "View App",
+        "viewSource": "View Source Code"
       },
       "skills": {
-        "badge": "Expertise",
-        "title": "My Skills",
-        "description": "Technologies and tools I work with"
+        "title": "Skills",
+        "subtitle": "I am striving to never stop learning and improving",
+        "loading": "Loading skills...",
+        "empty": "No skills available. Please add some in the CMS.",
+        "levels": {
+          "beginner": "BEGINNER",
+          "intermediate": "INTERMEDIATE",
+          "proficient": "PROFICIENT",
+          "senior": "SENIOR",
+          "expert": "EXPERT"
+        },
+        "categories": {
+          "programmingLanguages": "Programming Languages",
+          "aiDataScience": "AI & Data Science",
+          "theory": "Theoretical Computer Science",
+          "backend": "Backend Development",
+          "web": "Web Development",
+          "mobile": "Mobile Development",
+          "database": "Database & Cloud Computing",
+          "devops": "DevOps & Security",
+          "design": "Design & Tools"
+        }
       },
       "blog": {
         "badge": "Articles",
@@ -96,18 +98,22 @@
         }
       },
       "contact": {
-        "badge": "Get in Touch",
-        "title": "Let's Work Together",
-        "description": "Have a project in mind? Let's discuss how we can collaborate",
-        "email": "Email",
-        "location": "Location",
-        "nameLabel": "Name",
-        "namePlaceholder": "Your name",
-        "emailLabel": "Email",
-        "emailPlaceholder": "your@email.com",
-        "messageLabel": "Message",
-        "messagePlaceholder": "Your message here...",
-        "submit": "Send Message"
+        "title": "Contact",
+        "subtitle": "I'm currently available for freelance work",
+        "sendMeMessageBtn": "Send Me A Message",
+        "yourName": "Your name *",
+        "namePlaceholder": "Enter your name",
+        "yourEmail": "Your email *",
+        "emailPlaceholder": "Enter your email",
+        "subject": "Subject",
+        "subjectPlaceholder": "What is this about?",
+        "yourMessage": "Your message *",
+        "messagePlaceholder": "Enter your needs",
+        "sending": "Sending...",
+        "sendMessage": "Send Message",
+        "statusSending": "Sending your message…",
+        "statusSuccess": "Message sent successfully! I'll get back to you soon.",
+        "statusError": "Failed to send message. Please try again."
       }
     }
   },

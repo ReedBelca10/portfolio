@@ -30,10 +30,10 @@ export interface StrapiError {
 }
 
 // Fonctions helper pour les requêtes
-export async function fetchPortfolioInfo() {
+export async function fetchPortfolioInfo(locale: string = 'en') {
   try {
     const response = await strapiClient.get<StrapiResponse<any>>(
-      '/portfolio-info?populate=*'
+      `/portfolio-info?populate=*&locale=${locale}`
     );
     const data = response.data.data;
     return data ? { id: data.id, ...data.attributes } : null;
@@ -43,10 +43,10 @@ export async function fetchPortfolioInfo() {
   }
 }
 
-export async function fetchProjects() {
+export async function fetchProjects(locale: string = 'en') {
   try {
     const response = await strapiClient.get<StrapiResponse<any>>(
-      '/projects?populate=*&sort=createdAt:desc'
+      `/projects?populate=*&sort=createdAt:desc&locale=${locale}`
     );
     const data = response.data.data;
     return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
@@ -56,10 +56,10 @@ export async function fetchProjects() {
   }
 }
 
-export async function fetchSkills() {
+export async function fetchSkills(locale: string = 'en') {
   try {
     const response = await strapiClient.get<StrapiResponse<any>>(
-      '/skills?populate=*&sort=stack'
+      `/skills?populate=*&sort=stack&locale=${locale}`
     );
     const data = response.data.data;
     return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
@@ -69,10 +69,10 @@ export async function fetchSkills() {
   }
 }
 
-export async function fetchWorks() {
+export async function fetchWorks(locale: string = 'en') {
   try {
     const response = await strapiClient.get<StrapiResponse<any>>(
-      '/works?populate=*'
+      `/works?populate=*&locale=${locale}`
     );
     const data = response.data.data;
     return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
@@ -109,11 +109,11 @@ export async function submitMessage(data: {
   }
 }
 
-export async function fetchBlogs() {
+export async function fetchBlogs(locale: string = 'en') {
   try {
     // Sort by publication date desc
     const response = await strapiClient.get<StrapiResponse<any>>(
-      '/blogs?populate=*&sort=publishedDate:desc'
+      `/blogs?populate=*&sort=publishedDate:desc&locale=${locale}`
     );
     const data = response.data.data;
     return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
@@ -123,10 +123,10 @@ export async function fetchBlogs() {
   }
 }
 
-export async function fetchBlogById(id: string | number) {
+export async function fetchBlogById(id: string | number, locale: string = 'en') {
   try {
     const response = await strapiClient.get<StrapiResponse<any>>(
-      `/blogs/${id}?populate=*`
+      `/blogs/${id}?populate=*&locale=${locale}`
     );
     const data = response.data.data;
     return data ? { id: data.id, ...data.attributes } : null;
@@ -148,5 +148,21 @@ export async function subscribeToNewsletter(email: string) {
       throw new Error(error.response.data.error.message);
     }
     throw error;
+  }
+}
+
+export async function fetchCV(locale: string = 'en') {
+  try {
+    const response = await strapiClient.get<StrapiResponse<any>>(
+      `/cv?populate=*&locale=${locale}`
+    );
+    const data = response.data.data;
+    if (data?.attributes?.file?.data?.attributes?.url) {
+      return data.attributes.file.data.attributes.url;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching CV:', error);
+    return null;
   }
 }

@@ -2,11 +2,13 @@
 
 import React, { useState } from 'react';
 import { submitMessage } from '@/lib/strapi';
+import { useTranslations } from 'next-intl';
 
 const CYAN = '#00D9FF';
 const BG = '#071216';
 
 export function ContactSection() {
+  const t = useTranslations('pages.home.contact');
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState<{ type: 'idle' | 'sending' | 'success' | 'error'; message: string }>({
     type: 'idle',
@@ -29,15 +31,14 @@ export function ContactSection() {
 
     if (!trimmedForm.name || !trimmedForm.email || !trimmedForm.message) return;
 
-    setStatus({ type: 'sending', message: 'Sending your message…' });
+    setStatus({ type: 'sending', message: t('statusSending') });
 
     try {
       await submitMessage(trimmedForm);
-      setStatus({ type: 'success', message: 'Message sent successfully! I\'ll get back to you soon.' });
+      setStatus({ type: 'success', message: t('statusSuccess') });
       setForm({ name: '', email: '', subject: '', message: '' });
     } catch (err: any) {
-      const msg = err?.message || 'Failed to send message. Please try again.';
-      setStatus({ type: 'error', message: msg });
+      setStatus({ type: 'error', message: t('statusError') });
     }
   };
 
@@ -52,7 +53,7 @@ export function ContactSection() {
             style={{ color: CYAN, fontSize: 'clamp(40px, 6.2vw, 72px)', lineHeight: 1 }}
             className="font-semibold"
           >
-            Contact
+            {t('title')}
           </h2>
           <div className="mx-auto my-4 w-[120px] sm:w-[140px]">
             <div className="h-0.5 bg-[#00D9FF] mx-auto w-full relative" />
@@ -61,7 +62,7 @@ export function ContactSection() {
             </div>
           </div>
           <p className="text-sm sm:text-base text-white/80 mb-8">
-            I&apos;m currently available for freelance work
+            {t('subtitle')}
           </p>
 
           <div className="mx-auto mb-8 sm:mb-10">
@@ -69,7 +70,7 @@ export function ContactSection() {
               href="#contact"
               className="inline-flex w-full sm:w-auto items-center justify-center border-2 border-[#00D9FF] text-[#00D9FF] rounded-tr-3xl rounded-bl-3xl px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold hover:bg-[#00D9FF]/10 transition-all"
             >
-              Send Me A Message
+              {t('sendMeMessageBtn')}
             </a>
           </div>
         </div>
@@ -82,7 +83,7 @@ export function ContactSection() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-semibold text-[#00D9FF] mb-2">
-                  Your name *
+                  {t('yourName')}
                 </label>
                 <input
                   type="text"
@@ -90,13 +91,13 @@ export function ContactSection() {
                   required
                   value={form.name}
                   onChange={handleChange}
-                  placeholder="Enter your name"
+                  placeholder={t('namePlaceholder')}
                   className="w-full bg-transparent border-b-2 border-white/30 text-white py-3 placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] transition-colors"
                 />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-[#00D9FF] mb-2">
-                  Your email *
+                  {t('yourEmail')}
                 </label>
                 <input
                   type="email"
@@ -104,7 +105,7 @@ export function ContactSection() {
                   required
                   value={form.email}
                   onChange={handleChange}
-                  placeholder="Enter your email"
+                  placeholder={t('emailPlaceholder')}
                   className="w-full bg-transparent border-b-2 border-white/30 text-white py-3 placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] transition-colors"
                 />
               </div>
@@ -112,21 +113,21 @@ export function ContactSection() {
 
             <div>
               <label className="block text-sm font-semibold text-[#00D9FF] mb-2">
-                Subject
+                {t('subject')}
               </label>
               <input
                 type="text"
                 name="subject"
                 value={form.subject}
                 onChange={handleChange}
-                placeholder="What is this about?"
+                placeholder={t('subjectPlaceholder')}
                 className="w-full bg-transparent border-b-2 border-white/30 text-white py-3 placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] transition-colors"
               />
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-[#00D9FF] mb-2">
-                Your message *
+                {t('yourMessage')}
               </label>
               <textarea
                 name="message"
@@ -134,7 +135,7 @@ export function ContactSection() {
                 required
                 value={form.message}
                 onChange={handleChange}
-                placeholder="Enter your needs"
+                placeholder={t('messagePlaceholder')}
                 className="w-full bg-transparent border-b-2 border-white/30 text-white py-3 placeholder:text-white/40 focus:outline-none focus:border-[#00D9FF] resize-none transition-colors"
               />
             </div>
@@ -147,14 +148,14 @@ export function ContactSection() {
               >
                 {status.type === 'sending' ? (
                   <>
-                    Sending...
+                    {t('sending')}
                     <svg className="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none">
                       <circle cx="12" cy="12" r="10" stroke="#071216" strokeWidth="3" strokeDasharray="31.4 31.4" strokeLinecap="round" />
                     </svg>
                   </>
                 ) : (
                   <>
-                    Send Message
+                    {t('sendMessage')}
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#071216" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M22 2L11 13" />
                       <path d="M22 2l-7 20-4-9-9-4 20-7z" />

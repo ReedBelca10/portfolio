@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from 'next-intl';
 
 /* ─────────────────────────────────────────────────────────────────
    HERO SECTION
@@ -27,7 +28,12 @@ const STATS = [
   { n: "4+", label: "QA & Design", sub: "Tools" },
 ];
 
-export function Hero() {
+interface HeroProps {
+  cvUrl?: string | null;
+}
+
+export function Hero({ cvUrl }: HeroProps) {
+  const t = useTranslations('pages.home.hero');
   return (
     <section
       id="home"
@@ -320,7 +326,7 @@ export function Hero() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    Software Engineer
+                    {t('role')}
                   </p>
                 </div>
 
@@ -336,7 +342,7 @@ export function Hero() {
                   </div>
                   <div className="hp-row">
                     <span className="hp-icon"><BriefcaseIcon /></span>
-                    <span className="hp-text">Full-time / Freelancer</span>
+                    <span className="hp-text">{t('availability')}</span>
                   </div>
                   <div className="hp-row">
                     <span className="hp-icon"><GlobeIcon /></span>
@@ -352,8 +358,8 @@ export function Hero() {
                 </div>
 
                 {/* Download CV */}
-                <Link href="/CalebCV.pdf" target="_blank" className="hp-cv">
-                  Download CV
+                <Link href={cvUrl || "/CalebCV.pdf"} target="_blank" className="hp-cv">
+                  {t('downloadCv')}
                   <DownloadIcon />
                 </Link>
 
@@ -386,11 +392,11 @@ export function Hero() {
                 overflowWrap: "anywhere",
               }}
             >
-              Hey
+              {t('greeting')}
               <br />
-              I&apos;m <span style={{ color: CYAN }}>Caleb</span>,
+              {t('im')} <span style={{ color: CYAN }}>Caleb</span>,
               <br />
-              <span style={{ whiteSpace: "nowrap" }}>Software Engineer</span>
+              <span style={{ whiteSpace: "nowrap" }}>{t('role')}</span>
               {/* </h1> inline tag */}
               <span className="ctag">&lt;/h1&gt;</span>
             </h1>
@@ -411,10 +417,7 @@ export function Hero() {
                 fontFamily: "IBM Plex Mono",
               }}
             >
-              I craft high-performance web and mobile applications, from robust
-              backend architectures to seamless user experiences. If you&apos;re
-              looking for a versatile developer to transform complex ideas into
-              scalable digital products, let&apos;s build together.
+              {t('description')}
             </p>
 
             {/* </p> */}
@@ -424,7 +427,7 @@ export function Hero() {
 
             {/* Let's Talk */}
             <a href="mailto:calebadjeoda@hotmail.com" className="btn-talk">
-              Let&apos;s Talk
+              {t('letsTalk')}
               <span className="btn-talk-icon">
                 <MailIcon />
               </span>

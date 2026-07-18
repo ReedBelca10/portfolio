@@ -10,61 +10,63 @@
       "skills": "Compétences",
       "blog": "Articles",
       "contact": "Contact"
+    },
+    "footer": {
+      "copyright": "© {year} Caleb Adjeoda. Tous droits réservés.",
+      "privacyPolicy": "Politique de confidentialité",
+      "termsConditions": "Conditions générales"
     }
   },
   "pages": {
     "home": {
       "hero": {
-        "title": "Bienvenue sur Mon Portfolio",
-        "subtitle": "Créer de magnifiques expériences numériques grâce au design et au développement",
-        "cta": "Voir mes travaux",
-        "contact": "Contactez-moi"
+        "role": "Ingénieur Logiciel",
+        "availability": "Temps plein / Freelance",
+        "downloadCv": "Télécharger CV",
+        "greeting": "Salut",
+        "im": "Je suis",
+        "description": "Je crée des applications web et mobiles haute performance, allant d'architectures backend robustes à des expériences utilisateur fluides. Si vous recherchez un développeur polyvalent pour transformer des idées complexes en produits numériques évolutifs, construisons ensemble.",
+        "letsTalk": "Discutons"
       },
       "about": {
-        "badge": "À propos",
-        "title": "Apprenez à me connaître",
-        "description": "Une brève présentation de qui je suis et ce que je fais",
-        "paragraph1": "Je suis un développeur et designer passionné avec un œil aiguisé pour créer des expériences utilisateur intuitives et engageantes.",
-        "paragraph2": "Avec expertise dans les technologies web modernes, je donne vie aux idées grâce à du code propre et efficace et à un design réfléchi.",
-        "highlights": "Points clés",
-        "skill1": "Développement full-stack avec React & Next.js",
-        "skill2": "Design UI/UX & Prototypage",
-        "skill3": "Design et optimisation de bases de données",
-        "skill4": "Leadership d'équipe & Mentorat"
+        "title": "À Propos de Moi",
+        "hello": "Bonjour !",
+        "p1": "Je m'appelle Caleb et je me spécialise dans l'ingénierie de systèmes web et mobiles full-stack en utilisant des écosystèmes modernes tels que <hl>Next.js</hl>, <hl>NestJS</hl> et <hl>Flutter</hl>.",
+        "p2": "Je suis un professionnel très motivé, dédié à la stabilité architecturale, écrivant un code propre, robuste, bien testé et évolutif. Je fais le lien entre la conception technique de projet et une exécution propre pour fournir des solutions numériques fiables de bout en bout.",
+        "p3": "Quand je ne code pas ou n'optimise pas des requêtes de base de données, j'aime <hl>concevoir des interfaces modernes sur Figma</hl>, <hl>analyser des flux de travail de systèmes complexes</hl>, ou me plonger dans la documentation technique. J'aime aussi nourrir ma curiosité en <hl>lisant</hl>, en <hl>explorant des concepts philosophiques</hl>, en <hl>créant du contenu numérique</hl> notamment pour <hl>YouTube</hl>, ou en me détendant avec une bonne <hl>session de jeu vidéo</hl>.",
+        "p4": "J'adore créer des plateformes impactantes qui résolvent des problèmes concrets et repousser continuellement les limites de mes capacités techniques."
       },
       "projects": {
-        "badge": "Portfolio",
-        "title": "Travaux récents",
-        "description": "Une sélection de projets sur lesquels j'ai récemment travaillé",
-        "item1": {
-          "title": "Plateforme E-Commerce",
-          "description": "Solution e-commerce moderne avec React et Node.js"
-        },
-        "item2": {
-          "title": "Tableau de bord SaaS",
-          "description": "Tableau de bord analytique pour l'intelligence commerciale"
-        },
-        "item3": {
-          "title": "Application Mobile",
-          "description": "Application mobile multiplateforme utilisant React Native"
-        },
-        "item4": {
-          "title": "Système CMS",
-          "description": "CMS sans tête avec API GraphQL"
-        },
-        "item5": {
-          "title": "Système de Design",
-          "description": "Bibliothèque de composants et tokens de design complets"
-        },
-        "item6": {
-          "title": "Portail Web",
-          "description": "Portail web d'entreprise avec fonctionnalités avancées"
-        }
+        "title": "Travaux",
+        "description": "J'ai eu le plaisir de travailler sur ces superbes projets",
+        "loading": "Chargement des projets...",
+        "empty": "Aucun projet disponible. Veuillez en ajouter dans le CMS.",
+        "viewApp": "Voir l'application",
+        "viewSource": "Voir le code source"
       },
       "skills": {
-        "badge": "Expertise",
-        "title": "Mes compétences",
-        "description": "Technologies et outils avec lesquels je travaille"
+        "title": "Compétences",
+        "subtitle": "Je m'efforce de ne jamais cesser d'apprendre et de m'améliorer",
+        "loading": "Chargement des compétences...",
+        "empty": "Aucune compétence disponible. Veuillez en ajouter dans le CMS.",
+        "levels": {
+          "beginner": "DÉBUTANT",
+          "intermediate": "INTERMÉDIAIRE",
+          "proficient": "COMPÉTENT",
+          "senior": "SENIOR",
+          "expert": "EXPERT"
+        },
+        "categories": {
+          "programmingLanguages": "Langages de programmation",
+          "aiDataScience": "IA & Science des données",
+          "theory": "Informatique Théorique",
+          "backend": "Développement Backend",
+          "web": "Développement Web",
+          "mobile": "Développement Mobile",
+          "database": "Bases de données & Cloud",
+          "devops": "DevOps & Sécurité",
+          "design": "Design & Outils"
+        }
       },
       "blog": {
         "badge": "Articles",
@@ -96,18 +98,22 @@
         }
       },
       "contact": {
-        "badge": "Contactez-moi",
-        "title": "Travaillons ensemble",
-        "description": "Vous avez un projet en tête ? Discutons de la façon dont nous pouvons collaborer",
-        "email": "Email",
-        "location": "Localisation",
-        "nameLabel": "Nom",
-        "namePlaceholder": "Votre nom",
-        "emailLabel": "Email",
-        "emailPlaceholder": "votre@email.com",
-        "messageLabel": "Message",
-        "messagePlaceholder": "Votre message ici...",
-        "submit": "Envoyer le message"
+        "title": "Contact",
+        "subtitle": "Je suis actuellement disponible pour des missions en freelance",
+        "sendMeMessageBtn": "Envoyez-moi un message",
+        "yourName": "Votre nom *",
+        "namePlaceholder": "Entrez votre nom",
+        "yourEmail": "Votre e-mail *",
+        "emailPlaceholder": "Entrez votre e-mail",
+        "subject": "Sujet",
+        "subjectPlaceholder": "De quoi s'agit-il ?",
+        "yourMessage": "Votre message *",
+        "messagePlaceholder": "Entrez vos besoins",
+        "sending": "Envoi...",
+        "sendMessage": "Envoyer le message",
+        "statusSending": "Envoi de votre message…",
+        "statusSuccess": "Message envoyé avec succès ! Je vous répondrai bientôt.",
+        "statusError": "Échec de l'envoi du message. Veuillez réessayer."
       }
     }
   },

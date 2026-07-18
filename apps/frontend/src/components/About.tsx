@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from 'next-intl';
 
 const CYAN = "#00D9FF";
 const BG_CARD = "#2A3137";
 
 export function About() {
+  const t = useTranslations('pages.home.about');
   return (
     <section
       id="about"
@@ -174,7 +176,7 @@ export function About() {
         <div className="title-container">
           <div className="about-title-wrap">
             <div className="about-title-border" aria-hidden="true"></div>
-            <h2 className="about-title">About Me</h2>
+            <h2 className="about-title">{t('title')}</h2>
           </div>
         </div>
 
@@ -183,22 +185,22 @@ export function About() {
           {/* Text Card */}
           <div className="about-card">
             <div className="about-ctag">&lt;p&gt;</div>
-            <div className="about-hello">Hello!</div>
+            <div className="about-hello">{t('hello')}</div>
             
             <p>
-              My name is Caleb and I specialize in engineering full-stack web and mobile systems utilizing modern ecosystems like <span className="hl">Next.js</span>, <span className="hl">NestJS</span>, and <span className="hl">Flutter</span>.
+              {t.rich('p1', { hl: (chunks) => <span className="hl">{chunks}</span> })}
             </p>
             
             <p>
-              I am a highly motivated professional dedicated to architectural stability, writing clean, robust, and well-tested code that scales. I bridge the gap between technical project design and clean execution to deliver reliable, end-to-end digital solutions.
+              {t('p2')}
             </p>
             
             <p>
-              When I&apos;m not coding or optimizing database queries, I enjoy <span className="hl">designing modern interfaces in Figma</span>, <span className="hl">analyzing complex system workflows</span>, or diving into technical documentation. I also like to fuel my curiosity by <span className="hl">reading</span>, <span className="hl">exploring philosophical concepts</span>, <span className="hl">creating digital</span> content especially for <span className="hl">YouTube</span>, or unwinding with a good <span className="hl">gaming session</span>.
+              {t.rich('p3', { hl: (chunks) => <span className="hl">{chunks}</span> })}
             </p>
             
             <p>
-              I love building impactful platforms that solve real-world problems and continuously pushing the boundaries of my technical capabilities.
+              {t('p4')}
             </p>
 
             <div className="about-ctag-bottom">&lt;/p&gt;</div>

@@ -2,8 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Link, usePathname } from '@/i18n';
+import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 import { GitHubIcon, LinkedInIcon, DiscordIcon, GitLabIcon, LeetCodeIcon } from './Icon';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface NavbarLink {
   label: string;
@@ -24,10 +26,7 @@ interface NavbarProps {
 }
 
 export function Navbar({
-  links = [
-    { label: 'Home', href: '/' },
-    { label: 'Blogs', href: '/blog' },
-  ],
+  links,
   socialLinks = [
     { name: 'leetcode', url: 'https://leetcode.com/reedbelca10', icon: 'leetcode' },
     { name: 'linkedin', url: 'https://www.linkedin.com/in/caleb-adjeoda-410b34415', icon: 'linkedin' },
@@ -38,6 +37,12 @@ export function Navbar({
   onSearch,
   className,
 }: NavbarProps) {
+  const t = useTranslations('common.nav');
+  const defaultLinks = links || [
+    { label: t('home'), href: '/' },
+    { label: t('blog'), href: '/blog' },
+  ];
+
   const pathname = usePathname();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -123,7 +128,7 @@ export function Navbar({
             {/* Links + Search Toggle Container */}
             <div className="relative flex flex-col items-end">
               <div className="flex items-center gap-5 md:gap-8">
-                {links.map((link) => {
+                {defaultLinks.map((link) => {
                   const isActive =
                     link.href === '/'
                       ? pathname === '/' || pathname === ''
@@ -143,6 +148,9 @@ export function Navbar({
                   );
                 })}
                 
+                {/* Language Switcher */}
+                <LanguageSwitcher />
+
                 {/* Search Toggle Button */}
                 <button
                   onClick={handleSearchToggle}

@@ -6,8 +6,15 @@ import Works from '@/components/Works';
 import Blogs from '@/components/Blogs';
 import ContactSection from '@/components/ContactSection';
 
-export default function HomePage() {
-  
+import { fetchCV } from '@/lib/strapi';
+
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const cvUrl = await fetchCV(locale);
 
   return (
     <>
@@ -16,7 +23,7 @@ export default function HomePage() {
 
       <main className="min-h-screen">
         {/* Hero Section */}
-        <Hero />
+        <Hero cvUrl={cvUrl} />
 
         {/* About Section */}
         <About />

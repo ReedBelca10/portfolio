@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { fetchWorks } from '@/lib/strapi';
+import { useLocale, useTranslations } from 'next-intl';
 
 /*
  * Works Component
@@ -80,6 +81,9 @@ function ChevronRight() {
 }
 
 export function Works() {
+  const locale = useLocale();
+  const t = useTranslations('pages.home.projects');
+
   const [works, setWorks] = useState<StrapiWork[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -87,7 +91,7 @@ export function Works() {
   useEffect(() => {
     async function loadWorks() {
       try {
-        const data = await fetchWorks();
+        const data = await fetchWorks(locale);
         setWorks(data || []);
       } catch (error) {
         console.error("Failed to load works:", error);
@@ -132,20 +136,20 @@ export function Works() {
 
         {/* ── Title block ── */}
         <div className="works-title-block">
-          <h2 className="works-title">Works</h2>
+          <h2 className="works-title">{t('title')}</h2>
           <div className="works-title-underline" />
           <p className="works-subtitle">
-            I had the pleasure of working with these awesome projects
+            {t('description')}
           </p>
         </div>
 
         {loading ? (
           <div style={{ textAlign: "center", color: "#fff", marginTop: "40px", fontFamily: "IBM Plex Mono, monospace" }}>
-            Loading projects...
+            {t('loading')}
           </div>
         ) : works.length === 0 ? (
           <div style={{ textAlign: "center", color: "#fff", marginTop: "40px", fontFamily: "IBM Plex Mono, monospace" }}>
-            No projects available. Please add some in the CMS.
+            {t('empty')}
           </div>
         ) : (
           <>
@@ -188,7 +192,7 @@ export function Works() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span className="works-label__text">View App</span>
+                    <span className="works-label__text">{t('viewApp')}</span>
                     <CursorIcon className="works-label__cursor" />
                   </a>
 
@@ -212,7 +216,7 @@ export function Works() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <span className="works-label__text">View Source Code</span>
+                  <span className="works-label__text">{t('viewSource')}</span>
                   <CursorIcon className="works-label__cursor" />
                 </a>
               </div>

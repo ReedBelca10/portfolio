@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { GitHubIcon, LeetCodeIcon, LinkedInIcon, GitLabIcon, DiscordIcon } from './Icon';
+import { useTranslations } from 'next-intl';
 
 /*
  * Footer Component
@@ -30,14 +31,9 @@ interface FooterProps {
   className?: string;
 }
 
-const defaultLegalLinks: FooterLink[] = [
-  { label: 'Privacy Policy', href: '#privacy' },
-  { label: 'Terms & Conditions', href: '#terms' },
-];
-
 export function Footer({
-  copyrightText = `© ${new Date().getFullYear()} Caleb Adjeoda. All rights reserved.`,
-  legalLinks = defaultLegalLinks,
+  copyrightText,
+  legalLinks,
   socialLinks = {
     github: 'https://github.com/ReedBelca10',
     linkedin: 'https://www.linkedin.com/in/caleb-adjeoda-410b34415',
@@ -47,6 +43,13 @@ export function Footer({
   },
   className,
 }: FooterProps) {
+  const t = useTranslations('footer');
+  
+  const actualCopyrightText = copyrightText || t('copyright', { year: new Date().getFullYear() });
+  const actualLegalLinks = legalLinks || [
+    { label: t('privacyPolicy'), href: '#privacy' },
+    { label: t('termsConditions'), href: '#terms' },
+  ];
   const handleSocialClick = (url: string | undefined) => {
     if (url) {
       window.open(url, '_blank');
@@ -62,9 +65,9 @@ export function Footer({
     >
       <div className="container-custom px-4 sm:px-6 lg:px-8 py-8 md:py-10 lg:py-12">
         <div className="hidden md:flex flex-wrap items-center justify-between gap-6 md:gap-8">
-          <p className="text-xs md:text-sm text-white flex-shrink-0">{copyrightText}</p>
+          <p className="text-xs md:text-sm text-white flex-shrink-0">{actualCopyrightText}</p>
           <div className="flex flex-wrap gap-4 md:gap-6 justify-center flex-grow">
-            {legalLinks.map((link) => (
+            {actualLegalLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -172,9 +175,9 @@ export function Footer({
             )}
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 text-center">
-            <p className="text-xs text-white">{copyrightText}</p>
+            <p className="text-xs text-white">{actualCopyrightText}</p>
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              {legalLinks.map((link) => (
+              {actualLegalLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
@@ -235,9 +238,9 @@ export function Footer({
               </button>
             )}
           </div>
-          <p className="text-xs text-white text-center">{copyrightText}</p>
+          <p className="text-xs text-white text-center">{actualCopyrightText}</p>
           <div className="flex flex-col gap-3 text-center">
-            {legalLinks.map((link) => (
+            {actualLegalLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
