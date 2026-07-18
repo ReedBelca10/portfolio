@@ -93,24 +93,6 @@ export function Footer({
                 <LeetCodeIcon size="md" />
               </button>
             )}
-            {socialLinks.leetcode && (
-              <button
-                onClick={() => handleSocialClick(socialLinks.leetcode)}
-                className="p-2 rounded-full bg-white/10 hover:bg-[#FFA116]/20 text-white hover:text-[#FFA116] transition-all duration-base"
-                aria-label="LeetCode"
-              >
-                <LeetCodeIcon size="md" />
-              </button>
-            )}
-            {socialLinks.leetcode && (
-              <button
-                onClick={() => handleSocialClick(socialLinks.leetcode)}
-                className="p-2 rounded-full bg-white/10 hover:bg-[#FFA116]/20 text-white hover:text-[#FFA116] transition-all duration-base"
-                aria-label="LeetCode"
-              >
-                <LeetCodeIcon size="md" />
-              </button>
-            )}
             {socialLinks.linkedin && (
               <button
                 onClick={() => handleSocialClick(socialLinks.linkedin)}
@@ -150,6 +132,15 @@ export function Footer({
                 aria-label="GitHub"
               >
                 <GitHubIcon size="md" />
+              </button>
+            )}
+            {socialLinks.leetcode && (
+              <button
+                onClick={() => handleSocialClick(socialLinks.leetcode)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#FFA116]/20 text-white hover:text-[#FFA116] transition-all duration-base"
+                aria-label="LeetCode"
+              >
+                <LeetCodeIcon size="md" />
               </button>
             )}
             {socialLinks.linkedin && (
@@ -205,6 +196,15 @@ export function Footer({
                 aria-label="GitHub"
               >
                 <GitHubIcon size="md" />
+              </button>
+            )}
+            {socialLinks.leetcode && (
+              <button
+                onClick={() => handleSocialClick(socialLinks.leetcode)}
+                className="p-2 rounded-full bg-white/10 hover:bg-[#FFA116]/20 text-white hover:text-[#FFA116] transition-all duration-base"
+                aria-label="LeetCode"
+              >
+                <LeetCodeIcon size="md" />
               </button>
             )}
             {socialLinks.linkedin && (
