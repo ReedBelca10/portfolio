@@ -43,12 +43,12 @@ export function Footer({
   },
   className,
 }: FooterProps) {
-  const t = useTranslations('footer');
+  const t = useTranslations('common.footer');
   
   const actualCopyrightText = copyrightText || t('copyright', { year: new Date().getFullYear() });
   const actualLegalLinks = legalLinks || [
-    { label: t('privacyPolicy'), href: '#privacy' },
-    { label: t('termsConditions'), href: '#terms' },
+    { label: t('privacyPolicy'), href: '#' },
+    { label: t('termsConditions'), href: '#' },
   ];
   const handleSocialClick = (url: string | undefined) => {
     if (url) {
