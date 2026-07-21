@@ -7,6 +7,9 @@ import '../globals.css';
 export const metadata: Metadata = {
   title: 'Caleb Adjeoda Portfolio',
   description: 'Professional portfolio website',
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 export function generateStaticParams() {
