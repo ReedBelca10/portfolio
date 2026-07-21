@@ -13,15 +13,15 @@ export const dynamic = 'force-dynamic';
 export default async function BlogPostPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ locale: string; id: string }>;
 }) {
   const resolvedParams = await params;
   let post = null;
   let relatedBlogs = [];
 
   try {
-    post = await fetchBlogById(resolvedParams.id);
-    relatedBlogs = await fetchBlogs();
+    post = await fetchBlogById(resolvedParams.id, resolvedParams.locale);
+    relatedBlogs = await fetchBlogs(resolvedParams.locale);
   } catch (error) {
     console.error('Error fetching blog', error);
   }

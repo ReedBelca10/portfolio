@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
 import { fetchBlogs, subscribeToNewsletter } from '@/lib/strapi';
 
 /*
@@ -16,6 +17,7 @@ const CYAN = "#00D9FF";
 const TEXT_MUTED = "rgba(255,255,255,0.85)";
 
 export function Blogs() {
+  const locale = useLocale();
   const [latestBlog, setLatestBlog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [subscribeEmail, setSubscribeEmail] = useState('');
@@ -25,7 +27,7 @@ export function Blogs() {
   useEffect(() => {
     async function loadBlogs() {
       try {
-        const data = await fetchBlogs();
+        const data = await fetchBlogs(locale);
         if (data && data.length > 0) {
           setLatestBlog(data[0]);
         }

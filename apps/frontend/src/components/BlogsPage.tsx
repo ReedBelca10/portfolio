@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
 import { fetchBlogs, subscribeToNewsletter } from '@/lib/strapi';
 
 /*
@@ -162,6 +163,7 @@ export function BlogCard({ post }: { post: any }) {
 }
 
 export function BlogsPage() {
+  const locale = useLocale();
   const [blogs, setBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [subscribeEmail, setSubscribeEmail] = useState('');
@@ -172,7 +174,7 @@ export function BlogsPage() {
   useEffect(() => {
     async function loadBlogs() {
       try {
-        const data = await fetchBlogs();
+        const data = await fetchBlogs(locale);
         if (data) {
           setBlogs(data);
         }
