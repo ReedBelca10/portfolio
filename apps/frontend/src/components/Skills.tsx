@@ -618,7 +618,7 @@ export function Skills() {
                 aria-labelledby={`skilltab-${currentCategory.id}`}
               >
                 {currentCategory.skills.map((skill, i) => (
-                  <SkillCard key={`${activeTab}-${skill.name}`} skill={skill} index={i} />
+                  <SkillCard key={`${activeTab}-${skill.attributes.name}`} skill={skill} index={i} />
                 ))}
               </div>
             )}
