@@ -114,6 +114,30 @@
         "statusSending": "Sending your message…",
         "statusSuccess": "Message sent successfully! I'll get back to you soon.",
         "statusError": "Failed to send message. Please try again."
+      },
+      "blogSection": {
+        "sectionTitle": "Blogs",
+        "subtitle": "My thoughts on science, technology and business",
+        "loading": "Loading latest blog...",
+        "readMore": "Read More >>",
+        "author": "Author",
+        "date": "Date",
+        "read": "Read",
+        "empty": "No blogs published yet.",
+        "viewMore": "View More",
+        "emailPlaceholder": "Enter your email",
+        "subscribing": "Subscribing...",
+        "subscribe": "Subscribe",
+        "subscribeBtn": "Subscribe My Blogs",
+        "submit": "Submit",
+        "subscribeSuccess": "Successfully subscribed!",
+        "subscribeFail": "Failed to subscribe.",
+        "loadingBlogs": "Loading blogs...",
+        "noBlogs": "No blogs found.",
+        "shareArticle": "Share this article",
+        "copyLink": "Copy link",
+        "linkCopied": "Link copied!",
+        "relatedTitle": "You Might Also Like"
       }
     }
   },

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { BlogCard } from './BlogsPage';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useLocale, useTranslations } from 'next-intl';
 import { subscribeToNewsletter } from '@/lib/strapi';
 
 const BG_SECTION = '#292F36';
@@ -60,7 +61,7 @@ function CheckIcon() {
   );
 }
 
-function SharePanel({ title, onClose }: { title: string; onClose: () => void }) {
+function SharePanel({ title, onClose, t }: { title: string; onClose: () => void; t: any }) {
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
   const [copied, setCopied] = useState(false);
   const panelRef = React.useRef<HTMLDivElement>(null);
@@ -150,7 +151,7 @@ function SharePanel({ title, onClose }: { title: string; onClose: () => void }) 
       `}</style>
 
       <p style={{ margin: '0 0 14px 0', fontSize: '12px', fontWeight: 600, color: '#00D9FF', letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: "'IBM Plex Mono', monospace" }}>
-        Share this article
+        {t('shareArticle')}
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -177,22 +178,22 @@ function SharePanel({ title, onClose }: { title: string; onClose: () => void }) 
           <span className="share-net-icon" style={{ background: 'rgba(0, 217, 255, 0.15)', color: '#00D9FF' }}>
             {copied ? <CheckIcon /> : <CopyIcon />}
           </span>
-          {copied ? 'Link copied!' : 'Copy link'}
+          {copied ? t('linkCopied') : t('copyLink')}
         </button>
       </div>
     </div>
   );
 }
 
-function ArticleMetaRow({ author, date, readTime, title }: { author: string; date: string; readTime: string; title: string }) {
+function ArticleMetaRow({ author, date, readTime, title, t }: { author: string; date: string; readTime: string; title: string; t: any }) {
   const [showShare, setShowShare] = useState(false);
 
   return (
     <div className="flex flex-wrap items-center justify-between w-full max-w-[800px] mx-auto py-4 font-primary text-[13px] text-[#E2E8F0]">
       <div className="flex items-center gap-4">
-        <span><strong className="text-white font-bold">Author</strong> {author}</span>
-        <span><strong className="text-white font-bold">Date</strong> {date}</span>
-        <span><strong className="text-white font-bold">Read</strong> {readTime}</span>
+        <span><strong className="text-white font-bold">{t('author')}</strong> {author}</span>
+        <span><strong className="text-white font-bold">{t('date')}</strong> {date}</span>
+        <span><strong className="text-white font-bold">{t('read')}</strong> {readTime}</span>
       </div>
       <div className="relative">
         <button
@@ -208,13 +209,15 @@ function ArticleMetaRow({ author, date, readTime, title }: { author: string; dat
             <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
           </svg>
         </button>
-        {showShare && <SharePanel title={title} onClose={() => setShowShare(false)} />}
+        {showShare && <SharePanel title={title} onClose={() => setShowShare(false)} t={t} />}
       </div>
     </div>
   );
 }
 
 export function ArticlePage({ post, related = [] }: ArticlePageProps) {
+  const locale = useLocale();
+  const t = useTranslations('pages.home.blogSection');
   const [subscribeEmail, setSubscribeEmail] = useState('');
   const [subscribeStatus, setSubscribeStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -239,18 +242,18 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
     setSubscribeStatus({ type: null, message: '' });
     try {
       await subscribeToNewsletter(subscribeEmail);
-      setSubscribeStatus({ type: 'success', message: 'Successfully subscribed!' });
+      setSubscribeStatus({ type: 'success', message: t('subscribeSuccess') });
       setSubscribeEmail('');
       setTimeout(() => setShowSubscribeForm(false), 3000);
     } catch (err: any) {
-      setSubscribeStatus({ type: 'error', message: err.message || 'Failed to subscribe.' });
+      setSubscribeStatus({ type: 'error', message: err.message || t('subscribeFail') });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const author = post.author || 'Caleb';
-  const date = new Date(post.publishedDate || post.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  const date = new Date(post.publishedDate || post.publishedAt).toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' });
   const readTime = calculateReadTime(post.content);
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
   const rawImageUrl = post.media?.data?.[0]?.attributes?.url;
@@ -326,7 +329,7 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
       </h1>
 
       {/* Top Meta */}
-      <ArticleMetaRow author={author} date={date} readTime={readTime} title={post.title} />
+      <ArticleMetaRow author={author} date={date} readTime={readTime} title={post.title} t={t} />
 
       {/* Hero Image */}
       <div className="w-full max-w-[800px] aspect-[16/9] md:aspect-[2/1] relative mt-4 mb-10 rounded overflow-hidden">
@@ -353,7 +356,7 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
       </div>
 
       {/* Bottom Meta */}
-      <ArticleMetaRow author={author} date={date} readTime={readTime} title={post.title} />
+      <ArticleMetaRow author={author} date={date} readTime={readTime} title={post.title} t={t} />
 
       {/* Subscribe Button */}
       <div className="w-full max-w-[800px] flex flex-col items-center mt-12 mb-20">
@@ -362,20 +365,20 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
             onClick={() => setShowSubscribeForm(true)}
             className="border-2 border-[#00D9FF] text-white bg-transparent font-monospace text-[14px] px-8 py-2.5 rounded-full cursor-pointer transition-colors hover:bg-[#00D9FF]/10 tracking-wide"
           >
-            Subscribe My Blogs
+            {t('subscribeBtn')}
           </button>
         ) : (
           <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row items-center gap-4">
             <input 
               type="email" 
-              placeholder="Enter your email" 
+              placeholder={t('emailPlaceholder')} 
               required 
               className="subscribe-input-article"
               value={subscribeEmail}
               onChange={(e) => setSubscribeEmail(e.target.value)}
             />
             <button type="submit" className="border-2 border-[#00D9FF] text-[#000] bg-[#00D9FF] font-monospace text-[14px] px-8 py-2.5 rounded-full cursor-pointer hover:opacity-80 transition-opacity tracking-wide" disabled={isSubmitting}>
-              {isSubmitting ? 'Subscribing...' : 'Submit'}
+              {isSubmitting ? t('subscribing') : t('submit')}
             </button>
           </form>
         )}
@@ -390,7 +393,7 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
       {relatedPosts.length > 0 && (
         <div className="w-full max-w-[800px] flex flex-col items-center mt-8">
           <h2 className="text-[#00D9FF] font-primary text-3xl md:text-[32px] mb-12 text-center">
-            You Might Also Like
+            {t('relatedTitle')}
           </h2>
           <div className="w-full flex flex-col">
             {relatedPosts.map((relatedPost, idx) => (

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { fetchBlogs, subscribeToNewsletter } from '@/lib/strapi';
 
 /*
@@ -17,6 +17,8 @@ const CYAN = '#00D9FF';
 const BG_SECTION = '#292F36';
 
 export function BlogCard({ post }: { post: any }) {
+  const locale = useLocale();
+  const t = useTranslations('pages.home.blogSection');
   const truncateText = (text: string, length = 150) => {
     if (!text) return '';
     const plainText = text.replace(/(<([^>]+)>)/gi, "");
@@ -40,7 +42,7 @@ export function BlogCard({ post }: { post: any }) {
   const title = post.title;
   const excerpt = truncateText(post.content, 200);
   const author = post.author || 'Caleb';
-  const date = new Date(post.publishedDate || post.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  const date = new Date(post.publishedDate || post.publishedAt).toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' });
   const readTime = calculateReadTime(post.content);
   const tag = post.seoTags ? post.seoTags.split(',')[0] : 'Blog';
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
@@ -103,7 +105,7 @@ export function BlogCard({ post }: { post: any }) {
               textUnderlineOffset: '3px',
             }}
           >
-            Read More &gt;&gt;
+            {t('readMore')}
           </Link>
         </div>
 
@@ -144,15 +146,15 @@ export function BlogCard({ post }: { post: any }) {
             }}
           >
             <span>
-              <strong style={{ color: '#fff', fontWeight: 700 }}>Author</strong>{' '}
+              <strong style={{ color: '#fff', fontWeight: 700 }}>{t('author')}</strong>{' '}
               {author}
             </span>
             <span>
-              <strong style={{ color: '#fff', fontWeight: 700 }}>Date</strong>{' '}
+              <strong style={{ color: '#fff', fontWeight: 700 }}>{t('date')}</strong>{' '}
               {date}
             </span>
             <span>
-              <strong style={{ color: '#fff', fontWeight: 700 }}>Read</strong>{' '}
+              <strong style={{ color: '#fff', fontWeight: 700 }}>{t('read')}</strong>{' '}
               {readTime}
             </span>
           </div>
@@ -164,6 +166,7 @@ export function BlogCard({ post }: { post: any }) {
 
 export function BlogsPage() {
   const locale = useLocale();
+  const t = useTranslations('pages.home.blogSection');
   const [blogs, setBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [subscribeEmail, setSubscribeEmail] = useState('');
@@ -194,11 +197,11 @@ export function BlogsPage() {
     setSubscribeStatus({ type: null, message: '' });
     try {
       await subscribeToNewsletter(subscribeEmail);
-      setSubscribeStatus({ type: 'success', message: 'Successfully subscribed!' });
+      setSubscribeStatus({ type: 'success', message: t('subscribeSuccess') });
       setSubscribeEmail('');
       setTimeout(() => setShowSubscribeForm(false), 3000);
     } catch (err: any) {
-      setSubscribeStatus({ type: 'error', message: err.message || 'Failed to subscribe.' });
+      setSubscribeStatus({ type: 'error', message: err.message || t('subscribeFail') });
     } finally {
       setIsSubmitting(false);
     }
@@ -278,7 +281,7 @@ export function BlogsPage() {
           lineHeight: 1.1,
           marginBottom: "4px"
         }}>
-          Blogs
+          {t('sectionTitle')}
         </h2>
         <div style={{
           width: "120px",
@@ -294,23 +297,23 @@ export function BlogsPage() {
           marginBottom: "36px",
           letterSpacing: "0.02em"
         }}>
-          My thoughts on technology and business, welcome to subscribe
+          {t('subtitle')}
         </p>
 
         {!showSubscribeForm ? (
-          <button onClick={() => setShowSubscribeForm(true)} className="blogs-page-subscribe-btn">Subscribe My Blogs</button>
+          <button onClick={() => setShowSubscribeForm(true)} className="blogs-page-subscribe-btn">{t('subscribeBtn')}</button>
         ) : (
           <form onSubmit={handleSubscribe} className="subscribe-form-page flex-col sm:flex-row">
             <input 
               type="email" 
-              placeholder="Enter your email" 
+              placeholder={t('emailPlaceholder')} 
               required 
               className="subscribe-input-page"
               value={subscribeEmail}
               onChange={(e) => setSubscribeEmail(e.target.value)}
             />
             <button type="submit" className="blogs-page-subscribe-btn" disabled={isSubmitting}>
-              {isSubmitting ? 'Subscribing...' : 'Submit'}
+              {isSubmitting ? t('subscribing') : t('submit')}
             </button>
           </form>
         )}
@@ -325,9 +328,9 @@ export function BlogsPage() {
       {/* Blog list */}
       <div className="blogs-page-list">
         {loading ? (
-          <div className="py-20 text-white/50">Loading blogs...</div>
+          <div className="py-20 text-white/50">{t('loadingBlogs')}</div>
         ) : blogs.length === 0 ? (
-          <div className="py-20 text-white/50">No blogs found.</div>
+          <div className="py-20 text-white/50">{t('noBlogs')}</div>
         ) : (
           blogs.map((post, idx) => (
             <React.Fragment key={post.id}>

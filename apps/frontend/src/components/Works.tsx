@@ -124,7 +124,6 @@ export function Works() {
           alt=""
           fill
           className="object-cover"
-          quality={80}
           priority={false}
           unoptimized
         />

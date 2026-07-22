@@ -114,6 +114,30 @@
         "statusSending": "Envoi de votre message…",
         "statusSuccess": "Message envoyé avec succès ! Je vous répondrai bientôt.",
         "statusError": "Échec de l'envoi du message. Veuillez réessayer."
+      },
+      "blogSection": {
+        "sectionTitle": "Articles",
+        "subtitle": "Mes réflexions sur la science, la technologie et le business",
+        "loading": "Chargement du dernier article...",
+        "readMore": "Lire la suite >>",
+        "author": "Auteur",
+        "date": "Date",
+        "read": "Lecture",
+        "empty": "Aucun article publié pour le moment.",
+        "viewMore": "Voir plus",
+        "emailPlaceholder": "Entrez votre e-mail",
+        "subscribing": "Abonnement...",
+        "subscribe": "S'abonner",
+        "subscribeBtn": "S'abonner à mes articles",
+        "submit": "Envoyer",
+        "subscribeSuccess": "Abonnement réussi !",
+        "subscribeFail": "Échec de l'abonnement.",
+        "loadingBlogs": "Chargement des articles...",
+        "noBlogs": "Aucun article trouvé.",
+        "shareArticle": "Partager cet article",
+        "copyLink": "Copier le lien",
+        "linkCopied": "Lien copié !",
+        "relatedTitle": "Vous aimerez aussi"
       }
     }
   },

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { fetchBlogs, subscribeToNewsletter } from '@/lib/strapi';
 
 /*
@@ -18,6 +18,7 @@ const TEXT_MUTED = "rgba(255,255,255,0.85)";
 
 export function Blogs() {
   const locale = useLocale();
+  const t = useTranslations('pages.home.blogSection');
   const [latestBlog, setLatestBlog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [subscribeEmail, setSubscribeEmail] = useState('');
@@ -47,10 +48,10 @@ export function Blogs() {
     setSubscribeStatus({ type: null, message: '' });
     try {
       await subscribeToNewsletter(subscribeEmail);
-      setSubscribeStatus({ type: 'success', message: 'Successfully subscribed!' });
+      setSubscribeStatus({ type: 'success', message: t('subscribeSuccess') });
       setSubscribeEmail('');
     } catch (err: any) {
-      setSubscribeStatus({ type: 'error', message: err.message || 'Failed to subscribe.' });
+      setSubscribeStatus({ type: 'error', message: err.message || t('subscribeFail') });
     } finally {
       setIsSubmitting(false);
     }
@@ -258,17 +259,17 @@ export function Blogs() {
       `}</style>
 
       <div className="flex flex-col items-center text-center">
-        <h2 className="blogs-title">Blogs</h2>
+        <h2 className="blogs-title">{t('sectionTitle')}</h2>
         <div className="blogs-underline" />
         <p className="blogs-subtitle">
-          My thoughts on technology and business, welcome to subscribe
+          {t('subtitle')}
         </p>
       </div>
 
       <hr className="blogs-separator" />
 
       {loading ? (
-        <div className="py-20 text-white/50">Loading latest blog...</div>
+        <div className="py-20 text-white/50">{t('loading')}</div>
       ) : latestBlog ? (
         <article className="blog-card">
           <div className="blog-img-wrapper">
@@ -287,7 +288,7 @@ export function Blogs() {
               {truncateText(latestBlog.content)}
             </p>
             <div>
-              <Link href={`/blog/${latestBlog.documentId || latestBlog.id}`} className="blog-readmore">Read More &gt;&gt;</Link>
+              <Link href={`/blog/${latestBlog.documentId || latestBlog.id}`} className="blog-readmore">{t('readMore')}</Link>
             </div>
             
             <div className="blog-meta">
@@ -295,32 +296,32 @@ export function Blogs() {
                 <span className="blog-badge">{latestBlog.seoTags.split(',')[0]}</span>
               )}
               <div className="blog-meta-info">
-                <div><span className="meta-label">Author</span> {latestBlog.author || 'Caleb'}</div>
-                <div><span className="meta-label">Date</span> {new Date(latestBlog.publishedDate || latestBlog.publishedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
-                <div><span className="meta-label">Read</span> {calculateReadTime(latestBlog.content)}</div>
+                <div><span className="meta-label">{t('author')}</span> {latestBlog.author || 'Caleb'}</div>
+                <div><span className="meta-label">{t('date')}</span> {new Date(latestBlog.publishedDate || latestBlog.publishedAt).toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                <div><span className="meta-label">{t('read')}</span> {calculateReadTime(latestBlog.content)}</div>
               </div>
             </div>
           </div>
         </article>
       ) : (
-        <div className="py-20 text-white/50">No blogs published yet.</div>
+        <div className="py-20 text-white/50">{t('empty')}</div>
       )}
 
       <hr className="blogs-separator" />
 
       <div className="blogs-actions">
-        <Link href="/blog" className="btn-cyan">View More</Link>
+        <Link href="/blog" className="btn-cyan">{t('viewMore')}</Link>
         <form onSubmit={handleSubscribe} className="subscribe-form flex-col sm:flex-row">
           <input 
             type="email" 
-            placeholder="Enter your email" 
+            placeholder={t('emailPlaceholder')} 
             required 
             className="subscribe-input"
             value={subscribeEmail}
             onChange={(e) => setSubscribeEmail(e.target.value)}
           />
           <button type="submit" className="btn-outline-cyan" disabled={isSubmitting}>
-            {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+            {isSubmitting ? t('subscribing') : t('subscribe')}
           </button>
         </form>
       </div>
