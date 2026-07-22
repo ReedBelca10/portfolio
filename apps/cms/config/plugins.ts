@@ -37,7 +37,7 @@ export default ({ env }) => ({
         },
       },
       settings: {
-        defaultFrom: 'contact@calebadjeoda.dev',
+        defaultFrom: env('SMTP_USERNAME'),
         defaultReplyTo: 'contact@calebadjeoda.dev',
       },
     },
