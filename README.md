@@ -12,12 +12,14 @@ The project is structured as a monorepo containing two main applications:
 ## Deployment Configurations
 
 ### Frontend (Vercel)
-Production URL: `https://calebadjeodaportfolio.vercel.app`
+- Frontend URL: `https://calebadjeoda.dev`
+- Production URL: `https://calebadjeoda.dev`
 Required Environment Variables:
-- `NEXT_PUBLIC_API_URL`: `https://portfolio-pwfp.onrender.com`
+- `NEXT_PUBLIC_API_URL`: `https://api.calebadjeoda.dev`
 
 ### Backend (Render)
-Production URL: `https://portfolio-pwfp.onrender.com`
+- Backend URL: `https://api.calebadjeoda.dev`
+- Production URL: `https://api.calebadjeoda.dev`
 Required Environment Variables:
 - `DATABASE_URL`: Your production PostgreSQL connection string
 - `CLOUDINARY_NAME`, `CLOUDINARY_KEY`, `CLOUDINARY_SECRET`: For media uploads

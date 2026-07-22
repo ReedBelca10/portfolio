@@ -6,7 +6,7 @@ export default {
       console.log(`[Message Lifecycle] New message from ${result.name} <${result.email}>`);
 
       await strapi.plugin('email').service('email').send({
-        to: 'calebadjeoda@hotmail.com',
+        to: 'contact@calebadjeoda.dev',
         from: process.env.SMTP_USERNAME || 'noreply@calebadjeoda.com',
         replyTo: result.email,
         subject: result.subject
@@ -53,7 +53,7 @@ export default {
         `,
       });
 
-      console.log(`[Message Lifecycle] Email forwarded to calebadjeoda@hotmail.com`);
+      console.log(`[Message Lifecycle] Email forwarded to contact@calebadjeoda.dev`);
     } catch (error) {
       console.error('[Message Lifecycle] Failed to forward email:', error);
       // Don't throw — the message is still saved in the DB even if email fails

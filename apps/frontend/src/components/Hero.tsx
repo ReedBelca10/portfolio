@@ -334,7 +334,7 @@ export function Hero({ cvUrl }: HeroProps) {
                 <div className="hp-info">
                   <div className="hp-row">
                     <span className="hp-icon"><MailIcon /></span>
-                    <span className="hp-text">calebadjeoda@hotmail.com</span>
+                    <span className="hp-text">contact@calebadjeoda.dev</span>
                   </div>
                   <div className="hp-row">
                     <span className="hp-icon"><PinIcon /></span>
@@ -346,7 +346,7 @@ export function Hero({ cvUrl }: HeroProps) {
                   </div>
                   <div className="hp-row">
                     <span className="hp-icon"><GlobeIcon /></span>
-                    <span className="hp-text">www.calebadjeoda.dev</span>
+                    <span className="hp-text">https://calebadjeoda.dev</span>
                   </div>
                 </div>
 
@@ -426,7 +426,7 @@ export function Hero({ cvUrl }: HeroProps) {
             </span>
 
             {/* Let's Talk */}
-            <a href="mailto:calebadjeoda@hotmail.com" className="btn-talk">
+            <a href="mailto:contact@calebadjeoda.dev" className="btn-talk">
               {t('letsTalk')}
               <span className="btn-talk-icon">
                 <MailIcon />

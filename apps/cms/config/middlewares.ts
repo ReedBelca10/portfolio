@@ -30,7 +30,7 @@ export default [
   {
     name: 'strapi::cors',
     config: {
-      origin: ['http://localhost:3000', 'https://calebadjeodaportfolio.vercel.app'],
+      origin: ['http://localhost:3000', 'https://calebadjeoda.dev', 'https://www.calebadjeoda.dev'],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
       headers: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
       keepHeaderOnError: true,

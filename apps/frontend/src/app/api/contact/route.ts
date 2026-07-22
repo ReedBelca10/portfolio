@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       process.env.STRAPI_API_URL ||
       process.env.STRAPI_URL ||
       process.env.NEXT_PUBLIC_API_URL ||
-      'https://portfolio-pwfp.onrender.com';
+      'https://api.calebadjeoda.dev';
 
     const response = await fetch(`${baseUrl.replace(/\/$/, '')}/api/messages`, {
       method: 'POST',
