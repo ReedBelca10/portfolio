@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Link, usePathname } from '@/i18n';
+import { useDebounce } from '../hooks/useDebounce';
 import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 import { GitHubIcon, LinkedInIcon, DiscordIcon, GitLabIcon, LeetCodeIcon } from './Icon';
@@ -25,6 +26,12 @@ interface NavbarProps {
   className?: string;
 }
 
+interface SearchResults {
+  blogs: { id: number; title: string; publishedDate: string }[];
+  skills: { id: number; name: string; stack: string; subcategory: string }[];
+  sections: { id: string; label: string }[];
+}
+
 export function Navbar({
   links,
   socialLinks = [
@@ -46,6 +53,9 @@ export function Navbar({
   const pathname = usePathname();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<SearchResults | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleSearchToggle = () => {
@@ -56,6 +66,7 @@ export function Navbar({
       }, 100);
     } else {
       setSearchQuery('');
+      setSearchResults(null);
     }
   };
 
@@ -71,6 +82,31 @@ export function Navbar({
     }
     return;
   }, [searchOpen]);
+
+  useEffect(() => {
+    if (debouncedSearchQuery.trim().length === 0) {
+      setSearchResults(null);
+      return;
+    }
+
+    const fetchResults = async () => {
+      setIsSearching(true);
+      try {
+        const lang = document.documentElement.lang || 'en';
+        const res = await fetch(`/api/search?q=${encodeURIComponent(debouncedSearchQuery)}&locale=${lang}`);
+        if (res.ok) {
+          const data = await res.json();
+          setSearchResults(data);
+        }
+      } catch (err) {
+        console.error('Failed to search', err);
+      } finally {
+        setIsSearching(false);
+      }
+    };
+
+    fetchResults();
+  }, [debouncedSearchQuery]);
 
   const handleSearchSubmit = (e?: React.FormEvent | null) => {
     e?.preventDefault?.();
@@ -180,7 +216,7 @@ export function Navbar({
                   searchOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"
                 )}
               >
-                <div className="flex items-center justify-between bg-white rounded-full px-4 py-1.5 md:py-2 shadow-lg">
+                <div className="flex items-center justify-between bg-white rounded-full px-4 py-1.5 md:py-2 shadow-lg relative z-10">
                   <input
                     ref={searchInputRef}
                     type="text"
@@ -191,7 +227,7 @@ export function Navbar({
                       if (e.key === 'Enter') handleSearchSubmit();
                     }}
                     className="bg-transparent text-slate-900 focus:outline-none text-sm w-full"
-                    placeholder=""
+                    placeholder="Search articles, skills, sections..."
                   />
                   <button onClick={() => handleSearchSubmit()} className="ml-2 flex-shrink-0">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -200,6 +236,67 @@ export function Navbar({
                     </svg>
                   </button>
                 </div>
+
+                {/* Search Results Dropdown */}
+                {searchQuery.trim().length > 0 && searchResults && (
+                  <div className="absolute top-full right-0 mt-2 w-full bg-[#1e2328] border border-[#3d444a] shadow-xl rounded-lg overflow-hidden flex flex-col max-h-[60vh] overflow-y-auto z-20">
+                    {isSearching ? (
+                      <div className="p-4 text-center text-gray-400 text-sm">Searching...</div>
+                    ) : (
+                      <>
+                        {searchResults.sections.length > 0 && (
+                          <div className="p-2">
+                            <div className="px-2 py-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Sections</div>
+                            {searchResults.sections.map(sec => (
+                              <a 
+                                key={sec.id} 
+                                href={`/#${sec.id}`}
+                                onClick={() => { setSearchOpen(false); setSearchQuery(''); }}
+                                className="block px-3 py-2 mt-1 rounded-md hover:bg-[#292F36] text-gray-200 text-sm no-underline"
+                              >
+                                {sec.label}
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                        {searchResults.blogs.length > 0 && (
+                          <div className="p-2 border-t border-[#3d444a]">
+                            <div className="px-2 py-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Articles</div>
+                            {searchResults.blogs.map(blog => (
+                              <Link 
+                                key={blog.id} 
+                                href={`/blog/${blog.id}`}
+                                onClick={() => { setSearchOpen(false); setSearchQuery(''); }}
+                                className="block px-3 py-2 mt-1 rounded-md hover:bg-[#292F36] text-gray-200 text-sm no-underline"
+                              >
+                                {blog.title}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                        {searchResults.skills.length > 0 && (
+                          <div className="p-2 border-t border-[#3d444a]">
+                            <div className="px-2 py-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Skills</div>
+                            {searchResults.skills.map(skill => (
+                              <a 
+                                key={skill.id} 
+                                href={`/#skills`}
+                                onClick={() => { setSearchOpen(false); setSearchQuery(''); }}
+                                className="block px-3 py-2 mt-1 rounded-md hover:bg-[#292F36] text-gray-200 text-sm no-underline flex flex-col"
+                              >
+                                <span>{skill.name}</span>
+                                <span className="text-xs text-gray-500">{skill.stack} - {skill.subcategory}</span>
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                        {searchResults.sections.length === 0 && searchResults.blogs.length === 0 && searchResults.skills.length === 0 && (
+                          <div className="p-4 text-center text-gray-400 text-sm">No results found</div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
