@@ -8,6 +8,14 @@
       "skills": "Compétences",
       "blog": "Articles",
       "contact": "Contact"
+    },
+    "search": {
+      "placeholder": "Rechercher des articles, compétences, sections...",
+      "searching": "Recherche...",
+      "noResults": "Aucun résultat trouvé",
+      "sections": "Sections",
+      "articles": "Articles",
+      "skills": "Compétences"
     }
   },
   "pages": {

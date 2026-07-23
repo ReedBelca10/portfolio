@@ -1,14 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchBlogs, fetchSkills } from '@/lib/strapi';
 
-const SECTIONS = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'blog', label: 'Blog' },
-  { id: 'contact', label: 'Contact' },
-];
+const SECTIONS = {
+  en: [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About Me' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'projects', label: 'Works' },
+    { id: 'blog', label: 'Blogs' },
+    { id: 'contact', label: 'Contact' },
+  ],
+  fr: [
+    { id: 'home', label: 'Accueil' },
+    { id: 'about', label: 'À propos' },
+    { id: 'skills', label: 'Compétences' },
+    { id: 'projects', label: 'Travaux' },
+    { id: 'blog', label: 'Articles' },
+    { id: 'contact', label: 'Contact' },
+  ]
+};
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -48,7 +58,8 @@ export async function GET(request: NextRequest) {
     });
 
     // Filter Sections
-    const filteredSections = SECTIONS.filter((section) =>
+    const sectionsList = SECTIONS[locale as keyof typeof SECTIONS] || SECTIONS.en;
+    const filteredSections = sectionsList.filter((section) =>
       section.label.toLowerCase().includes(normalizedQuery) ||
       section.id.toLowerCase().includes(normalizedQuery)
     );

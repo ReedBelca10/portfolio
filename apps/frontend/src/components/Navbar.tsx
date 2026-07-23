@@ -45,6 +45,7 @@ export function Navbar({
   className,
 }: NavbarProps) {
   const t = useTranslations('common.nav');
+  const tSearch = useTranslations('common.search');
   const defaultLinks = links || [
     { label: t('home'), href: '/' },
     { label: t('blog'), href: '/blog' },
@@ -227,7 +228,7 @@ export function Navbar({
                       if (e.key === 'Enter') handleSearchSubmit();
                     }}
                     className="bg-transparent text-slate-900 focus:outline-none text-sm w-full"
-                    placeholder="Search articles, skills, sections..."
+                    placeholder={tSearch('placeholder')}
                   />
                   <button onClick={() => handleSearchSubmit()} className="ml-2 flex-shrink-0">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -241,12 +242,12 @@ export function Navbar({
                 {searchQuery.trim().length > 0 && searchResults && (
                   <div className="absolute top-full right-0 mt-2 w-full bg-[#1e2328] border border-[#3d444a] shadow-xl rounded-lg overflow-hidden flex flex-col max-h-[60vh] overflow-y-auto z-20">
                     {isSearching ? (
-                      <div className="p-4 text-center text-gray-400 text-sm">Searching...</div>
+                      <div className="p-4 text-center text-gray-400 text-sm">{tSearch('searching')}</div>
                     ) : (
                       <>
                         {searchResults.sections.length > 0 && (
                           <div className="p-2">
-                            <div className="px-2 py-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Sections</div>
+                            <div className="px-2 py-1 text-xs font-bold text-gray-500 uppercase tracking-wider">{tSearch('sections')}</div>
                             {searchResults.sections.map(sec => (
                               <a 
                                 key={sec.id} 
@@ -261,7 +262,7 @@ export function Navbar({
                         )}
                         {searchResults.blogs.length > 0 && (
                           <div className="p-2 border-t border-[#3d444a]">
-                            <div className="px-2 py-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Articles</div>
+                            <div className="px-2 py-1 text-xs font-bold text-gray-500 uppercase tracking-wider">{tSearch('articles')}</div>
                             {searchResults.blogs.map(blog => (
                               <Link 
                                 key={blog.id} 
@@ -276,7 +277,7 @@ export function Navbar({
                         )}
                         {searchResults.skills.length > 0 && (
                           <div className="p-2 border-t border-[#3d444a]">
-                            <div className="px-2 py-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Skills</div>
+                            <div className="px-2 py-1 text-xs font-bold text-gray-500 uppercase tracking-wider">{tSearch('skills')}</div>
                             {searchResults.skills.map(skill => (
                               <a 
                                 key={skill.id} 
@@ -291,7 +292,7 @@ export function Navbar({
                           </div>
                         )}
                         {searchResults.sections.length === 0 && searchResults.blogs.length === 0 && searchResults.skills.length === 0 && (
-                          <div className="p-4 text-center text-gray-400 text-sm">No results found</div>
+                          <div className="p-4 text-center text-gray-400 text-sm">{tSearch('noResults')}</div>
                         )}
                       </>
                     )}
