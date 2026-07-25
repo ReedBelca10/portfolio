@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      { error: { message: error?.message || 'Unable to send message.', cause: String(error?.cause), stack: error?.stack, baseUrl } },
+      { error: { message: error?.message || 'Unable to send message.' } },
       { status: 500 }
     );
   } finally {
