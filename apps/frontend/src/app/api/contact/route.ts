@@ -11,11 +11,15 @@ export async function POST(request: Request) {
     const body = await request.json();
     const payload = body?.data ?? body;
 
-    const baseUrl =
+    let baseUrl =
       process.env.STRAPI_API_URL ||
       process.env.STRAPI_URL ||
       process.env.NEXT_PUBLIC_API_URL ||
       'https://api.calebadjeoda.dev';
+
+    if (baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')) {
+      baseUrl = 'https://api.calebadjeoda.dev';
+    }
 
     const response = await fetch(`${baseUrl.replace(/\/$/, '')}/api/messages`, {
       method: 'POST',
@@ -56,7 +60,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      { error: { message: error?.message || 'Unable to send message.' } },
+      { error: { message: error?.message || 'Unable to send message.', cause: String(error?.cause), stack: error?.stack, baseUrl } },
       { status: 500 }
     );
   } finally {
