@@ -36,6 +36,8 @@
     "date-fns": "2.30.0"
   },
   "dependencies": {
-    "date-fns": "2.30.0"
+    "date-fns": "2.30.0",
+    "@strapi/provider-upload-cloudinary": "4.26.2",
+    "@strapi/provider-email-nodemailer": "4.26.2"
   }
 }
