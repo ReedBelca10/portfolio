@@ -314,11 +314,19 @@ export interface ApiBlogBlog extends Schema.CollectionType {
   options: {
     draftAndPublish: true;
   };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
   attributes: {
     author: Attribute.String;
     content: Attribute.RichText & Attribute.Required;
     createdAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::blog.blog', 'oneToOne', 'admin::user'> & Attribute.Private;
+    likes: Attribute.Integer & Attribute.DefaultTo<0>;
+    locale: Attribute.String;
+    localizations: Attribute.Relation<'api::blog.blog', 'oneToMany', 'api::blog.blog'>;
     media: Attribute.Media<'images' | 'videos' | 'audios', true>;
     publishedAt: Attribute.DateTime;
     publishedDate: Attribute.Date;
@@ -326,6 +334,39 @@ export interface ApiBlogBlog extends Schema.CollectionType {
     title: Attribute.String & Attribute.Required;
     updatedAt: Attribute.DateTime;
     updatedBy: Attribute.Relation<'api::blog.blog', 'oneToOne', 'admin::user'> & Attribute.Private;
+  };
+}
+
+export interface ApiCvCv extends Schema.SingleType {
+  collectionName: 'cvs';
+  info: {
+    description: 'Dynamic localized CV';
+    displayName: 'CV';
+    pluralName: 'cvs';
+    singularName: 'cv';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::cv.cv', 'oneToOne', 'admin::user'> & Attribute.Private;
+    file: Attribute.Media<'files'> &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Attribute.String;
+    localizations: Attribute.Relation<'api::cv.cv', 'oneToMany', 'api::cv.cv'>;
+    updatedAt: Attribute.DateTime;
+    updatedBy: Attribute.Relation<'api::cv.cv', 'oneToOne', 'admin::user'> & Attribute.Private;
   };
 }
 
@@ -363,13 +404,20 @@ export interface ApiSkillSkill extends Schema.CollectionType {
     singularName: 'skill';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
   };
   attributes: {
     createdAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::skill.skill', 'oneToOne', 'admin::user'> &
       Attribute.Private;
     icon: Attribute.Media<'images'>;
+    locale: Attribute.String;
+    localizations: Attribute.Relation<'api::skill.skill', 'oneToMany', 'api::skill.skill'>;
     name: Attribute.String & Attribute.Required;
     proficiency: Attribute.Integer &
       Attribute.Required &
@@ -380,6 +428,7 @@ export interface ApiSkillSkill extends Schema.CollectionType {
         },
         number
       >;
+    publishedAt: Attribute.DateTime;
     stack: Attribute.Enumeration<
       [
         'Programming Languages',
@@ -435,12 +484,19 @@ export interface ApiWorkWork extends Schema.CollectionType {
   options: {
     draftAndPublish: true;
   };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
   attributes: {
     appImage: Attribute.Media<'images'>;
     appLink: Attribute.String;
     createdAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::work.work', 'oneToOne', 'admin::user'> & Attribute.Private;
     description: Attribute.Text & Attribute.Required;
+    locale: Attribute.String;
+    localizations: Attribute.Relation<'api::work.work', 'oneToMany', 'api::work.work'>;
     publishedAt: Attribute.DateTime;
     sourceCodeImage: Attribute.Media<'images'>;
     sourceCodeLink: Attribute.String;
@@ -816,6 +872,7 @@ declare module '@strapi/types' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::blog.blog': ApiBlogBlog;
+      'api::cv.cv': ApiCvCv;
       'api::message.message': ApiMessageMessage;
       'api::skill.skill': ApiSkillSkill;
       'api::subscriber.subscriber': ApiSubscriberSubscriber;

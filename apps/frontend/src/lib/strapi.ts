@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === 'production' ? 'https://api.calebadjeoda.dev' : 'http://localhost:1337');
+const API_URL = process.env.NODE_ENV === 'development'
+  ? process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337'
+  : 'https://api.calebadjeoda.dev';
 
 export const strapiClient = axios.create({
   baseURL: `${API_URL}/api`,

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
+const API_URL = process.env.NODE_ENV === 'development' 
+  ? process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337' 
+  : 'https://api.calebadjeoda.dev';
 
 export async function POST(request: NextRequest) {
   try {

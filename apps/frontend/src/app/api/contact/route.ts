@@ -4,22 +4,10 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 function resolveStrapiBaseUrl() {
-  let configuredBaseUrl = process.env.STRAPI_API_URL || process.env.STRAPI_URL || process.env.NEXT_PUBLIC_API_URL;
-
-  if (!configuredBaseUrl || configuredBaseUrl.trim() === '') {
-    return 'https://api.calebadjeoda.dev';
+  if (process.env.NODE_ENV === 'development') {
+    return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
   }
-
-  configuredBaseUrl = configuredBaseUrl.trim();
-  if (!configuredBaseUrl.match(/^https?:\/\//i)) {
-    configuredBaseUrl = `https://${configuredBaseUrl}`;
-  }
-
-  if (configuredBaseUrl.includes('localhost') || configuredBaseUrl.includes('127.0.0.1')) {
-    return 'https://api.calebadjeoda.dev';
-  }
-
-  return configuredBaseUrl.replace(/\/api\/?$/, '');
+  return 'https://api.calebadjeoda.dev';
 }
 
 function normalizePayload(body: unknown) {
