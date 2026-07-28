@@ -42,6 +42,11 @@
     },
     "publishedDate": {
       "type": "date"
+    },
+    "likes": {
+      "type": "integer",
+      "default": 0,
+      "required": false
     }
   }
 }

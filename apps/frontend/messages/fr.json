@@ -11,6 +11,14 @@
       "blog": "Articles",
       "contact": "Contact"
     },
+    "search": {
+      "placeholder": "Rechercher des articles, compétences, sections...",
+      "searching": "Recherche en cours...",
+      "noResults": "Aucun résultat trouvé.",
+      "sections": "Sections",
+      "articles": "Articles",
+      "skills": "Compétences"
+    },
     "footer": {
       "copyright": "© {year} Caleb Adjeoda. Tous droits réservés.",
       "privacyPolicy": "Politique de confidentialité",
@@ -137,7 +145,10 @@
         "shareArticle": "Partager cet article",
         "copyLink": "Copier le lien",
         "linkCopied": "Lien copié !",
-        "relatedTitle": "Vous aimerez aussi"
+        "relatedTitle": "Vous aimerez aussi",
+        "like": "J'aime",
+        "likes": "{count, plural, =0 {Aucun j'aime} =1 {1 j'aime} other {# j'aime}}",
+        "liked": "Aimé"
       }
     }
   },

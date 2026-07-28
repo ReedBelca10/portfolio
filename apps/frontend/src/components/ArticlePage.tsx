@@ -61,6 +61,162 @@ function CheckIcon() {
   );
 }
 
+function HeartIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill={filled ? '#FF4D6A' : 'none'}
+      stroke={filled ? '#FF4D6A' : 'currentColor'}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </svg>
+  );
+}
+
+function LikeButton({ blogId, initialLikes, t }: { blogId: string | number; initialLikes: number; t: any }) {
+  const storageKey = `blog_liked_${blogId}`;
+  const [liked, setLiked] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(storageKey) === 'true';
+    }
+    return false;
+  });
+  const [likeCount, setLikeCount] = useState(initialLikes);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Sync localStorage on mount (for SSR hydration)
+  React.useEffect(() => {
+    setLiked(localStorage.getItem(storageKey) === 'true');
+  }, [storageKey]);
+
+  const handleLike = async () => {
+    if (liked) return; // Already liked
+
+    setIsAnimating(true);
+    setLiked(true);
+    setLikeCount((prev) => prev + 1);
+    localStorage.setItem(storageKey, 'true');
+
+    try {
+      const res = await fetch('/api/like', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ blogId }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setLikeCount(data.likes);
+      }
+    } catch (err) {
+      console.error('Failed to like:', err);
+    }
+
+    setTimeout(() => setIsAnimating(false), 600);
+  };
+
+  return (
+    <>
+      <style>{`
+        @keyframes likeHeartPop {
+          0%   { transform: scale(1); }
+          30%  { transform: scale(1.35); }
+          50%  { transform: scale(0.95); }
+          70%  { transform: scale(1.15); }
+          100% { transform: scale(1); }
+        }
+        @keyframes likeParticle {
+          0%   { opacity: 1; transform: translateY(0) scale(1); }
+          100% { opacity: 0; transform: translateY(-24px) scale(0.5); }
+        }
+        .like-btn {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 20px;
+          border-radius: 999px;
+          border: 2px solid rgba(255, 77, 106, 0.3);
+          background: rgba(255, 77, 106, 0.05);
+          color: #E2E8F0;
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 14px;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          position: relative;
+          overflow: visible;
+        }
+        .like-btn:hover:not(.like-btn--liked) {
+          border-color: rgba(255, 77, 106, 0.6);
+          background: rgba(255, 77, 106, 0.1);
+          color: #FF4D6A;
+        }
+        .like-btn--liked {
+          border-color: #FF4D6A;
+          background: rgba(255, 77, 106, 0.12);
+          color: #FF4D6A;
+          cursor: default;
+        }
+        .like-btn__icon {
+          display: flex;
+          align-items: center;
+        }
+        .like-btn__icon--animating {
+          animation: likeHeartPop 0.6s ease forwards;
+        }
+        .like-btn__count {
+          font-weight: 600;
+          font-variant-numeric: tabular-nums;
+          min-width: 16px;
+        }
+        .like-particles {
+          position: absolute;
+          top: 50%;
+          left: 20px;
+          pointer-events: none;
+        }
+        .like-particle {
+          position: absolute;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #FF4D6A;
+          animation: likeParticle 0.6s ease-out forwards;
+        }
+      `}</style>
+      <button
+        onClick={handleLike}
+        className={`like-btn ${liked ? 'like-btn--liked' : ''}`}
+        aria-label={liked ? t('liked') : t('like')}
+        disabled={liked}
+      >
+        <span className={`like-btn__icon ${isAnimating ? 'like-btn__icon--animating' : ''}`}>
+          <HeartIcon filled={liked} />
+        </span>
+        <span className="like-btn__count">{likeCount}</span>
+        <span>{liked ? t('liked') : t('like')}</span>
+        {isAnimating && (
+          <span className="like-particles">
+            {[...Array(5)].map((_, i) => (
+              <span
+                key={i}
+                className="like-particle"
+                style={{
+                  left: `${Math.random() * 20 - 10}px`,
+                  animationDelay: `${i * 0.08}s`,
+                }}
+              />
+            ))}
+          </span>
+        )}
+      </button>
+    </>
+  );
+}
+
 function SharePanel({ title, onClose, t }: { title: string; onClose: () => void; t: any }) {
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
   const [copied, setCopied] = useState(false);
@@ -348,11 +504,14 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
         </ReactMarkdown>
       </div>
 
-      {/* Tags */}
-      <div className="w-full max-w-[800px] flex flex-wrap gap-4 mt-12 mb-8 font-primary">
-        {tags.map((tag: string, i: number) => (
-          <span key={i} className="bg-[#424952] text-[#E2E8F0] px-4 py-1.5 rounded-full text-[12px]">{tag}</span>
-        ))}
+      {/* Tags + Like Row */}
+      <div className="w-full max-w-[800px] flex flex-wrap items-center justify-between mt-12 mb-8 font-primary">
+        <div className="flex flex-wrap gap-4">
+          {tags.map((tag: string, i: number) => (
+            <span key={i} className="bg-[#424952] text-[#E2E8F0] px-4 py-1.5 rounded-full text-[12px]">{tag}</span>
+          ))}
+        </div>
+        <LikeButton blogId={post.documentId || post.id} initialLikes={post.likes || 0} t={t} />
       </div>
 
       {/* Bottom Meta */}
