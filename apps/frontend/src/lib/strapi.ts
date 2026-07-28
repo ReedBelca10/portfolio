@@ -91,16 +91,21 @@ export async function submitMessage(data: {
   message: string;
 }) {
   try {
-    const response = await axios.post(`${API_URL}/api/messages`, {
-      data,
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data }),
     });
 
-    return response.data;
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result?.error?.message || 'Unable to send message.');
+    }
+
+    return result;
   } catch (error: any) {
     console.error('Error submitting message:', error);
-    if (error.response?.data?.error?.message) {
-      throw new Error(error.response.data.error.message);
-    }
     throw new Error(error.message || 'Unable to send message.');
   }
 }
