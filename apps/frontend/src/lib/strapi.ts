@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === 'production' ? 'https://api.calebadjeoda.dev' : 'http://localhost:1337');
 
 export const strapiClient = axios.create({
   baseURL: `${API_URL}/api`,
@@ -89,23 +89,17 @@ export async function submitMessage(data: {
   message: string;
 }) {
   try {
-    const response = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data }),
-      cache: 'no-store',
+    const response = await axios.post(`${API_URL}/api/messages`, {
+      data,
     });
 
-    const responseData = await response.json();
-
-    if (!response.ok) {
-      throw new Error(responseData?.error?.message || 'Unable to send message.');
-    }
-
-    return responseData;
-  } catch (error) {
+    return response.data;
+  } catch (error: any) {
     console.error('Error submitting message:', error);
-    throw error;
+    if (error.response?.data?.error?.message) {
+      throw new Error(error.response.data.error.message);
+    }
+    throw new Error(error.message || 'Unable to send message.');
   }
 }
 

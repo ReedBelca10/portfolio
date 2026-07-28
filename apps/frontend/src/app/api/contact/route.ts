@@ -3,25 +3,59 @@ import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+function resolveStrapiBaseUrl() {
+  let configuredBaseUrl = process.env.STRAPI_API_URL || process.env.STRAPI_URL || process.env.NEXT_PUBLIC_API_URL;
+
+  if (!configuredBaseUrl || configuredBaseUrl.trim() === '') {
+    return 'https://api.calebadjeoda.dev';
+  }
+
+  configuredBaseUrl = configuredBaseUrl.trim();
+  if (!configuredBaseUrl.match(/^https?:\/\//i)) {
+    configuredBaseUrl = `https://${configuredBaseUrl}`;
+  }
+
+  if (configuredBaseUrl.includes('localhost') || configuredBaseUrl.includes('127.0.0.1')) {
+    return 'https://api.calebadjeoda.dev';
+  }
+
+  return configuredBaseUrl.replace(/\/api\/?$/, '');
+}
+
+function normalizePayload(body: unknown) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return body;
+  }
+
+  const candidate = body as Record<string, unknown>;
+
+  if ('data' in candidate && candidate.data && typeof candidate.data === 'object' && !Array.isArray(candidate.data)) {
+    return candidate.data;
+  }
+
+  return candidate;
+}
+
 export async function POST(request: Request) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 50000);
 
   try {
-    const body = await request.json();
-    const payload = body?.data ?? body;
+    const rawBody = await request.text();
+    let parsedBody: unknown = {};
 
-    let baseUrl =
-      process.env.STRAPI_API_URL ||
-      process.env.STRAPI_URL ||
-      process.env.NEXT_PUBLIC_API_URL ||
-      'https://api.calebadjeoda.dev';
-
-    if (baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')) {
-      baseUrl = 'https://api.calebadjeoda.dev';
+    if (rawBody) {
+      try {
+        parsedBody = JSON.parse(rawBody);
+      } catch {
+        parsedBody = { raw: rawBody };
+      }
     }
 
-    const response = await fetch(`${baseUrl.replace(/\/$/, '')}/api/messages`, {
+    const payload = normalizePayload(parsedBody);
+    const baseUrl = resolveStrapiBaseUrl();
+
+    const response = await fetch(`${baseUrl}/api/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,7 +64,6 @@ export async function POST(request: Request) {
       body: JSON.stringify({ data: payload }),
       signal: controller.signal,
       cache: 'no-store',
-      keepalive: true,
     });
 
     const text = await response.text();
@@ -40,10 +73,6 @@ export async function POST(request: Request) {
       data = text ? JSON.parse(text) : {};
     } catch {
       data = { message: text };
-    }
-
-    if (response.ok) {
-      return NextResponse.json(data, { status: response.status });
     }
 
     return NextResponse.json(data, { status: response.status });
