@@ -20,19 +20,15 @@ const BORDER_CARD = "#00D9FF";
 
 /* ── Skill data ── */
 interface StrapiSkill {
-  name: any;
-  stack: any;
   id: number;
-  attributes: {
-    name: string;
-    stack: string;
-    subcategory: string;
-    proficiency: number;
-    icon?: {
-      data?: {
-        attributes?: {
-          url: string;
-        };
+  name: string;
+  stack: string;
+  subcategory: string;
+  proficiency: number;
+  icon?: {
+    data?: {
+      attributes?: {
+        url: string;
       };
     };
   };
@@ -155,7 +151,7 @@ function CategoryIcon({ type, color = CYAN }: { type: SkillCategory["icon"]; col
 /* ── Single Skill Card ── */
 function SkillCard({ skill, index }: { skill: StrapiSkill; index: number }) {
   const t = useTranslations('pages.home.skills');
-  const { name, subcategory, proficiency, icon } = skill.attributes;
+  const { name, subcategory, proficiency, icon } = skill;
   const level = getProficiencyLevel(proficiency);
   const imageUrl = getImageUrl(icon?.data?.attributes?.url);
 
@@ -618,7 +614,7 @@ export function Skills() {
                 aria-labelledby={`skilltab-${currentCategory.id}`}
               >
                 {currentCategory.skills.map((skill, i) => (
-                  <SkillCard key={`${activeTab}-${skill.attributes.name}`} skill={skill} index={i} />
+                  <SkillCard key={`${activeTab}-${skill.name}`} skill={skill} index={i} />
                 ))}
               </div>
             )}
