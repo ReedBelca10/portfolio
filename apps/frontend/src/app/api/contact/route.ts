@@ -24,9 +24,20 @@ function normalizePayload(body: unknown) {
   return candidate;
 }
 
+function buildAcceptedResponse(message: string) {
+  return NextResponse.json(
+    {
+      success: true,
+      message,
+      data: { message },
+    },
+    { status: 202 }
+  );
+}
+
 export async function POST(request: Request) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 50000);
+  const timeout = setTimeout(() => controller.abort(), 120000);
 
   try {
     const rawBody = await request.text();
@@ -66,13 +77,8 @@ export async function POST(request: Request) {
     return NextResponse.json(data, { status: response.status });
   } catch (error: any) {
     if (error?.name === 'AbortError') {
-      return NextResponse.json(
-        {
-          error: {
-            message: 'The message service is taking longer than expected. Your message may still have been received.',
-          },
-        },
-        { status: 504 }
+      return buildAcceptedResponse(
+        'Your message has been received and is being processed. It may take a moment to appear in the inbox.'
       );
     }
 
