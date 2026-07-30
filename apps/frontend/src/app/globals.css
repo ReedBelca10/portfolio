@@ -318,10 +318,13 @@ a {
 
 .works-subtitle {
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
-  font-size: 15px;
+  font-size: clamp(12px, 1.5vw, 15px);
   color: rgba(255, 255, 255, 0.7);
   letter-spacing: 0.02em;
   margin: 0;
+  padding: 0 16px;
+  max-width: 800px;
+  line-height: 1.5;
 }
 
 /* ── Showcase area (monitors + arrows) ── */
@@ -538,7 +541,6 @@ a {
   }
 
   .works-subtitle {
-    font-size: 13px;
     padding: 0 12px;
   }
   
@@ -877,9 +879,9 @@ a {
   }
 
   .works-subtitle {
-    font-size: 13px;
-    padding: 0 12px;
-  }
+  font-size: clamp(12px, 1.5vw, 15px);
+  padding: 0 20px;
+}
 
   .works-monitors {
     width: 420px;

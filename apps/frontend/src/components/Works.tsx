@@ -23,6 +23,7 @@ interface StrapiWork {
   id: number;
   title: string;
   description: string;
+  technologies?: string;
   sourceCodeLink: string;
   appLink: string;
   sourceCodeImage?: {
@@ -233,9 +234,28 @@ export function Works() {
             {/* ── Project Description ── */}
             <div className="works-description-block" style={{ marginTop: '40px', textAlign: 'center', maxWidth: '800px', marginLeft: 'auto', marginRight: 'auto', padding: '20px', background: 'rgba(18, 24, 30, 0.68)', borderRadius: '12px', border: '1px solid rgba(0, 217, 255, 0.25)', backdropFilter: 'blur(10px)' }}>
               <h3 style={{ color: '#00D9FF', fontFamily: '"IBM Plex Mono", monospace', fontSize: '20px', marginBottom: '12px' }}>{currentWork.title}</h3>
-              <p style={{ color: 'rgba(255,255,255,0.85)', fontFamily: '"IBM Plex Mono", monospace', fontSize: '14px', lineHeight: '1.6' }}>
+              <p style={{ color: 'rgba(255,255,255,0.85)', fontFamily: '"IBM Plex Mono", monospace', fontSize: '14px', lineHeight: '1.6', marginBottom: '16px' }}>
                 {currentWork.description}
               </p>
+              
+              {/* Technologies */}
+              {currentWork.technologies && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px' }}>
+                  {currentWork.technologies.split(',').map((tech, idx) => (
+                    <span key={idx} style={{ 
+                      background: 'rgba(0, 217, 255, 0.1)', 
+                      color: '#00D9FF', 
+                      padding: '4px 10px', 
+                      borderRadius: '4px', 
+                      fontSize: '12px', 
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      border: '1px solid rgba(0, 217, 255, 0.2)' 
+                    }}>
+                      {tech.trim()}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* ── Dots indicator ── */}

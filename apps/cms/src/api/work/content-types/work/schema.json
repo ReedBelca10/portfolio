@@ -45,6 +45,9 @@
       "allowedTypes": [
         "images"
       ]
+    },
+    "technologies": {
+      "type": "string"
     }
   }
 }

@@ -292,10 +292,11 @@ export function BlogsPage() {
         }} />
         <p style={{
           fontFamily: "'IBM Plex Mono', monospace",
-          fontSize: "clamp(13px, 1.5vw, 15px)",
+          fontSize: "clamp(12px, 1.5vw, 15px)",
           color: "rgba(255, 255, 255, 0.85)",
           marginBottom: "36px",
-          letterSpacing: "0.02em"
+          letterSpacing: "0.02em",
+          padding: "0 16px"
         }}>
           {t('subtitle')}
         </p>

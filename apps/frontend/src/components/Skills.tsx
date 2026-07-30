@@ -353,13 +353,13 @@ export function Skills() {
         }
         .skills-subtitle {
           color: rgba(255,255,255,0.85);
-          font-size: clamp(12px, 1.05vw, 15px);
+          font-size: clamp(12px, 1.5vw, 15px);
           margin-top: 14px;
           line-height: 1.6;
           letter-spacing: 0.02em;
           font-family: "IBM Plex Mono", monospace;
           text-align: center;
-          white-space: nowrap;
+          padding: 0 16px;
         }
         .skills-header-row {
           display: flex;

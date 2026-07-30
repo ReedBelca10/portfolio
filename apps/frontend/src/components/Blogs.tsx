@@ -107,10 +107,11 @@ export function Blogs() {
           border-radius: 2px;
         }
         .blogs-subtitle {
-          font-size: clamp(13px, 1.5vw, 15px);
+          font-size: clamp(12px, 1.5vw, 15px);
           color: ${TEXT_MUTED};
           margin-bottom: 48px;
           text-align: center;
+          padding: 0 16px;
         }
         .blogs-separator {
           width: 100%;

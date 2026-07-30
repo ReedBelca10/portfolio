@@ -61,7 +61,7 @@ export function ContactSection() {
               <span className="block w-2 h-2 bg-[#00D9FF] rounded-full mx-auto"></span>
             </div>
           </div>
-          <p className="text-sm sm:text-base text-white/80 mb-8">
+          <p className="text-[clamp(12px,1.5vw,15px)] text-white/80 mb-8 px-4">
             {t('subtitle')}
           </p>
 
