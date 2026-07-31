@@ -48,6 +48,15 @@
     },
     "technologies": {
       "type": "string"
+    },
+    "projectType": {
+      "type": "enumeration",
+      "enum": [
+        "web",
+        "desktop",
+        "mobile"
+      ],
+      "default": "web"
     }
   }
 }

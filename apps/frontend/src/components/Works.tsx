@@ -24,6 +24,7 @@ interface StrapiWork {
   title: string;
   description: string;
   technologies?: string;
+  projectType?: 'web' | 'desktop' | 'mobile';
   sourceCodeLink: string;
   appLink: string;
   sourceCodeImage?: {
@@ -183,31 +184,57 @@ export function Works() {
                   <div className="works-monitor__base works-monitor__base--dark" />
                 </div>
 
-                {/* Production monitor (right, in front) */}
-                <div className="works-monitor works-monitor--production">
-                  {/* "View Website" label */}
-                  <a
-                    href={currentWork.appLink || '#'}
-                    className="works-label works-label--website"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span className="works-label__text">{t('viewApp')}</span>
-                    <CursorIcon className="works-label__cursor" />
-                  </a>
+                {/* Production monitor/mobile (right, in front) */}
+                {currentWork.projectType === 'mobile' ? (
+                  <div className="works-mobile works-mobile--production">
+                    {/* "View App" label */}
+                    <a
+                      href={currentWork.appLink || '#'}
+                      className="works-label works-label--website"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span className="works-label__text">{t('viewApp')}</span>
+                      <CursorIcon className="works-label__cursor" />
+                    </a>
 
-                  <div className="works-monitor__screen works-monitor__screen--light">
-                    <Image
-                      src={getImageUrl(currentWork.appImage?.data?.attributes?.url) || "/Production.jpg"}
-                      alt={`${currentWork.title} App View`}
-                      fill
-                      className="object-cover object-top"
-                      unoptimized
-                    />
+                    <div className="works-mobile__frame">
+                      <div className="works-mobile__notch" />
+                      <Image
+                        src={getImageUrl(currentWork.appImage?.data?.attributes?.url) || "/Production.jpg"}
+                        alt={`${currentWork.title} App View`}
+                        fill
+                        className="object-cover object-top"
+                        unoptimized
+                      />
+                    </div>
                   </div>
-                  <div className="works-monitor__stand works-monitor__stand--light" />
-                  <div className="works-monitor__base works-monitor__base--light" />
-                </div>
+                ) : (
+                  <div className="works-monitor works-monitor--production">
+                    {/* "View Website" label */}
+                    <a
+                      href={currentWork.appLink || '#'}
+                      className="works-label works-label--website"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span className="works-label__text">{t('viewApp')}</span>
+                      <CursorIcon className="works-label__cursor" />
+                    </a>
+
+                    <div className="works-monitor__screen works-monitor__screen--light">
+                      <Image
+                        src={getImageUrl(currentWork.appImage?.data?.attributes?.url) || "/Production.jpg"}
+                        alt={`${currentWork.title} App View`}
+                        fill
+                        className="object-cover object-top"
+                        unoptimized
+                      />
+                    </div>
+                    <div className="works-monitor__stand works-monitor__stand--light" />
+                    <div className="works-monitor__base works-monitor__base--light" />
+                  </div>
+                )}
 
                 {/* "View Source Code" label (below left monitor) */}
                 <a
