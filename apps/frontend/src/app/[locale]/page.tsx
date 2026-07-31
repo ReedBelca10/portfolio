@@ -8,6 +8,8 @@ import ContactSection from '@/components/ContactSection';
 
 import { fetchCV } from '@/lib/strapi';
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage({
   params,
 }: {
