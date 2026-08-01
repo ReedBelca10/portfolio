@@ -187,8 +187,8 @@ export function SidebarNav({ items, className, onNavigate }: SidebarNavProps) {
       role="navigation"
       aria-label="Section navigation"
     >
-      <div className="rounded-full bg-[#2f3438] border border-white/30 shadow-lg p-1.5">
-        <div className="flex flex-col items-center gap-4 py-3 px-0.5 w-11">
+      <div className="rounded-full bg-[#2f3438] border border-white/30 shadow-lg p-3">
+        <div className="flex flex-col items-center gap-4 py-3 px-1 w-14">
           {defaultItems.map((item, index) => (
             <div key={item.id} className="relative group">
               <button

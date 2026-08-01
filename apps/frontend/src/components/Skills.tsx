@@ -371,34 +371,69 @@ export function Skills() {
         }
 
         /* ── Category tabs — card style ── */
+        .skills-tabs-wrapper {
+          position: relative;
+          margin-bottom: clamp(28px, 4vw, 48px);
+        }
+
+        /* Fade edges to hint at scrollable content */
+        .skills-tabs-wrapper::before,
+        .skills-tabs-wrapper::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 8px; /* exclude scrollbar area */
+          width: 40px;
+          z-index: 2;
+          pointer-events: none;
+          transition: opacity 0.3s ease;
+        }
+        .skills-tabs-wrapper::before {
+          left: 0;
+          background: linear-gradient(to right, rgba(18, 24, 30, 0.95), transparent);
+        }
+        .skills-tabs-wrapper::after {
+          right: 0;
+          background: linear-gradient(to left, rgba(18, 24, 30, 0.95), transparent);
+        }
+
         .skills-tabs {
           display: flex;
           flex-wrap: nowrap;
           justify-content: flex-start;
-          gap: clamp(8px, 1.2vw, 14px);
-          margin-bottom: clamp(28px, 4vw, 48px);
+          gap: clamp(10px, 1.2vw, 14px);
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
-          padding-bottom: 8px; /* space for custom scrollbar or breathing room */
+          padding: 4px 48px 12px 48px; /* left/right padding prevents clipping */
           scrollbar-width: thin;
-          scrollbar-color: rgba(0, 217, 255, 0.4) transparent;
+          scrollbar-color: rgba(0, 217, 255, 0.3) rgba(255,255,255,0.05);
+          scroll-snap-type: x mandatory;
+          scroll-behavior: smooth;
         }
         
         @media (min-width: 768px) {
           .skills-tabs {
             justify-content: center;
           }
+          .skills-tabs-wrapper::before,
+          .skills-tabs-wrapper::after {
+            display: none;
+          }
         }
         
         .skills-tabs::-webkit-scrollbar {
-          height: 6px;
+          height: 4px;
         }
         .skills-tabs::-webkit-scrollbar-track {
-          background: transparent;
+          background: rgba(255,255,255,0.05);
+          border-radius: 4px;
         }
         .skills-tabs::-webkit-scrollbar-thumb {
-          background: rgba(0, 217, 255, 0.4);
+          background: rgba(0, 217, 255, 0.35);
           border-radius: 4px;
+        }
+        .skills-tabs::-webkit-scrollbar-thumb:hover {
+          background: rgba(0, 217, 255, 0.6);
         }
 
         .skills-tab {
@@ -407,31 +442,37 @@ export function Skills() {
           align-items: center;
           justify-content: center;
           gap: 8px;
-          padding: clamp(14px, 2vw, 22px) clamp(12px, 1.5vw, 20px);
+          padding: clamp(14px, 2vw, 22px) clamp(14px, 1.5vw, 22px);
           border-radius: clamp(10px, 1.2vw, 14px);
-          border: 1.5px solid rgba(0, 217, 255, 0.25);
-          background: rgba(18, 28, 38, 0.72);
-          backdrop-filter: blur(6px);
-          -webkit-backdrop-filter: blur(6px);
+          border: 1.5px solid rgba(0, 217, 255, 0.2);
+          background: rgba(18, 28, 38, 0.65);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
           color: rgba(255,255,255,0.6);
           font-family: "IBM Plex Mono", monospace;
           cursor: pointer;
-          transition: all 0.22s ease;
+          transition: all 0.25s ease;
           outline: none;
           text-align: center;
-          flex: 0 0 auto; /* Don't shrink or grow */
-          min-width: 140px; /* Force minimum width to trigger scroll */
-          max-width: 200px;
+          flex: 0 0 auto;
+          min-width: 150px;
+          max-width: 210px;
+          scroll-snap-align: center;
+          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
         }
         .skills-tab:hover {
-          border-color: rgba(0, 217, 255, 0.6);
+          border-color: rgba(0, 217, 255, 0.55);
           color: #fff;
-          background: rgba(0, 217, 255, 0.1);
+          background: rgba(0, 217, 255, 0.08);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(0, 217, 255, 0.12);
         }
         .skills-tab.active {
           border-color: ${CYAN};
           background: ${CYAN};
           color: #0f1a22;
+          box-shadow: 0 4px 24px rgba(0, 217, 255, 0.35);
+          transform: translateY(-2px);
         }
         .skills-tab.active .skills-tab-icon svg {
           stroke: #0f1a22;
@@ -608,24 +649,26 @@ export function Skills() {
         ) : (
           <>
             {/* ── Category Tabs ── */}
-            <div className="skills-tabs" role="tablist" aria-label="Skill categories">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  role="tab"
-                  aria-selected={activeTab === cat.id}
-                  aria-controls={`skillpanel-${cat.id}`}
-                  id={`skilltab-${cat.id}`}
-                  className={`skills-tab${activeTab === cat.id ? " active" : ""}`}
-                  onClick={() => setActiveTab(cat.id)}
-                >
-                  <span className="skills-tab-icon">
-                    <CategoryIcon type={cat.icon} color={activeTab === cat.id ? "#0f1a22" : CYAN} />
-                  </span>
-                  <span className="skills-tab-label">{cat.label}</span>
-                  <span className="skills-tab-tags">{cat.tags}</span>
-                </button>
-              ))}
+            <div className="skills-tabs-wrapper">
+              <div className="skills-tabs" role="tablist" aria-label="Skill categories">
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    role="tab"
+                    aria-selected={activeTab === cat.id}
+                    aria-controls={`skillpanel-${cat.id}`}
+                    id={`skilltab-${cat.id}`}
+                    className={`skills-tab${activeTab === cat.id ? " active" : ""}`}
+                    onClick={() => setActiveTab(cat.id)}
+                  >
+                    <span className="skills-tab-icon">
+                      <CategoryIcon type={cat.icon} color={activeTab === cat.id ? "#0f1a22" : CYAN} />
+                    </span>
+                    <span className="skills-tab-label">{cat.label}</span>
+                    <span className="skills-tab-tags">{cat.tags}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* ── Skills Grid ── */}
