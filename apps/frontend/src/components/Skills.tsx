@@ -398,23 +398,24 @@ export function Skills() {
         }
 
         .skills-tabs {
-          display: flex;
-          flex-wrap: nowrap;
-          justify-content: flex-start;
-          gap: clamp(10px, 1.2vw, 14px);
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
-          padding: 4px 48px 12px 48px; /* left/right padding prevents clipping */
+          padding: 4px 0 12px 0;
           scrollbar-width: thin;
           scrollbar-color: rgba(0, 217, 255, 0.3) rgba(255,255,255,0.05);
-          scroll-snap-type: x mandatory;
           scroll-behavior: smooth;
+        }
+
+        .skills-tabs-inner {
+          display: inline-flex;
+          flex-wrap: nowrap;
+          gap: clamp(10px, 1.2vw, 14px);
+          margin: 0 auto; /* centers when content fits, scrolls fully when it overflows */
+          padding: 0 24px;
+          scroll-snap-type: x mandatory;
         }
         
         @media (min-width: 768px) {
-          .skills-tabs {
-            justify-content: center;
-          }
           .skills-tabs-wrapper::before,
           .skills-tabs-wrapper::after {
             display: none;
@@ -651,23 +652,25 @@ export function Skills() {
             {/* ── Category Tabs ── */}
             <div className="skills-tabs-wrapper">
               <div className="skills-tabs" role="tablist" aria-label="Skill categories">
-                {categories.map((cat) => (
-                  <button
-                    key={cat.id}
-                    role="tab"
-                    aria-selected={activeTab === cat.id}
-                    aria-controls={`skillpanel-${cat.id}`}
-                    id={`skilltab-${cat.id}`}
-                    className={`skills-tab${activeTab === cat.id ? " active" : ""}`}
-                    onClick={() => setActiveTab(cat.id)}
-                  >
-                    <span className="skills-tab-icon">
-                      <CategoryIcon type={cat.icon} color={activeTab === cat.id ? "#0f1a22" : CYAN} />
-                    </span>
-                    <span className="skills-tab-label">{cat.label}</span>
-                    <span className="skills-tab-tags">{cat.tags}</span>
-                  </button>
-                ))}
+                <div className="skills-tabs-inner">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      role="tab"
+                      aria-selected={activeTab === cat.id}
+                      aria-controls={`skillpanel-${cat.id}`}
+                      id={`skilltab-${cat.id}`}
+                      className={`skills-tab${activeTab === cat.id ? " active" : ""}`}
+                      onClick={() => setActiveTab(cat.id)}
+                    >
+                      <span className="skills-tab-icon">
+                        <CategoryIcon type={cat.icon} color={activeTab === cat.id ? "#0f1a22" : CYAN} />
+                      </span>
+                      <span className="skills-tab-label">{cat.label}</span>
+                      <span className="skills-tab-tags">{cat.tags}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
