@@ -152,6 +152,12 @@
       }
     }
   },
+  "Metadata": {
+    "title": "Caleb Adjeoda | Ingénieur Logiciel",
+    "description": "Portfolio et blog d'un Ingénieur Logiciel (Développeur Full-Stack) professionnel.",
+    "blogTitle": "Articles | Caleb Adjeoda",
+    "blogDescription": "Mes réflexions sur la science, la technologie, les affaires et l'ingénierie logicielle. N'hésitez pas à vous abonner."
+  },
   "home": {
     "title": "Bienvenue sur mon portfolio",
     "subtitle": "Développeur passionné par la création d'excellentes expériences web",

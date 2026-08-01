@@ -152,6 +152,12 @@
       }
     }
   },
+  "Metadata": {
+    "title": "Caleb Adjeoda | Software Engineer",
+    "description": "Professional Software Engineer (Full-Stack Developer) portfolio and blog.",
+    "blogTitle": "Blogs | Caleb Adjeoda",
+    "blogDescription": "My thoughts on science, technology, business, and software engineering. Welcome to subscribe."
+  },
   "home": {
     "title": "Welcome to my portfolio",
     "subtitle": "Full-stack developer passionate about building amazing web experiences",
