@@ -3,11 +3,10 @@ import { Navbar, Footer } from '@/components';
 import ArticlePage from '@/components/ArticlePage';
 import { fetchBlogById, fetchBlogs } from '@/lib/strapi';
 
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ locale: string; id: string }> },
-  parent: ResolvingMetadata
+  { params }: { params: Promise<{ locale: string; id: string }> }
 ): Promise<Metadata> {
   const { locale, id } = await params;
   
