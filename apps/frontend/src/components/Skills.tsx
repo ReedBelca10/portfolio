@@ -373,10 +373,32 @@ export function Skills() {
         /* ── Category tabs — card style ── */
         .skills-tabs {
           display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
           gap: clamp(8px, 1.2vw, 14px);
           margin-bottom: clamp(28px, 4vw, 48px);
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          padding-bottom: 8px; /* space for custom scrollbar or breathing room */
+          scrollbar-width: thin;
+          scrollbar-color: rgba(0, 217, 255, 0.4) transparent;
+        }
+        
+        @media (min-width: 768px) {
+          .skills-tabs {
+            justify-content: center;
+          }
+        }
+        
+        .skills-tabs::-webkit-scrollbar {
+          height: 6px;
+        }
+        .skills-tabs::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .skills-tabs::-webkit-scrollbar-thumb {
+          background: rgba(0, 217, 255, 0.4);
+          border-radius: 4px;
         }
 
         .skills-tab {
@@ -397,7 +419,8 @@ export function Skills() {
           transition: all 0.22s ease;
           outline: none;
           text-align: center;
-          flex: 1 1 150px;
+          flex: 0 0 auto; /* Don't shrink or grow */
+          min-width: 140px; /* Force minimum width to trigger scroll */
           max-width: 200px;
         }
         .skills-tab:hover {
