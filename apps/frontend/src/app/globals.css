@@ -887,6 +887,43 @@ a {
   transform: rotate(10deg);
 }
 
+/* ── Works Markdown ── */
+.works-markdown p {
+  margin-bottom: 1em;
+}
+.works-markdown h1, .works-markdown h2, .works-markdown h3, .works-markdown h4 {
+  color: #00D9FF;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+.works-markdown ul {
+  list-style-type: disc;
+  margin-left: 20px;
+  margin-bottom: 1em;
+}
+.works-markdown ol {
+  list-style-type: decimal;
+  margin-left: 20px;
+  margin-bottom: 1em;
+}
+.works-markdown li {
+  margin-bottom: 0.5em;
+}
+.works-markdown a {
+  color: #00D9FF;
+  text-decoration: underline;
+}
+.works-markdown strong {
+  color: #fff;
+}
+.works-markdown blockquote {
+  border-left: 4px solid #00D9FF;
+  padding-left: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1em;
+}
+
 /* ── Dots indicator ── */
 .works-dots {
   display: flex;

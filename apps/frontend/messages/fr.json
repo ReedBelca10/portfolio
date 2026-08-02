@@ -48,15 +48,16 @@
         "title": "Travaux",
         "description": "J'ai eu le plaisir de travailler sur ces superbes projets",
         "loading": "Chargement des projets...",
-        "empty": "Aucun projet disponible. Veuillez en ajouter dans le CMS.",
+        "empty": "Aucun projet disponible pour l'instant.",
         "viewApp": "Voir l'application",
-        "viewSource": "Voir le code source"
+        "viewSource": "Voir le code source",
+        "privateSourceCode": "Code source privé / Sous contraintes"
       },
       "skills": {
         "title": "Compétences",
         "subtitle": "Je m'efforce de ne jamais cesser d'apprendre et de m'améliorer",
         "loading": "Chargement des compétences...",
-        "empty": "Aucune compétence disponible. Veuillez en ajouter dans le CMS.",
+        "empty": "Aucune compétence disponible pour l'instant.",
         "levels": {
           "beginner": "DÉBUTANT",
           "intermediate": "INTERMÉDIAIRE",

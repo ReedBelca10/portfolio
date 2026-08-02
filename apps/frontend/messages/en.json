@@ -48,15 +48,16 @@
         "title": "Works",
         "description": "I had the pleasure of working with these awesome projects",
         "loading": "Loading projects...",
-        "empty": "No projects available. Please add some in the CMS.",
+        "empty": "No projects available for the moment.",
         "viewApp": "View App",
-        "viewSource": "View Source Code"
+        "viewSource": "View Source Code",
+        "privateSourceCode": "Source Code Private / Under Constraints"
       },
       "skills": {
         "title": "Skills",
         "subtitle": "I am striving to never stop learning and improving",
         "loading": "Loading skills...",
-        "empty": "No skills available. Please add some in the CMS.",
+        "empty": "No skills available for the moment.",
         "levels": {
           "beginner": "BEGINNER",
           "intermediate": "INTERMEDIATE",

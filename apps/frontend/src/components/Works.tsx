@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { fetchWorks } from '@/lib/strapi';
 import { useLocale, useTranslations } from 'next-intl';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 /*
  * Works Component
@@ -237,15 +239,23 @@ export function Works() {
                 )}
 
                 {/* "View Source Code" label (below left monitor) */}
-                <a
-                  href={currentWork.sourceCodeLink || '#'}
-                  className="works-label works-label--source"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span className="works-label__text">{t('viewSource')}</span>
-                  <CursorIcon className="works-label__cursor" />
-                </a>
+                {currentWork.sourceCodeLink && currentWork.sourceCodeLink !== '#' ? (
+                  <a
+                    href={currentWork.sourceCodeLink}
+                    className="works-label works-label--source"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="works-label__text">{t('viewSource')}</span>
+                    <CursorIcon className="works-label__cursor" />
+                  </a>
+                ) : (
+                  <div className="works-label works-label--source" style={{ cursor: 'default', opacity: 0.8 }}>
+                    <span className="works-label__text" style={{ whiteSpace: 'normal', textAlign: 'center', fontSize: '10px' }}>
+                      {t('privateSourceCode')}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Right arrow */}
@@ -261,9 +271,11 @@ export function Works() {
             {/* ── Project Description ── */}
             <div className="works-description-block" style={{ marginTop: '40px', textAlign: 'center', maxWidth: '800px', marginLeft: 'auto', marginRight: 'auto', padding: '20px', background: 'rgba(18, 24, 30, 0.68)', borderRadius: '12px', border: '1px solid rgba(0, 217, 255, 0.25)', backdropFilter: 'blur(10px)' }}>
               <h3 style={{ color: '#00D9FF', fontFamily: '"IBM Plex Mono", monospace', fontSize: '20px', marginBottom: '12px' }}>{currentWork.title}</h3>
-              <p style={{ color: 'rgba(255,255,255,0.85)', fontFamily: '"IBM Plex Mono", monospace', fontSize: '14px', lineHeight: '1.6', marginBottom: '16px' }}>
-                {currentWork.description}
-              </p>
+              <div className="works-markdown" style={{ color: 'rgba(255,255,255,0.85)', fontFamily: '"IBM Plex Mono", monospace', fontSize: '14px', lineHeight: '1.6', marginBottom: '16px', textAlign: 'left' }}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {currentWork.description}
+                </ReactMarkdown>
+              </div>
               
               {/* Technologies */}
               {currentWork.technologies && (
