@@ -316,7 +316,7 @@ export function Hero({ cvUrl }: HeroProps) {
                       color: "#fff",
                     }}
                   >
-                    Caleb Kokou Adjeoda
+                    Caleb K. Adjeoda
                   </p>
                   <p
                     style={{
