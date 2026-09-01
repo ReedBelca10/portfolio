@@ -258,7 +258,8 @@ function SharePanel({ title, onClose, t }: { title: string; onClose: () => void;
         right: 0,
         top: '100%',
         marginTop: '12px',
-        width: '260px',
+        width: 'calc(100vw - 32px)',
+        maxWidth: '260px',
         background: 'rgba(18, 24, 32, 0.96)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
@@ -351,7 +352,7 @@ function ArticleMetaRow({ author, date, readTime, title, t }: { author: string; 
         <span><strong className="text-white font-bold">{t('date')}</strong> {date}</span>
         <span><strong className="text-white font-bold">{t('read')}</strong> {readTime}</span>
       </div>
-      <div className="relative">
+      <div className="relative ml-auto">
         <button
           onClick={() => setShowShare(!showShare)}
           className="flex items-center justify-center w-9 h-9 rounded-full border border-[#00D9FF] text-[#00D9FF] hover:bg-[#00D9FF]/10 transition-colors shrink-0"
@@ -516,13 +517,15 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
       </div>
 
       {/* Tags + Like Row */}
-      <div className="w-full max-w-[800px] flex flex-wrap items-center justify-between mt-12 mb-8 font-primary">
+      <div className="w-full max-w-[800px] flex flex-wrap items-center justify-between mt-12 mb-8 font-primary gap-6">
         <div className="flex flex-wrap gap-4">
           {tags.map((tag: string, i: number) => (
             <span key={i} className="bg-[#424952] text-[#E2E8F0] px-4 py-1.5 rounded-full text-[12px]">{tag}</span>
           ))}
         </div>
-        <LikeButton blogId={post.documentId || post.id} initialLikes={post.likes || 0} t={t} />
+        <div className="ml-auto">
+          <LikeButton blogId={post.documentId || post.id} initialLikes={post.likes || 0} t={t} />
+        </div>
       </div>
 
       {/* Bottom Meta */}
