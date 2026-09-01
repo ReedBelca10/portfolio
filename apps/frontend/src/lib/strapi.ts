@@ -158,8 +158,10 @@ export async function fetchCV(locale: string = 'en') {
       `/cv?populate=*&locale=${locale}`
     );
     const data = response.data.data;
-    if (data?.attributes?.file?.data?.attributes?.url) {
-      return data.attributes.file.data.attributes.url;
+    const fileUrl = data?.attributes?.file?.data?.attributes?.url;
+    if (fileUrl) {
+      // If URL is relative, prepend the API base URL
+      return fileUrl.startsWith('http') ? fileUrl : `${API_URL}${fileUrl}`;
     }
     return null;
   } catch (error) {

@@ -1,0 +1,6 @@
+tree 329b4dedb1e091f4f1982cb855afd88771f4ed6a
+parent 712cf597bb1ae53e503b72f3c703f9854a7f40c2
+author ReedBelca <reedbelca55@gmail.com> 1784059058 +0000
+committer ReedBelca <reedbelca55@gmail.com> 1784059058 +0000
+
+fix: allow public message submissions in Strapi
