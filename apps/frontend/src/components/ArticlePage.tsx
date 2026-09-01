@@ -345,8 +345,8 @@ function ArticleMetaRow({ author, date, readTime, title, t }: { author: string; 
   const [showShare, setShowShare] = useState(false);
 
   return (
-    <div className="flex flex-wrap items-center justify-between w-full max-w-[800px] mx-auto py-4 font-primary text-[13px] text-[#E2E8F0]">
-      <div className="flex items-center gap-4">
+    <div className="flex flex-wrap items-center justify-between w-full max-w-[800px] mx-auto py-4 font-primary text-[13px] text-[#E2E8F0] gap-4">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <span><strong className="text-white font-bold">{t('author')}</strong> {author}</span>
         <span><strong className="text-white font-bold">{t('date')}</strong> {date}</span>
         <span><strong className="text-white font-bold">{t('read')}</strong> {readTime}</span>
@@ -354,7 +354,7 @@ function ArticleMetaRow({ author, date, readTime, title, t }: { author: string; 
       <div className="relative">
         <button
           onClick={() => setShowShare(!showShare)}
-          className="flex items-center justify-center w-9 h-9 rounded-full border border-[#00D9FF] text-[#00D9FF] hover:bg-[#00D9FF]/10 transition-colors"
+          className="flex items-center justify-center w-9 h-9 rounded-full border border-[#00D9FF] text-[#00D9FF] hover:bg-[#00D9FF]/10 transition-colors shrink-0"
           aria-label="Share this article"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -464,6 +464,16 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
           border-radius: 4px;
           margin: 1em 0;
         }
+        .markdown-content pre {
+          overflow-x: auto;
+          max-width: 100%;
+          background: rgba(0, 0, 0, 0.2);
+          padding: 1em;
+          border-radius: 4px;
+        }
+        .markdown-content code {
+          word-break: break-word;
+        }
         .subscribe-input-article {
           background: transparent;
           border: 2px solid rgba(255, 255, 255, 0.3);
@@ -473,6 +483,7 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
           outline: none;
           font-family: 'Ubuntu', sans-serif;
           margin-right: 8px;
+          width: 100%;
         }
         .subscribe-input-article:focus {
           border-color: ${CYAN};
@@ -480,7 +491,7 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
       `}</style>
 
       {/* Title */}
-      <h1 className="font-primary text-center text-3xl md:text-[32px] text-[#00D9FF] font-normal leading-snug max-w-[800px] mx-auto mb-6">
+      <h1 className="font-primary text-center text-3xl md:text-[32px] text-[#00D9FF] font-normal leading-snug max-w-[800px] w-full mx-auto mb-6 break-words">
         {post.title}
       </h1>
 
