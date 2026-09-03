@@ -580,7 +580,8 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
               const isVideo = url.match(/\.(mp4|webm|ogg|mov)$/i);
               const isAudio = url.match(/\.(mp3|wav|ogg)$/i);
               const isImage = url.match(/\.(jpeg|jpg|gif|png|webp|svg)$/i);
-              const isDocument = url.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|7z)$/i);
+              const isDocument = url.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|7z|txt|csv|rtf)$/i);
+              const isCode = url.match(/\.(js|jsx|ts|tsx|py|java|c|cpp|h|cs|go|rb|php|swift|rs|kt|sh|bat|json|yml|yaml|xml|sql|html|css|md|vue|svelte)$/i);
 
               const DownloadIcon = () => (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -623,17 +624,27 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
                   </div>
                 );
               }
-              if (isDocument) {
+              if (isDocument || isCode) {
+                const label = isCode ? 'Download Code' : 'Download File';
+                const Icon = isCode ? () => (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                  </svg>
+                ) : () => (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="12" y2="18"></line>
+                    <line x1="15" y1="15" x2="12" y2="18"></line>
+                  </svg>
+                );
+
                 return (
                   <a href={url} download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 p-3 bg-white/5 border border-white/10 rounded my-2 text-[#00D9FF] hover:bg-white/10 transition-colors w-fit">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                      <line x1="12" y1="18" x2="12" y2="12"></line>
-                      <line x1="9" y1="15" x2="12" y2="18"></line>
-                      <line x1="15" y1="15" x2="12" y2="18"></line>
-                    </svg>
-                    {children || 'Download File'}
+                    <Icon />
+                    {children || label}
                   </a>
                 );
               }
