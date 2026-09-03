@@ -568,10 +568,11 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
           components={{
             a: ({ node, href, children, ...props }: any) => {
               if (!href) return <a {...props}>{children}</a>;
-              const url = href.startsWith('http') ? href : `${API_URL}${href}`;
+              let url = href.trim();
+              url = url.startsWith('http') ? url : `${API_URL}${url}`;
               
               // Handle GitHub Gists
-              if (url.startsWith('https://gist.github.com/')) {
+              if (url.includes('gist.github.com/')) {
                 const baseGistUrl = url.split('?')[0].split('#')[0];
                 return <GistEmbed url={baseGistUrl} />;
               }
