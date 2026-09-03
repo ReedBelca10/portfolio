@@ -372,6 +372,58 @@ function ArticleMetaRow({ author, date, readTime, title, t }: { author: string; 
   );
 }
 
+function GistEmbed({ url }: { url: string }) {
+  const iframeSrc = `
+    <html>
+      <head>
+        <base target="_blank" />
+        <style>
+          body { margin: 0; padding: 0; background: transparent; }
+          .gist { width: 100%; margin: 0; }
+        </style>
+      </head>
+      <body>
+        <script src="${url}.js"></script>
+        <script>
+          function sendHeight() {
+            const height = document.body.scrollHeight;
+            window.parent.postMessage({ type: 'resize-gist', height, url: '${url}' }, '*');
+          }
+          window.onload = sendHeight;
+          if (typeof ResizeObserver !== 'undefined') {
+            new ResizeObserver(sendHeight).observe(document.body);
+          }
+        </script>
+      </body>
+    </html>
+  `;
+
+  const [height, setHeight] = React.useState(300);
+
+  React.useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      if (e.data && e.data.type === 'resize-gist' && e.data.url === url) {
+        setHeight(e.data.height + 20); // Add a small buffer to prevent scrollbars
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [url]);
+
+  return (
+    <div className="my-6 w-full max-w-full overflow-hidden bg-white/5 rounded-lg border border-white/10 pt-4 px-4 pb-0">
+      <iframe
+        srcDoc={iframeSrc}
+        width="100%"
+        height={height}
+        className="w-full border-0"
+        style={{ colorScheme: 'light' }}
+        title="GitHub Gist"
+      />
+    </div>
+  );
+}
+
 export function ArticlePage({ post, related = [] }: ArticlePageProps) {
   const locale = useLocale();
   const t = useTranslations('pages.home.blogSection');
@@ -517,6 +569,13 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
             a: ({ node, href, children, ...props }: any) => {
               if (!href) return <a {...props}>{children}</a>;
               const url = href.startsWith('http') ? href : `${API_URL}${href}`;
+              
+              // Handle GitHub Gists
+              if (url.startsWith('https://gist.github.com/')) {
+                const baseGistUrl = url.split('?')[0].split('#')[0];
+                return <GistEmbed url={baseGistUrl} />;
+              }
+
               const isVideo = url.match(/\.(mp4|webm|ogg|mov)$/i);
               const isAudio = url.match(/\.(mp3|wav|ogg)$/i);
               const isImage = url.match(/\.(jpeg|jpg|gif|png|webp|svg)$/i);
