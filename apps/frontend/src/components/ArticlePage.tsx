@@ -373,6 +373,7 @@ function ArticleMetaRow({ author, date, readTime, title, t }: { author: string; 
 }
 
 function GistEmbed({ url }: { url: string }) {
+  const cleanUrl = url.replace(/\.js$/, '');
   const iframeSrc = `
     <html>
       <head>
@@ -383,11 +384,11 @@ function GistEmbed({ url }: { url: string }) {
         </style>
       </head>
       <body>
-        <script src="${url}.js"></script>
+        <script src="${cleanUrl}.js"></script>
         <script>
           function sendHeight() {
             const height = document.body.scrollHeight;
-            window.parent.postMessage({ type: 'resize-gist', height, url: '${url}' }, '*');
+            window.parent.postMessage({ type: 'resize-gist', height, url: '${cleanUrl}' }, '*');
           }
           window.onload = sendHeight;
           if (typeof ResizeObserver !== 'undefined') {
@@ -402,16 +403,16 @@ function GistEmbed({ url }: { url: string }) {
 
   React.useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
-      if (e.data && e.data.type === 'resize-gist' && e.data.url === url) {
-        setHeight(e.data.height + 20); // Add a small buffer to prevent scrollbars
+      if (e.data && e.data.type === 'resize-gist' && e.data.url === cleanUrl) {
+        setHeight(e.data.height + 20);
       }
     };
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [url]);
+  }, [cleanUrl]);
 
   return (
-    <div className="my-6 w-full max-w-full overflow-hidden bg-white/5 rounded-lg border border-white/10 pt-4 px-4 pb-0">
+    <span className="block my-6 w-full max-w-full overflow-hidden bg-white/5 rounded-lg border border-white/10 pt-4 px-4 pb-0">
       <iframe
         srcDoc={iframeSrc}
         width="100%"
@@ -420,7 +421,7 @@ function GistEmbed({ url }: { url: string }) {
         style={{ colorScheme: 'light' }}
         title="GitHub Gist"
       />
-    </div>
+    </span>
   );
 }
 
@@ -566,16 +567,48 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
         <ReactMarkdown 
           remarkPlugins={[remarkGfm]}
           components={{
+            p: ({ node, children, ...props }: any) => {
+              // Extract text content from children if it's a bare gist URL that didn't get autolinked
+              let textContent = '';
+              React.Children.forEach(children, child => {
+                if (typeof child === 'string') textContent += child;
+              });
+              
+              if (textContent.trim().toLowerCase().includes('gist.github.com/')) {
+                const urlMatch = textContent.match(/https?:\/\/gist\.github\.com\/[^\s]+/i);
+                if (urlMatch) {
+                  const baseGistUrl = urlMatch[0].split('?')[0].split('#')[0].replace(/\.js$/, '');
+                  return <GistEmbed url={baseGistUrl} />;
+                }
+              }
+              
+              return <p {...props}>{children}</p>;
+            },
             a: ({ node, href, children, ...props }: any) => {
               if (!href) return <a {...props}>{children}</a>;
+              
               let url = href.trim();
-              url = url.startsWith('http') ? url : `${API_URL}${url}`;
               
               // Handle GitHub Gists
-              if (url.includes('gist.github.com/')) {
-                const baseGistUrl = url.split('?')[0].split('#')[0];
+              if (url.toLowerCase().includes('gist.github.com')) {
+                const baseGistUrl = url.split('?')[0].split('#')[0].replace(/\.js$/, '');
                 return <GistEmbed url={baseGistUrl} />;
               }
+
+              // Fallback string for children just in case they are text
+              let textContent = '';
+              React.Children.forEach(children, child => {
+                if (typeof child === 'string') textContent += child;
+              });
+              
+              if (textContent.toLowerCase().includes('gist.github.com')) {
+                const baseGistUrl = textContent.trim().split('?')[0].split('#')[0].replace(/\.js$/, '');
+                if (baseGistUrl.startsWith('http')) {
+                  return <GistEmbed url={baseGistUrl} />;
+                }
+              }
+
+              url = url.startsWith('http') ? url : `${API_URL}${url}`;
 
               const isVideo = url.match(/\.(mp4|webm|ogg|mov)$/i);
               const isAudio = url.match(/\.(mp3|wav|ogg)$/i);
