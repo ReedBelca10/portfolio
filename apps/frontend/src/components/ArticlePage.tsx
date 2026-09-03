@@ -511,7 +511,98 @@ export function ArticlePage({ post, related = [] }: ArticlePageProps) {
 
       {/* Article Content */}
       <div className="w-full max-w-[800px] font-primary text-[15px] text-[#E2E8F0] leading-[1.8] flex flex-col gap-6 markdown-content">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        <ReactMarkdown 
+          remarkPlugins={[remarkGfm]}
+          components={{
+            a: ({ node, href, children, ...props }: any) => {
+              if (!href) return <a {...props}>{children}</a>;
+              const url = href.startsWith('http') ? href : `${API_URL}${href}`;
+              const isVideo = url.match(/\.(mp4|webm|ogg|mov)$/i);
+              const isAudio = url.match(/\.(mp3|wav|ogg)$/i);
+              const isImage = url.match(/\.(jpeg|jpg|gif|png|webp|svg)$/i);
+              const isDocument = url.match(/\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|7z)$/i);
+
+              const DownloadIcon = () => (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              );
+
+              if (isVideo) {
+                return (
+                  <div className="flex flex-col items-start my-6 w-full">
+                    <video controls className="w-full rounded bg-black/20" src={url} />
+                    <a href={url} download target="_blank" rel="noopener noreferrer" className="mt-2 text-[#00D9FF] hover:underline flex items-center gap-1 text-sm font-monospace">
+                      <DownloadIcon />
+                      Download Video
+                    </a>
+                  </div>
+                );
+              }
+              if (isAudio) {
+                return (
+                  <div className="flex flex-col items-start my-6 w-full">
+                    <audio controls className="w-full" src={url} />
+                    <a href={url} download target="_blank" rel="noopener noreferrer" className="mt-2 text-[#00D9FF] hover:underline flex items-center gap-1 text-sm font-monospace">
+                      <DownloadIcon />
+                      Download Audio
+                    </a>
+                  </div>
+                );
+              }
+              if (isImage) {
+                return (
+                  <div className="flex flex-col items-center my-6 w-full">
+                    <img src={url} alt="Markdown content" className="max-w-full rounded max-h-[600px] object-contain bg-black/20" />
+                    <a href={url} download target="_blank" rel="noopener noreferrer" className="mt-2 text-[#00D9FF] hover:underline flex items-center gap-1 text-sm font-monospace self-start">
+                      <DownloadIcon />
+                      Download Image
+                    </a>
+                  </div>
+                );
+              }
+              if (isDocument) {
+                return (
+                  <a href={url} download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 p-3 bg-white/5 border border-white/10 rounded my-2 text-[#00D9FF] hover:bg-white/10 transition-colors w-fit">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                      <line x1="12" y1="18" x2="12" y2="12"></line>
+                      <line x1="9" y1="15" x2="12" y2="18"></line>
+                      <line x1="15" y1="15" x2="12" y2="18"></line>
+                    </svg>
+                    {children || 'Download File'}
+                  </a>
+                );
+              }
+
+              return (
+                <a href={url} target="_blank" rel="noopener noreferrer" className="text-[#00D9FF] underline hover:no-underline break-words" {...props}>
+                  {children}
+                </a>
+              );
+            },
+            img: ({ node, src, alt, ...props }: any) => {
+              if (!src) return <img alt={alt} {...props} />;
+              const url = src.startsWith('http') ? src : `${API_URL}${src}`;
+              return (
+                <div className="flex flex-col items-center my-6 w-full">
+                  <img src={url} alt={alt || 'Markdown image'} className="max-w-full rounded max-h-[600px] object-contain bg-black/20" {...props} />
+                  <a href={url} download target="_blank" rel="noopener noreferrer" className="mt-2 text-[#00D9FF] hover:underline flex items-center gap-1 text-sm font-monospace self-start">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download Image
+                  </a>
+                </div>
+              );
+            }
+          }}
+        >
           {rawContent}
         </ReactMarkdown>
       </div>
