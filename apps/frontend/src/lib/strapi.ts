@@ -74,7 +74,7 @@ export async function fetchSkills(locale: string = 'en') {
 export async function fetchWorks(locale: string = 'en') {
   try {
     const response = await strapiClient.get<StrapiResponse<any>>(
-      `/works?populate=*&pagination[pageSize]=100&locale=${locale}`
+      `/works?populate=*&sort=createdAt:desc&pagination[pageSize]=100&locale=${locale}`
     );
     const data = response.data.data;
     return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];

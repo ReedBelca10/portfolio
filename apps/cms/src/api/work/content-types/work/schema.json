@@ -27,6 +27,11 @@
     "sourceCodeLink": {
       "type": "string"
     },
+    "sourceCodeLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.link"
+    },
     "appLink": {
       "type": "string"
     },

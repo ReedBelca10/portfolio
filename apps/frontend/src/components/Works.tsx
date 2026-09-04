@@ -28,6 +28,7 @@ interface StrapiWork {
   technologies?: string;
   projectType?: 'web' | 'desktop' | 'mobile';
   sourceCodeLink: string;
+  sourceCodeLinks?: { id: number; url: string; label: string }[];
   appLink: string;
   sourceCodeImage?: {
     data?: {
@@ -239,7 +240,22 @@ export function Works() {
                 )}
 
                 {/* "View Source Code" label (below left monitor) */}
-                {currentWork.sourceCodeLink && currentWork.sourceCodeLink !== '#' ? (
+                {currentWork.sourceCodeLinks && currentWork.sourceCodeLinks.length > 0 ? (
+                  <div className="works-label works-label--source" style={{ flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>
+                    {currentWork.sourceCodeLinks.map((link) => (
+                      <a
+                        key={link.id}
+                        href={link.url}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none', color: 'inherit' }}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span className="works-label__text">{link.label}</span>
+                        <CursorIcon className="works-label__cursor" />
+                      </a>
+                    ))}
+                  </div>
+                ) : currentWork.sourceCodeLink && currentWork.sourceCodeLink !== '#' ? (
                   <a
                     href={currentWork.sourceCodeLink}
                     className="works-label works-label--source"
