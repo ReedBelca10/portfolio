@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { fetchWorks } from '@/lib/strapi';
 import { useLocale, useTranslations } from 'next-intl';
@@ -92,6 +92,27 @@ export function Works() {
   const [works, setWorks] = useState<StrapiWork[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [sourceDropdownOpen, setSourceDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setSourceDropdownOpen(false);
+      }
+    }
+    if (sourceDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [sourceDropdownOpen]);
+
+  // Close dropdown when changing project
+  const setCurrentIndexAndCloseDropdown = useCallback((indexOrFn: number | ((prev: number) => number)) => {
+    setSourceDropdownOpen(false);
+    setCurrentIndex(indexOrFn);
+  }, []);
 
   useEffect(() => {
     async function loadWorks() {
@@ -108,11 +129,11 @@ export function Works() {
   }, []);
 
   const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev === 0 ? works.length - 1 : prev - 1));
+    setCurrentIndexAndCloseDropdown((prev) => (prev === 0 ? works.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) => (prev === works.length - 1 ? 0 : prev + 1));
+    setCurrentIndexAndCloseDropdown((prev) => (prev === works.length - 1 ? 0 : prev + 1));
   };
 
   const currentWork = works[currentIndex];
@@ -240,21 +261,54 @@ export function Works() {
                 )}
 
                 {/* "View Source Code" label (below left monitor) */}
-                {currentWork.sourceCodeLinks && currentWork.sourceCodeLinks.length > 0 ? (
-                  <div className="works-label works-label--source" style={{ flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>
-                    {currentWork.sourceCodeLinks.map((link) => (
-                      <a
-                        key={link.id}
-                        href={link.url}
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none', color: 'inherit' }}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                {currentWork.sourceCodeLinks && currentWork.sourceCodeLinks.length > 1 ? (
+                  /* ── Dropdown for multiple source code links ── */
+                  <div className="works-label works-label--source works-source-dropdown" ref={dropdownRef}>
+                    <button
+                      className="works-source-dropdown__trigger"
+                      onClick={() => setSourceDropdownOpen((prev) => !prev)}
+                      aria-expanded={sourceDropdownOpen}
+                      aria-haspopup="true"
+                    >
+                      <span className="works-label__text">{t('viewSource')}</span>
+                      <svg
+                        className={`works-source-dropdown__chevron ${sourceDropdownOpen ? 'works-source-dropdown__chevron--open' : ''}`}
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <span className="works-label__text">{link.label}</span>
-                        <CursorIcon className="works-label__cursor" />
-                      </a>
-                    ))}
+                        <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <div className={`works-source-dropdown__menu ${sourceDropdownOpen ? 'works-source-dropdown__menu--open' : ''}`}>
+                      {currentWork.sourceCodeLinks.map((link) => (
+                        <a
+                          key={link.id}
+                          href={link.url}
+                          className="works-source-dropdown__item"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setSourceDropdownOpen(false)}
+                        >
+                          <CursorIcon className="works-source-dropdown__item-icon" />
+                          <span>{link.label}</span>
+                        </a>
+                      ))}
+                    </div>
                   </div>
+                ) : currentWork.sourceCodeLinks && currentWork.sourceCodeLinks.length === 1 ? (
+                  /* ── Single link from sourceCodeLinks array ── */
+                  <a
+                    href={currentWork.sourceCodeLinks[0].url}
+                    className="works-label works-label--source"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="works-label__text">{currentWork.sourceCodeLinks[0].label}</span>
+                    <CursorIcon className="works-label__cursor" />
+                  </a>
                 ) : currentWork.sourceCodeLink && currentWork.sourceCodeLink !== '#' ? (
                   <a
                     href={currentWork.sourceCodeLink}
@@ -318,7 +372,7 @@ export function Works() {
               {works.map((work, index) => (
                 <button
                   key={work.id}
-                  onClick={() => setCurrentIndex(index)}
+                  onClick={() => setCurrentIndexAndCloseDropdown(index)}
                   className={`works-dot ${index === currentIndex ? 'works-dot--active' : ''}`}
                   aria-label={`Go to project ${work.title}`}
                 />

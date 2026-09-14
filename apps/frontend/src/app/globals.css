@@ -887,6 +887,113 @@ a {
   transform: rotate(10deg);
 }
 
+/* ── Source Code Dropdown ── */
+.works-source-dropdown {
+  position: absolute;
+  cursor: default;
+}
+
+.works-source-dropdown:hover {
+  transform: none;
+}
+
+.works-source-dropdown__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: transform 0.25s ease;
+}
+
+.works-source-dropdown__trigger:hover {
+  transform: translateY(-2px);
+}
+
+.works-source-dropdown__chevron {
+  color: #00D9FF;
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.works-source-dropdown__chevron--open {
+  transform: rotate(180deg);
+}
+
+.works-source-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 200px;
+  background: rgba(12, 18, 24, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 217, 255, 0.25);
+  border-radius: 10px;
+  padding: 6px 0;
+  z-index: 50;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(0, 217, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  /* Closed state */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.97);
+  transform-origin: top left;
+  transition:
+    opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.works-source-dropdown__menu--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.works-source-dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+  border-left: 2px solid transparent;
+}
+
+.works-source-dropdown__item:hover {
+  background: rgba(0, 217, 255, 0.1);
+  color: #00D9FF;
+  border-left-color: #00D9FF;
+}
+
+.works-source-dropdown__item-icon {
+  color: rgba(0, 217, 255, 0.5);
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  transition: color 0.18s ease;
+}
+
+.works-source-dropdown__item:hover .works-source-dropdown__item-icon {
+  color: #00D9FF;
+}
+
 /* ── Works Markdown ── */
 .works-markdown p {
   margin-bottom: 1em;
@@ -1049,6 +1156,26 @@ a {
   .works-label--source {
     bottom: -4px;
     left: 20px;
+  }
+
+  .works-source-dropdown__menu {
+    min-width: 170px;
+  }
+
+  .works-source-dropdown__item {
+    font-size: 11px;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .works-source-dropdown__item-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .works-source-dropdown__chevron {
+    width: 12px;
+    height: 12px;
   }
 }
 
