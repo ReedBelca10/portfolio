@@ -6,6 +6,7 @@ const API_URL = process.env.NODE_ENV === 'development'
 
 export const strapiClient = axios.create({
   baseURL: `${API_URL}/api`,
+  timeout: 10000, // 10s — fail fast if Strapi is down
   headers: {
     'Content-Type': 'application/json',
   },
@@ -41,7 +42,7 @@ export async function fetchPortfolioInfo(locale: string = 'en') {
     return data ? { id: data.id, ...data.attributes } : null;
   } catch (error) {
     console.error('Error fetching portfolio info:', error);
-    throw error;
+    return null;
   }
 }
 
@@ -54,7 +55,7 @@ export async function fetchProjects(locale: string = 'en') {
     return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
   } catch (error) {
     console.error('Error fetching projects:', error);
-    throw error;
+    return [];
   }
 }
 
@@ -67,7 +68,7 @@ export async function fetchSkills(locale: string = 'en') {
     return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
   } catch (error) {
     console.error('Error fetching skills:', error);
-    throw error;
+    return [];
   }
 }
 
@@ -80,7 +81,7 @@ export async function fetchWorks(locale: string = 'en') {
     return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
   } catch (error) {
     console.error('Error fetching works:', error);
-    throw error;
+    return [];
   }
 }
 
@@ -120,7 +121,7 @@ export async function fetchBlogs(locale: string = 'en') {
     return Array.isArray(data) ? data.map((item: any) => ({ id: item.id, ...item.attributes })) : [];
   } catch (error) {
     console.error('Error fetching blogs:', error);
-    throw error;
+    return [];
   }
 }
 
@@ -133,7 +134,7 @@ export async function fetchBlogById(id: string | number, locale: string = 'en') 
     return data ? { id: data.id, ...data.attributes } : null;
   } catch (error) {
     console.error('Error fetching blog:', error);
-    throw error;
+    return null;
   }
 }
 
