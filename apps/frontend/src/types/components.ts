@@ -166,7 +166,7 @@ export interface FooterSocialLinks {
   linkedin?: string;
   gitlab?: string;
   leetcode?: string;
-  discord?: string;
+  slack?: string;
 }
 
 export interface FooterProps {

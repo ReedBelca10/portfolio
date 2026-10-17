@@ -2,7 +2,7 @@
 
 import React from 'react';
 import clsx from 'clsx';
-import { GitHubIcon, LeetCodeIcon, LinkedInIcon, GitLabIcon, DiscordIcon } from './Icon';
+import { GitHubIcon, LeetCodeIcon, LinkedInIcon, GitLabIcon, SlackIcon } from './Icon';
 import { useTranslations } from 'next-intl';
 
 /*
@@ -24,7 +24,7 @@ interface FooterProps {
   socialLinks?: {
     github?: string;
     linkedin?: string;
-    discord?: string;
+    slack?: string;
     gitlab?: string;
     leetcode?: string;
   };
@@ -37,7 +37,7 @@ export function Footer({
   socialLinks = {
     github: 'https://github.com/ReedBelca10',
     linkedin: 'https://www.linkedin.com/in/caleb-adjeoda-410b34415',
-    discord: 'https://discord.com/users/1425091386709115007',
+    slack: 'https://calebadjeoda.slack.com/team/U0C9HLWUFLH',
     gitlab: 'https://gitlab.com/ReedBelca10',
     leetcode: 'https://leetcode.com/reedbelca10',
   },
@@ -105,13 +105,13 @@ export function Footer({
                 <LinkedInIcon size="md" />
               </button>
             )}
-            {socialLinks.discord && (
+            {socialLinks.slack && (
               <button
-                onClick={() => handleSocialClick(socialLinks.discord)}
+                onClick={() => handleSocialClick(socialLinks.slack)}
                 className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
-                aria-label="Discord"
+                aria-label="Slack"
               >
-                <DiscordIcon size="md" />
+                <SlackIcon size="md" />
               </button>
             )}
             {socialLinks.gitlab && (
@@ -155,13 +155,13 @@ export function Footer({
                 <LinkedInIcon size="md" />
               </button>
             )}
-            {socialLinks.discord && (
+            {socialLinks.slack && (
               <button
-                onClick={() => handleSocialClick(socialLinks.discord)}
+                onClick={() => handleSocialClick(socialLinks.slack)}
                 className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
-                aria-label="Discord"
+                aria-label="Slack"
               >
-                <DiscordIcon size="md" />
+                <SlackIcon size="md" />
               </button>
             )}
             {socialLinks.gitlab && (
@@ -219,13 +219,13 @@ export function Footer({
                 <LinkedInIcon size="md" />
               </button>
             )}
-            {socialLinks.discord && (
+            {socialLinks.slack && (
               <button
-                onClick={() => handleSocialClick(socialLinks.discord)}
+                onClick={() => handleSocialClick(socialLinks.slack)}
                 className="p-2 rounded-full bg-white/10 hover:bg-[#00D9FF]/20 text-white hover:text-[#00D9FF] transition-all duration-base"
-                aria-label="Discord"
+                aria-label="Slack"
               >
-                <DiscordIcon size="md" />
+                <SlackIcon size="md" />
               </button>
             )}
             {socialLinks.gitlab && (

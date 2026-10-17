@@ -5,7 +5,7 @@ import { Link, usePathname } from '@/i18n';
 import { useDebounce } from '../hooks/useDebounce';
 import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
-import { GitHubIcon, LinkedInIcon, DiscordIcon, GitLabIcon, LeetCodeIcon } from './Icon';
+import { GitHubIcon, LinkedInIcon, SlackIcon, GitLabIcon, LeetCodeIcon } from './Icon';
 import LanguageSwitcher from './LanguageSwitcher';
 
 interface NavbarLink {
@@ -16,7 +16,7 @@ interface NavbarLink {
 interface SocialLink {
   name: string;
   url: string;
-  icon: 'github' | 'linkedin' | 'leetcode' | 'discord' | 'gitlab';
+  icon: 'github' | 'linkedin' | 'leetcode' | 'slack' | 'gitlab';
 }
 
 interface NavbarProps {
@@ -37,7 +37,7 @@ export function Navbar({
   socialLinks = [
     { name: 'leetcode', url: 'https://leetcode.com/reedbelca10', icon: 'leetcode' },
     { name: 'linkedin', url: 'https://www.linkedin.com/in/caleb-adjeoda-410b34415', icon: 'linkedin' },
-    { name: 'discord', url: 'https://discord.com/users/1425091386709115007', icon: 'discord' },
+    { name: 'slack', url: 'https://calebadjeoda.slack.com/team/U0C9HLWUFLH', icon: 'slack' },
     { name: 'gitlab', url: 'https://gitlab.com/ReedBelca10', icon: 'gitlab' },
     { name: 'github', url: 'https://github.com/ReedBelca10', icon: 'github' },
   ],
@@ -124,14 +124,14 @@ export function Navbar({
 
   
 
-  const renderSocialIcon = (icon: 'github' | 'linkedin' | 'discord' | 'gitlab' | 'leetcode') => {
+  const renderSocialIcon = (icon: 'github' | 'linkedin' | 'slack' | 'gitlab' | 'leetcode') => {
     switch (icon) {
       case 'github':
         return <GitHubIcon size="md" />;
       case 'linkedin':
         return <LinkedInIcon size="md" />;
-      case 'discord':
-        return <DiscordIcon size="md" />;
+      case 'slack':
+        return <SlackIcon size="md" />;
       case 'gitlab':
         return <GitLabIcon size="md" />;
       case 'leetcode':
